@@ -1,0 +1,3 @@
+C:/Users/Simon/Google Drive/BME/prog1/nhf/cmake-build-debug/CMakeFiles/nhf.dir
+C:/Users/Simon/Google Drive/BME/prog1/nhf/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Simon/Google Drive/BME/prog1/nhf/cmake-build-debug/CMakeFiles/rebuild_cache.dir
