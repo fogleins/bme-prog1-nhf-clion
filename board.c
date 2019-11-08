@@ -6,12 +6,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
+#include "board.h"
+
 /** kockadobást szimulál **/
 int dice(void) {
     return rand() % 7;
 }
 
-/** létrehoz egy ablakot és egy renderert**/
+/** létrehoz egy ablakot és egy renderert **/
 //TODO: pointereket adjon vissza (window és rederer)
 void ablak_letrehozasa(int szelesseg, int magassag) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -23,7 +25,7 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
         SDL_Log("Az ablak letrehozasa nem sikerult: %s.", SDL_GetError());
         exit(1);
     }
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     if (renderer == NULL) {
         SDL_Log("Nem hozhato letre a megjelenito: %s", SDL_GetError());
         exit(1);

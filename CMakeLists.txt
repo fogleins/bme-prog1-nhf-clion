@@ -17,8 +17,8 @@ set(CMAKE_C_STANDARD 99)
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 
-add_executable(sdlteszt main.c)
+add_executable(sdlteszt main.c board.c menu.c)
 
 #target_link_libraries(sdlteszt ${SDL2_LIBRARY} -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_gfx)
-target_link_libraries(sdlteszt "${SDL2_LIBRARY}" -lmingw32 -lSDL2 -lSDL2_gfx -lSDL2main)
+target_link_libraries(sdlteszt "${SDL2_LIBRARY}" -lmingw32 -lSDL2 -lSDL2_gfx -lSDL2main -lSDL2_image)
 

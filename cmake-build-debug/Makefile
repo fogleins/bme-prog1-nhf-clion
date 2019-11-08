@@ -122,6 +122,33 @@ sdlteszt/fast:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/build
 .PHONY : sdlteszt/fast
 
+board.obj: board.c.obj
+
+.PHONY : board.obj
+
+# target to build an object file
+board.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.obj
+.PHONY : board.c.obj
+
+board.i: board.c.i
+
+.PHONY : board.i
+
+# target to preprocess a source file
+board.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.i
+.PHONY : board.c.i
+
+board.s: board.c.s
+
+.PHONY : board.s
+
+# target to generate assembly for a file
+board.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.s
+.PHONY : board.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -149,6 +176,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/main.c.s
 .PHONY : main.c.s
 
+menu.obj: menu.c.obj
+
+.PHONY : menu.obj
+
+# target to build an object file
+menu.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/menu.c.obj
+.PHONY : menu.c.obj
+
+menu.i: menu.c.i
+
+.PHONY : menu.i
+
+# target to preprocess a source file
+menu.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/menu.c.i
+.PHONY : menu.c.i
+
+menu.s: menu.c.s
+
+.PHONY : menu.s
+
+# target to generate assembly for a file
+menu.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/menu.c.s
+.PHONY : menu.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -158,9 +212,15 @@ help:
 	@echo ... sdlteszt
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... board.obj
+	@echo ... board.i
+	@echo ... board.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... menu.obj
+	@echo ... menu.i
+	@echo ... menu.s
 .PHONY : help
 
 
