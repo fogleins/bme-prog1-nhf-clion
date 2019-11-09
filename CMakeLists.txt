@@ -20,5 +20,5 @@ include_directories(${SDL2_INCLUDE_DIR})
 add_executable(sdlteszt main.c board.c menu.c)
 
 #target_link_libraries(sdlteszt ${SDL2_LIBRARY} -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_gfx)
-target_link_libraries(sdlteszt "${SDL2_LIBRARY}" -lmingw32 -lSDL2 -lSDL2_gfx -lSDL2main -lSDL2_image)
+target_link_libraries(sdlteszt "${SDL2_LIBRARY}" -lmingw32 -lSDL2 -lSDL2_gfx -lSDL2main -lSDL2_image -lSDL2_ttf)
 

@@ -21,3 +21,15 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+/*TODO: gombok megnyomására nyíljon új játék
+ * (legyen megadható a játékosok száma!),
+ * lehessen betölteni régi játékmenetet,
+ * lehessen menteni az aktuális állást*/
+
+/*TODO: játékmenet modul (structok, szabályok)
+ * esetleg 3 élet, hogy lehessen passzolni a
+ * rossz mezőket?*/
+
+/*TODO: mezők tulajdonságainak megadása,
+ * pálya véglegesítése (mezők száma, szín)*/
