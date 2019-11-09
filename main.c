@@ -33,3 +33,6 @@ int main(int argc, char *argv[]) {
 
 /*TODO: mezők tulajdonságainak megadása,
  * pálya véglegesítése (mezők száma, szín)*/
+
+/*TODO: az ablak és renderer által foglalt
+ * memória felszabadítása*/
