@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string.h>
 
-#include "board.h"
+#include "ablakkezeles.h"
 #include "menu.h"
 
 /** a board.c-ben lévő globális rendererre mutat **/
@@ -16,8 +16,6 @@ int main(int argc, char *argv[]) {
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
     menu_kirajzolasa(); /* menu.c */
-    ablakra_kiir();
-    ablak_bezarasa();
 
     return 0;
 }

@@ -149,6 +149,33 @@ board.c.s:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.s
 .PHONY : board.c.s
 
+jatek.obj: jatek.c.obj
+
+.PHONY : jatek.obj
+
+# target to build an object file
+jatek.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek.c.obj
+.PHONY : jatek.c.obj
+
+jatek.i: jatek.c.i
+
+.PHONY : jatek.i
+
+# target to preprocess a source file
+jatek.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek.c.i
+.PHONY : jatek.c.i
+
+jatek.s: jatek.c.s
+
+.PHONY : jatek.s
+
+# target to generate assembly for a file
+jatek.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek.c.s
+.PHONY : jatek.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -215,6 +242,9 @@ help:
 	@echo ... board.obj
 	@echo ... board.i
 	@echo ... board.s
+	@echo ... jatek.obj
+	@echo ... jatek.i
+	@echo ... jatek.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

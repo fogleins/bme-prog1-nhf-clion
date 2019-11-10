@@ -6,7 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
-#include "board.h"
+#include "ablakkezeles.h"
 
 /** kockadobást szimulál **/
 int dice(void) {
@@ -45,6 +45,11 @@ void ablakra_kiir(void) {
 //    stringRGBA(renderer, 300, 280, kiiras, 255, 255, 255, 255);
 //    SDL_RenderPresent(renderer);
     return;
+}
+
+void ablak_tisztitasa(SDL_Renderer* renderer) {
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
 }
 
 void ablak_bezarasa(void) {

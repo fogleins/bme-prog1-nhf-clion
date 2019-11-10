@@ -8,7 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 
-#include "board.h"
+#include "ablakkezeles.h"
+#include "jatek.h"
 #include "menu.h"
 
 SDL_Window* menu_kirajzolasa(void) {
@@ -81,6 +82,7 @@ static void egeresbillentyu(void) {
             case SDL_MOUSEBUTTONDOWN:
                 // ha új játékot kezd
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 255 && esemeny.button.y <= 305) {
+                    jatekkezdes();
                     //TODO: új játék
                 }
                 // ha játékmenetet tölt be
@@ -96,7 +98,7 @@ static void egeresbillentyu(void) {
             case SDL_KEYDOWN:
                 // ha n (=new)
                 if (esemeny.key.keysym.sym == SDLK_n) {
-                    /// ld fent
+                    jatekkezdes();
                 }
                 // ha l (load)
                 if (esemeny.key.keysym.sym == SDLK_l) {
