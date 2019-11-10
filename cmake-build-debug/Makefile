@@ -122,32 +122,32 @@ sdlteszt/fast:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/build
 .PHONY : sdlteszt/fast
 
-board.obj: board.c.obj
+ablakkezeles.obj: ablakkezeles.c.obj
 
-.PHONY : board.obj
+.PHONY : ablakkezeles.obj
 
 # target to build an object file
-board.c.obj:
-	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.obj
-.PHONY : board.c.obj
+ablakkezeles.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/ablakkezeles.c.obj
+.PHONY : ablakkezeles.c.obj
 
-board.i: board.c.i
+ablakkezeles.i: ablakkezeles.c.i
 
-.PHONY : board.i
+.PHONY : ablakkezeles.i
 
 # target to preprocess a source file
-board.c.i:
-	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.i
-.PHONY : board.c.i
+ablakkezeles.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/ablakkezeles.c.i
+.PHONY : ablakkezeles.c.i
 
-board.s: board.c.s
+ablakkezeles.s: ablakkezeles.c.s
 
-.PHONY : board.s
+.PHONY : ablakkezeles.s
 
 # target to generate assembly for a file
-board.c.s:
-	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/board.c.s
-.PHONY : board.c.s
+ablakkezeles.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/ablakkezeles.c.s
+.PHONY : ablakkezeles.c.s
 
 jatek.obj: jatek.c.obj
 
@@ -239,9 +239,9 @@ help:
 	@echo ... sdlteszt
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... board.obj
-	@echo ... board.i
-	@echo ... board.s
+	@echo ... ablakkezeles.obj
+	@echo ... ablakkezeles.i
+	@echo ... ablakkezeles.s
 	@echo ... jatek.obj
 	@echo ... jatek.i
 	@echo ... jatek.s

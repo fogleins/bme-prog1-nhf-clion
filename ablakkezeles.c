@@ -8,10 +8,6 @@
 
 #include "ablakkezeles.h"
 
-/** kockadobást szimulál **/
-int dice(void) {
-    return rand() % 7;
-}
 
 /** létrehoz egy ablakot és egy renderert **/
 //TODO: pointereket adjon vissza (window és rederer)
@@ -31,20 +27,6 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
         exit(1);
     }
     SDL_RenderClear(renderer);
-}
-
-/** kiír egyelőre csak hardcodeolva van**/
-//TODO: renderer legyen definiálva
-void ablakra_kiir(void) {
-//    // A sztring kiírása SDL-lel
-//    //felesleges, mert mindig csak egy jegyű szám lehet, így biztosan 9 karakternyi hely kell
-//    //char* kiiras = (char*) malloc(sizeof(char) * 9); /* string: Kocka: [int]\0 => 9 chars */
-//    char kiiras[9] = "Kocka: ";
-//    kiiras[7] = (char) dice();
-//    kiiras[8] = '\0';
-//    stringRGBA(renderer, 300, 280, kiiras, 255, 255, 255, 255);
-//    SDL_RenderPresent(renderer);
-    return;
 }
 
 void ablak_tisztitasa(SDL_Renderer* renderer) {

@@ -92,7 +92,6 @@ static void egeresbillentyu(void) {
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465) {
                     SDL_Quit();
                     kilepes = true;
-                    break;
                 }
                 break;
             case SDL_KEYDOWN:
@@ -108,7 +107,6 @@ static void egeresbillentyu(void) {
                 if (esemeny.key.keysym.sym == SDLK_q) {
                     kilepes = true;
                     SDL_Quit();
-                    break;
                 }
                 break;
             case SDL_QUIT:

@@ -7,9 +7,7 @@
 
 SDL_Renderer *renderer;
 
-int dice(void);
 void ablak_letrehozasa(int szelesseg, int magassag);
-void ablakra_kiir(void);
 void ablak_bezarasa(void);
 void ablak_tisztitasa(SDL_Renderer* renderer);
 

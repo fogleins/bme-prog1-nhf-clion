@@ -21,5 +21,7 @@ typedef struct Mezo {
 } Mezo;
 
 void jatekkezdes(void);
+void jatek_vege(void);
+int kocka(void);
 
 #endif //TARSAS_JATEK_H
