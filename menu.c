@@ -90,8 +90,8 @@ static void egeresbillentyu(void) {
                     //TODO: fájl beolvasása
                 }
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465) {
-                    SDL_Quit();
                     kilepes = true;
+                    SDL_Quit();
                 }
                 break;
             case SDL_KEYDOWN:
