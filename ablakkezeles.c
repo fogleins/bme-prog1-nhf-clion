@@ -36,11 +36,11 @@ void ablak_tisztitasa(SDL_Renderer* renderer) {
 }
 
 void ablak_bezarasa(void) {
-    /* varunk a kilepesre */
-    SDL_Event ev;
-    while (SDL_WaitEvent(&ev) && ev.type != SDL_QUIT) {}
-
-    /* ablak bezarasa */
+//    /* varunk a kilepesre */
+//    SDL_Event ev;
+//    //while (SDL_WaitEvent(&ev) && ev.type != SDL_QUIT) {}
+//
+//    /* ablak bezarasa */
     SDL_Quit();
 }
 
@@ -56,6 +56,10 @@ SDL_Color szin(Szinek szin) {
         case piros:
             r = 255;
             g = 0;
+            b = 0;
+        case zold:
+            r = 0;
+            g = 255;
             b = 0;
         default:
             // fekete
