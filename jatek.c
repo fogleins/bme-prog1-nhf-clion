@@ -17,7 +17,9 @@ void jatek_main(void) {
     Jatekos* jatekostomb = jatekkezdes();
     jatekter_kirajzolasa();
 
-    jatek_vege(jatekostomb);
+    ///a tesztelés idejére kikommentelve
+    //TODO: játék vége fgv javítása
+    //jatek_vege(jatekostomb);
 }
 
 
@@ -81,9 +83,10 @@ static Jatekos* jatekkezdes(void) {
                 //TODO: itt lehetne kilepes = false-szal továbblépni?
                 if (jatekosok_tombje == NULL) {
                     SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
-                    exit(1);
+                    kilepes = false;
+                    //exit(0);
                 }
-                return jatekosok_tombje;
+                else return jatekosok_tombje;
             }
         }
     }
@@ -96,8 +99,10 @@ static void jatekter_kirajzolasa(void) {
         exit(1);
     }
     SDL_RenderCopy(renderer, tabla, NULL, NULL);
+
     /*TODO: különféle mezők megjelenítése*/
     SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(tabla);
 }
 
 static void jatek_vege(Jatekos* jatekostomb) {
