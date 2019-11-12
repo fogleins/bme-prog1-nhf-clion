@@ -22,6 +22,7 @@ typedef struct Mezo {
 
 void jatek_main(void);
 static Jatekos* jatekkezdes(void);
+static void parbeszed(TTF_Font* betu, char* uzenet, int y);
 static void jatekter_kirajzolasa(void);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);

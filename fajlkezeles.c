@@ -1,7 +1,7 @@
 //
 // Created by Simon on 2019-11-12.
 //
-// https://lazyfoo.net/tutorials/SDL/33_file_reading_and_writing/index.php
+// https://lazyfoo.net/tutorials/SDL/33_file_readi  ng_and_writing/index.php
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
