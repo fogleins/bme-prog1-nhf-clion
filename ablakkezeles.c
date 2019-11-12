@@ -47,13 +47,16 @@ void ablak_bezarasa(void) {
 /* visszaad egy SDL_Color típusú színt */
 SDL_Color szin(Szinek szin) {
     int r, g, b;
-    SDL_Color color[3] = {r, g, b};
     switch (szin) {
         case feher:
             r = 255;
             g = 255;
             b = 255;
             break;
+        case piros:
+            r = 255;
+            g = 0;
+            b = 0;
         default:
             // fekete
             r = 0;
@@ -61,4 +64,6 @@ SDL_Color szin(Szinek szin) {
             b = 0;
             break;
     }
+    SDL_Color color = {r, g, b};
+    return color;
 }

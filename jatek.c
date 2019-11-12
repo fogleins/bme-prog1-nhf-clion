@@ -30,7 +30,7 @@ static Jatekos* jatekkezdes(void) {
     Jatekos* jatekosok_tombje;
     ablak_tisztitasa(renderer);
     TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 55);
-    fancy_szoveget_kiir(betu, szin(feher),"Add meg a játékosok számát", 576 / 3);
+    fancy_szoveget_kiir(betu, szin(feher),"Add meg a játékosok számát", 576 / 6);
     SDL_RenderPresent(renderer);
     bool kilepes = false;
     int jatekosok_szama;
