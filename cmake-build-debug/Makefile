@@ -149,6 +149,33 @@ ablakkezeles.c.s:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/ablakkezeles.c.s
 .PHONY : ablakkezeles.c.s
 
+fajlkezeles.obj: fajlkezeles.c.obj
+
+.PHONY : fajlkezeles.obj
+
+# target to build an object file
+fajlkezeles.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/fajlkezeles.c.obj
+.PHONY : fajlkezeles.c.obj
+
+fajlkezeles.i: fajlkezeles.c.i
+
+.PHONY : fajlkezeles.i
+
+# target to preprocess a source file
+fajlkezeles.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/fajlkezeles.c.i
+.PHONY : fajlkezeles.c.i
+
+fajlkezeles.s: fajlkezeles.c.s
+
+.PHONY : fajlkezeles.s
+
+# target to generate assembly for a file
+fajlkezeles.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/fajlkezeles.c.s
+.PHONY : fajlkezeles.c.s
+
 jatek.obj: jatek.c.obj
 
 .PHONY : jatek.obj
@@ -242,6 +269,9 @@ help:
 	@echo ... ablakkezeles.obj
 	@echo ... ablakkezeles.i
 	@echo ... ablakkezeles.s
+	@echo ... fajlkezeles.obj
+	@echo ... fajlkezeles.i
+	@echo ... fajlkezeles.s
 	@echo ... jatek.obj
 	@echo ... jatek.i
 	@echo ... jatek.s

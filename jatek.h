@@ -25,5 +25,6 @@ static Jatekos* jatekkezdes(void);
 static void jatekter_kirajzolasa(void);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);
+char* sdl_sztring(void);
 
 #endif //TARSAS_JATEK_H

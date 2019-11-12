@@ -7,6 +7,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "main.h"
 #include "jatek.h"
@@ -93,12 +94,14 @@ static Jatekos* jatekkezdes(void) {
 }
 
 static void jatekter_kirajzolasa(void) {
+    ablak_tisztitasa(renderer);
     SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
+    SDL_Rect cel = { 448, 0, 576, 576 };
     if (tabla == NULL) {
         SDL_Log("Nem nyithato meg a kep. (%s)", IMG_GetError());
         exit(1);
     }
-    SDL_RenderCopy(renderer, tabla, NULL, NULL);
+    SDL_RenderCopy(renderer, tabla, NULL, &cel);
 
     /*TODO: különféle mezők megjelenítése*/
     SDL_RenderPresent(renderer);
@@ -114,4 +117,27 @@ static void jatek_vege(Jatekos* jatekostomb) {
 /** kockadobást szimulál **/
 static int kocka(void) {
     return rand() % 7;
+}
+
+/* sztring bemenet kezelése */
+// https://wiki.libsdl.org/Tutorials/TextInput
+char* sdl_sztring(void) {
+    char* str = "";
+    bool kilepes = false;
+    SDL_StartTextInput();
+    while (!kilepes) {
+        SDL_Event esemeny;
+        if (SDL_PollEvent(&esemeny)) {
+            switch (esemeny.type) {
+                case SDL_QUIT:
+                    kilepes = true;
+                    break;
+                case SDL_TEXTINPUT:
+                    /* Add new text onto the end of our text */
+                    strcat(str, esemeny.text.text);
+                    break;
+            }
+        }
+    }
+    return str;
 }
