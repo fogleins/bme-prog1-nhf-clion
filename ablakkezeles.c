@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
+#include "main.h"
 #include "ablakkezeles.h"
 
 
@@ -41,4 +42,23 @@ void ablak_bezarasa(void) {
 
     /* ablak bezarasa */
     SDL_Quit();
+}
+
+/* visszaad egy SDL_Color típusú színt */
+SDL_Color szin(Szinek szin) {
+    int r, g, b;
+    SDL_Color color[3] = {r, g, b};
+    switch (szin) {
+        case feher:
+            r = 255;
+            g = 255;
+            b = 255;
+            break;
+        default:
+            // fekete
+            r = 0;
+            g = 0;
+            b = 0;
+            break;
+    }
 }

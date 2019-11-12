@@ -3,21 +3,35 @@
 //
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
 
+#include "main.h"
 #include "jatek.h"
 #include "ablakkezeles.h"
+#include "menu.h"
 
-Jatekos* jatekosok_tombje;
+void jatek_main(void) {
+    Jatekos* jatekostomb = jatekkezdes();
+    jatekter_kirajzolasa();
+
+    jatek_vege(jatekostomb);
+}
+
 
 /*Letisztítja az ablakot, bekér egy
  * 6nál nem nagyobb számot (játékosok
  * száma, és létrehoz egy Jatekos
  * típusú tömböt, amiben a játék
  * adatai lesznek tárolva*/
-void jatekkezdes(void) {
+static Jatekos* jatekkezdes(void) {
+    Jatekos* jatekosok_tombje;
     ablak_tisztitasa(renderer);
+    TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 55);
+    fancy_szoveget_kiir(betu, szin(feher),"Add meg a játékosok számát", 576 / 3);
+    SDL_RenderPresent(renderer);
     bool kilepes = false;
     int jatekosok_szama;
     while (!kilepes) {
@@ -32,24 +46,34 @@ void jatekkezdes(void) {
             /// https://wiki.libsdl.org/SDL_GetKeyName
             switch (esemeny.key.keysym.sym) {
                 case SDLK_2:
+                case SDLK_KP_2:
                     jatekosok_szama = 2;
                     kilepes = true;
                     break;
                 case SDLK_3:
+                case SDLK_KP_3:
                     jatekosok_szama = 3;
                     kilepes = true;
                     break;
                 case SDLK_4:
+                case SDLK_KP_4:
                     jatekosok_szama = 4;
                     kilepes = true;
                     break;
                 case SDLK_5:
+                case SDLK_KP_5:
                     jatekosok_szama = 5;
                     kilepes = true;
                     break;
                 case SDLK_6:
+                case SDLK_KP_6:
                     jatekosok_szama = 6;
                     kilepes = true;
+                    break;
+                default:
+                    kilepes = false;
+                    betu = TTF_OpenFont("myfrida-bold.otf", 60);
+                    //fancy_szoveget_kiir(betu, feher, );
                     break;
             }
             if (kilepes) {
@@ -59,18 +83,30 @@ void jatekkezdes(void) {
                     SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
                     exit(1);
                 }
+                return jatekosok_tombje;
             }
         }
     }
 }
 
-void jatek_vege(void) {
+static void jatekter_kirajzolasa(void) {
+    SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
+    if (tabla == NULL) {
+        SDL_Log("Nem nyithato meg a kep. (%s)", IMG_GetError());
+        exit(1);
+    }
+    SDL_RenderCopy(renderer, tabla, NULL, NULL);
+    /*TODO: különféle mezők megjelenítése*/
+    SDL_RenderPresent(renderer);
+}
+
+static void jatek_vege(Jatekos* jatekostomb) {
     /*TODO: eredménykijelzés, stb*/
-    free(jatekosok_tombje);
+    free(jatekostomb);
     SDL_Quit();
 }
 
 /** kockadobást szimulál **/
-int kocka(void) {
+static int kocka(void) {
     return rand() % 7;
 }

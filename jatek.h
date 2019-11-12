@@ -20,8 +20,10 @@ typedef struct Mezo {
     int lep; /*rálépéskor ennyit léphetünk előre, (-) ha hátra*/
 } Mezo;
 
-void jatekkezdes(void);
-void jatek_vege(void);
-int kocka(void);
+void jatek_main(void);
+static Jatekos* jatekkezdes(void);
+static void jatekter_kirajzolasa(void);
+static void jatek_vege(Jatekos* jatekostomb);
+static int kocka(void);
 
 #endif //TARSAS_JATEK_H

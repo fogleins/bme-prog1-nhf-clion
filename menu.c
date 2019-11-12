@@ -50,7 +50,7 @@ SDL_Window* menu_kirajzolasa(void) {
     SDL_DestroyTexture(hatter);
 }
 //TODO: a sztring bemenet biztos jó így?
-static void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int y) {
+void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int y) {
     /* ha sajat kodban hasznalod, csinalj belole fuggvenyt! */
     /* felirat megrajzolasa, kulonfele verziokban */
     SDL_Surface *felirat;
@@ -82,7 +82,7 @@ static void egeresbillentyu(void) {
             case SDL_MOUSEBUTTONDOWN:
                 // ha új játékot kezd
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 255 && esemeny.button.y <= 305) {
-                    jatekkezdes();
+                    jatek_main();
                     //TODO: új játék
                 }
                 // ha játékmenetet tölt be
@@ -97,7 +97,7 @@ static void egeresbillentyu(void) {
             case SDL_KEYDOWN:
                 // ha n (=new)
                 if (esemeny.key.keysym.sym == SDLK_n) {
-                    jatekkezdes();
+                    jatek_main();
                 }
                 // ha l (load)
                 if (esemeny.key.keysym.sym == SDLK_l) {
