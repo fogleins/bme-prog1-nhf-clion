@@ -13,8 +13,7 @@
 #include "jatek.h"
 #include "ablakkezeles.h"
 #include "menu.h"
-
-static void jatekosszam_gombok_kirajzolasa();
+#include "debugmalloc.h"
 
 void jatek_main(void) {
     Jatekos* jatekostomb = jatekkezdes();
@@ -26,22 +25,22 @@ void jatek_main(void) {
 }
 
 
-/*Letisztítja az ablakot, bekér egy
- * 6nál nem nagyobb számot (játékosok
- * száma, és létrehoz egy Jatekos
- * típusú tömböt, amiben a játék
- * adatai lesznek tárolva*/
+/**
+ * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
+ * @return Dinamikusan foglalt memóriaterületre mutató Játékos típusú pointer
+ */
 static Jatekos* jatekkezdes(void) {
     Jatekos *jatekosok_tombje;
     bool kilepes = false;
     int jatekosok_szama;
-    TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 48);
+    TTF_Font *betu = betutipus(felkover48pt);
     parbeszed(betu, "Add meg a játékosok számát: ", 576 / 8);
     jatekosszam_gombok_kirajzolasa();
     while (!kilepes) {
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
+            //TODO: ezt a kommentet átalakítani
             /// ez a switch elég foschnak néz ki, valahogy
             /// visszatérési értékként kéne megkapni a
             /// megadott számot
@@ -77,81 +76,82 @@ static Jatekos* jatekkezdes(void) {
                         break;
                     default:
                         kilepes = false;
-                        //TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 60);
-                        //fancy_szoveget_kiir(betu, feher, );
                         break;
                 }
             case SDL_MOUSEBUTTONDOWN:
-                if (esemeny.button.x >= 452 && esemeny.button.x <= 492) {
+                if (esemeny.button.x >= 452 && esemeny.button.x <= 572) {
                     // 2
                     if (esemeny.button.y >= 192 && esemeny.button.y <= 232) {
-
+                        jatekosok_szama = 2;
+                        kilepes = true;
                     }
                     // 3
                     if (esemeny.button.y >= 262 && esemeny.button.y <= 302) {
                         jatekosok_szama = 3;
                         kilepes = true;
-                        SDL_Quit();
                     }
                     // 4
                     if (esemeny.button.y >= 332 && esemeny.button.y <= 372) {
-
+                        jatekosok_szama = 4;
+                        kilepes = true;
                     }
                     // 5
                     if (esemeny.button.y >= 402 && esemeny.button.y <= 442) {
-
+                        jatekosok_szama = 5;
+                        kilepes = true;
                     }
                     // 6
                     if (esemeny.button.y >= 472 && esemeny.button.y <= 512) {
-
+                        jatekosok_szama = 6;
+                        kilepes = true;
                     }
                 }
                 break;
             case SDL_QUIT:
+                kilepes = true;
+                jatek_vege(jatekosok_tombje);
                 SDL_Quit();
         }
-
         if (kilepes) {
-            parbeszed(betu, "Folytatod?", 150);
-            bool megerositette = false;
-            while (!megerositette) {
-                // a játékkezdés megerősítése
-                SDL_Event megerosites_esemeny;
-                SDL_WaitEvent(&megerosites_esemeny);
-                if (esemeny.type == SDL_KEYDOWN) {
-                    //TODO: ezek működjenek egérrel is
-                    switch (megerosites_esemeny.key.keysym.sym) {
-                        case SDLK_i:
-                        case SDLK_y:
-                            jatekosok_tombje = (Jatekos *) malloc(jatekosok_szama * sizeof(Jatekos));
-                            //TODO: itt lehetne kilepes = false-szal továbblépni?
-                            if (jatekosok_tombje == NULL) {
-                                SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s",
-                                        SDL_GetError());
-                                kilepes = false;
-                                //exit(0);
-                            } else return jatekosok_tombje;
-                            break;
-                        case SDLK_n:
-                            megerositette = true;
-                            kilepes = false;
-                            ablak_tisztitasa(renderer);
-                            parbeszed(betu, "Add meg a játékosok számát: ", 576 / 6);
-                            break;
-                        case SDLK_m:
-                        case SDLK_f:
-                            megerositette = true;
-                            menu_kirajzolasa();
-                            break;
+            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
+        }
+    }
+}
+
+static bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam) {
+    parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
+    bool megerositette = false;
+    while (!megerositette) {
+        SDL_Event megerosites_esemeny;
+        SDL_WaitEvent(&megerosites_esemeny);
+        if (megerosites_esemeny.type == SDL_KEYDOWN) {
+            //TODO: ezek működjenek egérrel is
+            switch (megerosites_esemeny.key.keysym.sym) {
+                case SDLK_i:
+                case SDLK_y:
+                    tomb = (Jatekos *) malloc(jatekosszam * sizeof(Jatekos));
+                    //TODO: itt lehetne kilepes = false-szal továbblépni?
+                    if (tomb == NULL) {
+                        SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
+                        return false;
                     }
-                }
+                    else return true;
+                case SDLK_n:
+                    megerositette = true;
+                    ablak_tisztitasa(renderer);
+                    parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 6);
+                    break;
+                case SDLK_m:
+                case SDLK_f:
+                    menu_kirajzolasa();
+                    return false;
             }
         }
     }
 }
 
+/** Kirajzolja a játékosszám egérrel való megadásához szükséges gombokat */
 static void jatekosszam_gombok_kirajzolasa(void) {
-    TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 36);
     int y = 190;
     char szam = '2';
     char kiir[2];
@@ -165,21 +165,26 @@ static void jatekosszam_gombok_kirajzolasa(void) {
         // számok kiírása
         kiir[0] = szam;
         kiir[1] = '\0';
-        fancy_szoveget_kiir(betu, szin(feher), kiir, y);
+        fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), kiir, y);
         szam++;
         y += 70;
     }
     SDL_RenderPresent(renderer);
 }
 
-/* kiírja a paraméterként kapott üzenetet
- * az eventet nem vizsgálja */
+/** Letisztítja az ablakot és megjeleníti a paraméterként kapott üzenetet
+ *
+ * @param betu A megjelenítendő szöveg betűtípusa
+ * @param uzenet A megjelenítendő szöveg
+ * @param y A megjelenítendő szöveg föggőleges pozíciója az ablakon
+ */
 static void parbeszed(TTF_Font* betu, char* uzenet, int y) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betu, szin(feher), uzenet, y);
     SDL_RenderPresent(renderer);
 }
 
+/** Megjeleníti a játékmenet grafikus felületét */
 static void jatekter_kirajzolasa(void) {
     ablak_tisztitasa(renderer);
     SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
@@ -207,7 +212,15 @@ static void jatekter_kirajzolasa(void) {
     SDL_DestroyTexture(tabla);
 }
 
-// ez hátteres szöveget ír ki, gyorsabb a renderelés
+/** Hátteres élsimított szöveget ír ki
+ *
+ * @param betutipus A megjelenítendő szöveg betűtípusa
+ * @param szoveg A megjelenítendő szöveg
+ * @param x A szöveg vízszintes pozíója
+ * @param y A szöveg függőleges pozíciója
+ * @param betuszin A megjelenítendő szöveg színe
+ * @param hatterszin A megjelenítendő szöveg háttérszíne
+ */
 static void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL_Color betuszin, SDL_Color hatterszin) {
     SDL_Surface *felirat;
     SDL_Texture *felirat_t;
@@ -224,18 +237,24 @@ static void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int
     SDL_DestroyTexture(felirat_t);
 }
 
+/** A játék befejezésekor kerül hívásra. Felszabadítja a lefoglalt memóriát és bezárja az ablakot
+ *
+ * @param jatekostomb A felszabadítandó memóriaterületre mutató Jatekos típusú pointer
+ */
 static void jatek_vege(Jatekos* jatekostomb) {
     /*TODO: eredménykijelzés, stb*/
     free(jatekostomb);
     SDL_Quit();
 }
 
-/** kockadobást szimulál **/
+//TODO: ez kell?
+/** Kockadobást szimulál */
 static int kocka(void) {
     return rand() % 7;
 }
 
-/* sztring bemenet kezelése */
+//TODO ez a függvény
+/** Sztring bemenet kezelése */
 // https://wiki.libsdl.org/Tutorials/TextInput
 char* sdl_sztring(void) {
     char* str = "";

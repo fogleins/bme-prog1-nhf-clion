@@ -5,13 +5,16 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "main.h"
 #include "ablakkezeles.h"
+#include "debugmalloc.h"
 
 
-/** létrehoz egy ablakot és egy renderert **/
+/** Létrehoz egy ablakot és egy renderert */
 //TODO: pointereket adjon vissza (window és rederer)
+//TODO: ablakot is fel kell szabadítani?
 void ablak_letrehozasa(int szelesseg, int magassag) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         SDL_Log("Nem indithato az SDL: %s", SDL_GetError());
@@ -30,11 +33,13 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
     SDL_RenderClear(renderer);
 }
 
+/** letörli az ablak tartalmát */
 void ablak_tisztitasa(SDL_Renderer* renderer) {
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 }
 
+//TODO: ez nem kell (?)
 void ablak_bezarasa(void) {
 //    /* varunk a kilepesre */
 //    SDL_Event ev;
@@ -44,7 +49,11 @@ void ablak_bezarasa(void) {
     SDL_Quit();
 }
 
-/* visszaad egy SDL_Color típusú színt */
+/** visszaad egy SDL_Color típusú színt
+ *
+ *  @param szin main.h-ban definiált színek valamelyike
+ *  @return Egy SDL_Color típusú rgb szín
+ */
 SDL_Color szin(Szinek szin) {
     int r, g, b;
     switch (szin) {
@@ -82,4 +91,31 @@ SDL_Color szin(Szinek szin) {
     }
     SDL_Color color = {r, g, b};
     return color;
+}
+
+/** Visszaad egy TTF_Font típusú betűtípusra mutató pointert
+ *
+ *  @param betutipus A main.h-ban definiált betűtípusok valamelyike
+ *  @return NULL, ha nem definiált betűtípust ad meg a hívó
+ */
+TTF_Font* betutipus(Betuk betutipus) {
+    char* nev;
+    int meret;
+    switch (betutipus) {
+        case felkover60pt:
+            nev = "myfrida-bold.otf";
+            meret = 60;
+            break;
+        case felkover48pt:
+            nev = "myfrida-bold.otf";
+            meret = 48;
+            break;
+        case felkover36pt:
+            nev = "myfrida-bold.otf";
+            meret = 36;
+            break;
+        default:
+            return NULL;
+    }
+    return TTF_OpenFont(nev, meret);
 }

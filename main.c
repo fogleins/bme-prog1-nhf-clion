@@ -7,16 +7,15 @@
 
 #include "ablakkezeles.h"
 #include "menu.h"
-
-/** a board.c-ben lévő globális rendererre mutat **/
-//SDL_Renderer* main_renderer;
+#include "debugmalloc.h"
 
 int main(int argc, char *argv[]) {
     srand(time(0));
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
-    menu_kirajzolasa(); /* menu.c */
-
+    menu_kirajzolasa();
+    //TODO: memóriaszivárgás ellenőrzése
+    debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
     return 0;
 }
 

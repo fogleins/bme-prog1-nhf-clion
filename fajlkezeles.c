@@ -6,11 +6,12 @@
 #include <stdbool.h>
 
 #include "fajlkezeles.h"
+#include "debugmalloc.h"
 
-/* Beolvas egy korábbi játékmenetet
- * Visszatérési értéke igaz, ha a fájlt sikerült beolvasni,
- * hamis, ha a beolvasás sikertelen volt.
- * paramétere egy karaktertömb, ami a fájl elérési útja */
+/** Beolvas egy korábbi játékmenetet
+ * @param fajlnev A beolvasandó fájl neve
+ * @return igaz, ha a fájlt sikerült beolvasni
+ */
 // TODO: pointerként adja vissza a fájlt
 bool beolvas(char* fajlnev) {
     SDL_RWops* fajl = SDL_RWFromFile(fajlnev, "r");

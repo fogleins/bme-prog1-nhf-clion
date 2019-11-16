@@ -16,7 +16,9 @@
 #include "ablakkezeles.h"
 #include "jatek.h"
 #include "menu.h"
+#include "debugmalloc.h"
 
+/** Kirajzolja a menüt */
 SDL_Window* menu_kirajzolasa(void) {
     /// Háttér beállítása
     /* kép forrása:
@@ -54,10 +56,16 @@ SDL_Window* menu_kirajzolasa(void) {
     // a kép által foglalt memória felszabadítása
     SDL_DestroyTexture(hatter);
 }
+
+/** Háttér nélküli, élsimított betűket jelenít meg
+ *
+ * @param betutipus A megjelenítendő betűtípus és méret
+ * @param szin A szöveg színe
+ * @param szoveg A megjelenítendő szöveg
+ * @param y A szöveg függőleges helyzete
+ */
 //TODO: a sztring bemenet biztos jó így?
 void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int y) {
-    /* ha sajat kodban hasznalod, csinalj belole fuggvenyt! */
-    /* felirat megrajzolasa, kulonfele verziokban */
     SDL_Surface *felirat;
     SDL_Texture *felirat_t;
     SDL_Rect hova = { 0, 0, 0, 0 };
@@ -73,11 +81,7 @@ void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int 
     SDL_DestroyTexture(felirat_t);
 }
 
-/* Ez a függvény a menüképernyőn
- * tartózkodáskor fellépő eseményeket
- * kezeli. A menüpontok elérhetőek
- * az egér és a billentyűzet
- * használatával is. */
+/** A menüképernyőn tartózkodás alatt fellépő eseményeket (gombnyomás, kattintás) kezeli.*/
 static void egeresbillentyu(void) {
     bool kilepes = false;
     while (!kilepes) {
