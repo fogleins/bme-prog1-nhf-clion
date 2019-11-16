@@ -8,7 +8,9 @@
 typedef enum Szinek {
     feher,
     piros,
-    zold
+    zold,
+    hatter,
+    hatter_sotet
 } Szinek;
 
 #endif //TARSAS_MAIN_H

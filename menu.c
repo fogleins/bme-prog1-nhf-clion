@@ -1,6 +1,11 @@
 //
 // Created by Simon on 2019-11-08.
 //
+
+/* Ez a modul főleg a menü és a játéktábla megjelenítéséért,
+ * valamint az ezeken a képernyőkön fellépő eventek kezeléséért
+ * felelős függvényeket tartalmazza. */
+
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -27,7 +32,7 @@ SDL_Window* menu_kirajzolasa(void) {
     TTF_Init();
     TTF_Font *cim = TTF_OpenFont("myfrida-shadow-regular.otf", 65);
     TTF_Font *menupontok = TTF_OpenFont("myfrida-bold.otf", 26);
-    if (cim == NULL) {
+    if (cim == NULL || menupontok == NULL) {
         SDL_Log("Nem lehetett betolteni a betutipust. (%s)", TTF_GetError());
         exit(1);
     }
@@ -116,3 +121,6 @@ static void egeresbillentyu(void) {
         }
     }
 }
+
+/// JÁTÉKTÁBLA
+//void jatektabla_kirajzolasa()

@@ -17,7 +17,7 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
         SDL_Log("Nem indithato az SDL: %s", SDL_GetError());
         exit(1);
     }
-    SDL_Window *window = SDL_CreateWindow("Legyel olimpiai bajnok!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, szelesseg, magassag, 0);
+    SDL_Window *window = SDL_CreateWindow("Legyél olimpiai bajnok!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, szelesseg, magassag, 0);
     if (window == NULL) {
         SDL_Log("Az ablak letrehozasa nem sikerult: %s.", SDL_GetError());
         exit(1);
@@ -57,10 +57,22 @@ SDL_Color szin(Szinek szin) {
             r = 255;
             g = 0;
             b = 0;
+            break;
         case zold:
             r = 0;
             g = 255;
             b = 0;
+            break;
+        case hatter:
+            r = 0xCB; //203
+            g = 0x7D; //125
+            b = 0x7D; //125
+            break;
+        case hatter_sotet:
+            r = 0xAD;
+            g = 0x66;
+            b = 0x66;
+            break;
         default:
             // fekete
             r = 0;
