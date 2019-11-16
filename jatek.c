@@ -32,7 +32,7 @@ void jatek_main(void) {
  * típusú tömböt, amiben a játék
  * adatai lesznek tárolva*/
 static Jatekos* jatekkezdes(void) {
-    Jatekos* jatekosok_tombje;
+    Jatekos *jatekosok_tombje;
     bool kilepes = false;
     int jatekosok_szama;
     TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 48);
@@ -80,10 +80,37 @@ static Jatekos* jatekkezdes(void) {
                         //TTF_Font *betu = TTF_OpenFont("myfrida-bold.otf", 60);
                         //fancy_szoveget_kiir(betu, feher, );
                         break;
+                }
             case SDL_MOUSEBUTTONDOWN:
-                if (esemeny.button.x == 0)
-                    break;
-            }
+                if (esemeny.button.x >= 452 && esemeny.button.x <= 492) {
+                    // 2
+                    if (esemeny.button.y >= 192 && esemeny.button.y <= 232) {
+
+                    }
+                    // 3
+                    if (esemeny.button.y >= 262 && esemeny.button.y <= 302) {
+                        jatekosok_szama = 3;
+                        kilepes = true;
+                        SDL_Quit();
+                    }
+                    // 4
+                    if (esemeny.button.y >= 332 && esemeny.button.y <= 372) {
+
+                    }
+                    // 5
+                    if (esemeny.button.y >= 402 && esemeny.button.y <= 442) {
+
+                    }
+                    // 6
+                    if (esemeny.button.y >= 472 && esemeny.button.y <= 512) {
+
+                    }
+                }
+                break;
+            case SDL_QUIT:
+                SDL_Quit();
+        }
+
         if (kilepes) {
             parbeszed(betu, "Folytatod?", 150);
             bool megerositette = false;
@@ -99,11 +126,11 @@ static Jatekos* jatekkezdes(void) {
                             jatekosok_tombje = (Jatekos *) malloc(jatekosok_szama * sizeof(Jatekos));
                             //TODO: itt lehetne kilepes = false-szal továbblépni?
                             if (jatekosok_tombje == NULL) {
-                                SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
+                                SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s",
+                                        SDL_GetError());
                                 kilepes = false;
                                 //exit(0);
-                            }
-                            else return jatekosok_tombje;
+                            } else return jatekosok_tombje;
                             break;
                         case SDLK_n:
                             megerositette = true;
@@ -119,13 +146,6 @@ static Jatekos* jatekkezdes(void) {
                     }
                 }
             }
-        }
-        }
-        if (esemeny.type == SDL_MOUSEBUTTONDOWN) {
-
-        }
-        if (esemeny.type == SDL_QUIT) {
-            SDL_Quit();
         }
     }
 }
