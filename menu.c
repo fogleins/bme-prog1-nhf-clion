@@ -17,6 +17,7 @@
 #include "jatek.h"
 #include "menu.h"
 #include "debugmalloc.h"
+#include "jatek_megjelenites.h"
 
 /** Kirajzolja a menüt */
 SDL_Window* menu_kirajzolasa(void) {
@@ -39,16 +40,16 @@ SDL_Window* menu_kirajzolasa(void) {
         exit(1);
     }
     SDL_Color feher = { 255, 255, 255 };
-    fancy_szoveget_kiir(cim, feher, "Fõmenü", 100);
-//    /** alpha kódok: https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4 **/
+    fancy_szoveget_kiir(cim, feher, "Fõmenü", 0, 100);
+    /* alpha kódok: https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4 */
     boxRGBA(renderer, 362, 255, 662, 305, 0xCB, 0x7D, 0x7D, 0xC7);
     boxRGBA(renderer, 362, 325, 662, 375, 0xCB, 0x7D, 0x7D, 0xC7);
     boxRGBA(renderer, 362, 415, 662, 465, 0xCB, 0x7D, 0x7D, 0xE6);
-    fancy_szoveget_kiir(menupontok, feher, "Új játék", 265);
-    fancy_szoveget_kiir(menupontok, feher, "Játékmenet betöltése", 337);
-    fancy_szoveget_kiir(menupontok, feher, "Kilépés", 425);
+    fancy_szoveget_kiir(menupontok, feher, "Új játék", 0, 265);
+    fancy_szoveget_kiir(menupontok, feher, "Játékmenet betöltése", 0, 337);
+    fancy_szoveget_kiir(menupontok, feher, "Kilépés", 0, 425);
 
-    /// a változtatások megjelenítése a kimeneten
+    // a változtatások megjelenítése a kimeneten
     /*TODO: a renderer nem frissül, a
      * háttér nem jelenik meg, javításch - kész */
     SDL_RenderPresent(renderer);
@@ -62,17 +63,21 @@ SDL_Window* menu_kirajzolasa(void) {
  * @param betutipus A megjelenítendő betűtípus és méret
  * @param szin A szöveg színe
  * @param szoveg A megjelenítendő szöveg
+ * @param x A szöveg vízszintes helyzete
  * @param y A szöveg függőleges helyzete
  */
 //TODO: a sztring bemenet biztos jó így?
-void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int y) {
+void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int x, int y) {
     SDL_Surface *felirat;
     SDL_Texture *felirat_t;
     SDL_Rect hova = { 0, 0, 0, 0 };
 
     felirat = TTF_RenderUTF8_Blended(betutipus, szoveg, szin);
     felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
-    hova.x = (1024 - felirat->w) / 2;
+    if (x == 0)
+        hova.x = (1024 - felirat->w) / 2;
+    else
+        hova.x = szoveg_poz_x(szoveg, betutipus, x);
     hova.y = y;
     hova.w = felirat->w;
     hova.h = felirat->h;
@@ -125,6 +130,3 @@ static void egeresbillentyu(void) {
         }
     }
 }
-
-/// JÁTÉKTÁBLA
-//void jatektabla_kirajzolasa()

@@ -17,7 +17,7 @@ set(CMAKE_C_STANDARD 99)
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 
-add_executable(sdlteszt main.c ablakkezeles.c menu.c jatek.c fajlkezeles.c fajlkezeles.h)
+add_executable(sdlteszt main.c ablakkezeles.c menu.c jatek.c fajlkezeles.c fajlkezeles.h jatek_megjelenites.c jatek_megjelenites.h)
 
 #target_link_libraries(sdlteszt ${SDL2_LIBRARY} -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_gfx)
 target_link_libraries(sdlteszt "${SDL2_LIBRARY}" -lmingw32 -lSDL2 -lSDL2_gfx -lSDL2main -lSDL2_image -lSDL2_ttf)

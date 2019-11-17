@@ -203,6 +203,33 @@ jatek.c.s:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek.c.s
 .PHONY : jatek.c.s
 
+jatek_megjelenites.obj: jatek_megjelenites.c.obj
+
+.PHONY : jatek_megjelenites.obj
+
+# target to build an object file
+jatek_megjelenites.c.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek_megjelenites.c.obj
+.PHONY : jatek_megjelenites.c.obj
+
+jatek_megjelenites.i: jatek_megjelenites.c.i
+
+.PHONY : jatek_megjelenites.i
+
+# target to preprocess a source file
+jatek_megjelenites.c.i:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek_megjelenites.c.i
+.PHONY : jatek_megjelenites.c.i
+
+jatek_megjelenites.s: jatek_megjelenites.c.s
+
+.PHONY : jatek_megjelenites.s
+
+# target to generate assembly for a file
+jatek_megjelenites.c.s:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/jatek_megjelenites.c.s
+.PHONY : jatek_megjelenites.c.s
+
 main.obj: main.c.obj
 
 .PHONY : main.obj
@@ -275,6 +302,9 @@ help:
 	@echo ... jatek.obj
 	@echo ... jatek.i
 	@echo ... jatek.s
+	@echo ... jatek_megjelenites.obj
+	@echo ... jatek_megjelenites.i
+	@echo ... jatek_megjelenites.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

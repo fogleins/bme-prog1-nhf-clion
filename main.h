@@ -10,6 +10,7 @@ typedef enum Szinek {
     feher,
     piros,
     zold,
+    kek,
     hatter,
     hatter_sotet
 } Szinek;

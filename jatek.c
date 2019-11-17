@@ -11,6 +11,7 @@
 
 #include "main.h"
 #include "jatek.h"
+#include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
 #include "menu.h"
 #include "debugmalloc.h"
@@ -41,13 +42,11 @@ static Jatekos* jatekkezdes(void) {
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
-            //TODO: ezt a kommentet átalakítani
-            /// ez a switch elég foschnak néz ki, valahogy
-            /// visszatérési értékként kéne megkapni a
-            /// megadott számot
-            /// talán ez:
-            /// https://wiki.libsdl.org/SDLKeycodeLookup ?
-            /// https://wiki.libsdl.org/SDL_GetKeyName
+            /*TODO: visszatérési értékként kéne megkapni a megadott számot
+             * talán ez:
+             * https://wiki.libsdl.org/SDLKeycodeLookup ?
+             * https://wiki.libsdl.org/SDL_GetKeyName
+             */
             case SDL_KEYDOWN:
                 switch (esemeny.key.keysym.sym) {
                     case SDLK_2:
@@ -119,9 +118,15 @@ static Jatekos* jatekkezdes(void) {
     }
 }
 
+/** Megkérdezi a felhasználót, hogy biztosan meg szeretné-e kezdeni a játékot
+ *
+ * @param tomb A játékostömb, aminek memóriát kell foglalni
+ * @param jatekosszam A játékosok száma
+ * @return true, ha megkezdi a játékot
+ */
 static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
-    boxRGBA(renderer, 297, 334, 497, 384, szin(piros).r, szin(piros).g, szin(piros).b, 100);
+    boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
     boxRGBA(renderer, 527, 334, 727, 384, szin(zold).r, szin(zold).g, szin(zold).b, 100);
 
     SDL_RenderPresent(renderer);
@@ -135,12 +140,12 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
                 switch (megerosites_esemeny.key.keysym.sym) {
                     case SDLK_i:
                     case SDLK_y:
-                        megerositette = memfoglalas(tomb, jatekosszam);
-                        break;
+                        return memfoglalas(tomb, jatekosszam);
                     case SDLK_n:
                         megerositette = true;
-                        ablak_tisztitasa(renderer);
-                        parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 6);
+                        //ablak_tisztitasa(renderer);
+                        // parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 6);
+                        jatekosszam_gombok_kirajzolasa();
                         break;
                     case SDLK_m:
                     case SDLK_f:
@@ -151,9 +156,10 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
                 if (megerosites_esemeny.button.y >= 334 && megerosites_esemeny.button.y <= 384) {
                     if (megerosites_esemeny.button.x >= 297 && megerosites_esemeny.button.x <= 497) {
                         menu_kirajzolasa();
+                        return false;
                     }
                     if (megerosites_esemeny.button.x >= 527 && megerosites_esemeny.button.x <= 727) {
-                        megerositette = memfoglalas(tomb, jatekosszam);
+                        return memfoglalas(tomb, jatekosszam);
                     }
                 }
                 break;
@@ -179,93 +185,6 @@ static bool memfoglalas(Jatekos* tomb, int jatekosszam) {
         return false;
     }
     else return true;
-}
-
-/** Kirajzolja a játékosszám egérrel való megadásához szükséges gombokat */
-static void jatekosszam_gombok_kirajzolasa(void) {
-    int y = 190;
-    char szam = '2';
-    char kiir[2];
-    int teglalap_x1 = 452, teglalap_y1 = 192, teglalap_x2 = teglalap_x1 + 120, teglalap_y2 = teglalap_y1 + 40;
-    for (int i = 2; i <= 6; ++i) {
-        // téglalapok megrajzolása
-        boxRGBA(renderer, teglalap_x1, teglalap_y1, teglalap_x2, teglalap_y2,
-                      szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 100);
-        teglalap_y1 += 70;
-        teglalap_y2 += 70;
-        // számok kiírása
-        kiir[0] = szam;
-        kiir[1] = '\0';
-        fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), kiir, y);
-        szam++;
-        y += 70;
-    }
-    SDL_RenderPresent(renderer);
-}
-
-/** Letisztítja az ablakot és megjeleníti a paraméterként kapott üzenetet
- *
- * @param betu A megjelenítendő szöveg betűtípusa
- * @param uzenet A megjelenítendő szöveg
- * @param y A megjelenítendő szöveg föggőleges pozíciója az ablakon
- */
-static void parbeszed(TTF_Font* betu, char* uzenet, int y) {
-    ablak_tisztitasa(renderer);
-    fancy_szoveget_kiir(betu, szin(feher), uzenet, y);
-    SDL_RenderPresent(renderer);
-}
-
-/** Megjeleníti a játékmenet grafikus felületét */
-static void jatekter_kirajzolasa(void) {
-    ablak_tisztitasa(renderer);
-    SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
-    SDL_Rect cel = { 448, 0, 576, 576 };
-    if (tabla == NULL) {
-        SDL_Log("Nem nyithato meg a kep. (%s)", IMG_GetError());
-        exit(1);
-    }
-    SDL_RenderCopy(renderer, tabla, NULL, &cel);
-
-    /*TODO: különféle mezők megjelenítése*/
-
-    TTF_Font *menupontok = TTF_OpenFont("myfrida-bold.otf", 26);
-    if (menupontok == NULL) {
-        SDL_Log("Nem lehetett betolteni a betutipust. (%s)", TTF_GetError());
-        exit(1);
-    }
-    hatteres_szoveget_kiir(menupontok, "Következik: ", 10, 10, szin(feher), szin(hatter_sotet));
-
-    boxRGBA(renderer, 10, 10, 221, 60, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-//    boxRGBA(renderer, 362, 325, 662, 375, 0xCB, 0x7D, 0x7D, 0xC7);
-//    boxRGBA(renderer, 362, 415, 662, 465, 0xCB, 0x7D, 0x7D, 0xE6);
-
-    SDL_RenderPresent(renderer);
-    SDL_DestroyTexture(tabla);
-}
-
-/** Hátteres élsimított szöveget ír ki
- *
- * @param betutipus A megjelenítendő szöveg betűtípusa
- * @param szoveg A megjelenítendő szöveg
- * @param x A szöveg vízszintes pozíója
- * @param y A szöveg függőleges pozíciója
- * @param betuszin A megjelenítendő szöveg színe
- * @param hatterszin A megjelenítendő szöveg háttérszíne
- */
-static void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL_Color betuszin, SDL_Color hatterszin) {
-    SDL_Surface *felirat;
-    SDL_Texture *felirat_t;
-    SDL_Rect hova = { 0, 0, 0, 0 };
-
-    felirat = TTF_RenderUTF8_Shaded(betutipus, szoveg, betuszin, hatterszin);
-    felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
-    hova.x = x;
-    hova.y = y;
-    hova.w = felirat->w;
-    hova.h = felirat->h;
-    SDL_RenderCopy(renderer, felirat_t, NULL, &hova);
-    SDL_FreeSurface(felirat);
-    SDL_DestroyTexture(felirat_t);
 }
 
 /** A játék befejezésekor kerül hívásra. Felszabadítja a lefoglalt memóriát és bezárja az ablakot
