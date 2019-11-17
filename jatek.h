@@ -7,23 +7,24 @@
 
 typedef struct Jatekos {
     char* nev;
-    int id;
-    int mezo;   /*ezen a mezőn tartozkodik éppen*/
-    int ermek;  /*ennyi érme van jelenleg*/
-    int passz;  /*ennyi mezőt passzolhat még (max 3)*/
+    int id;     /**<a játékos azonosítója*/
+    int mezo;   /**<ezen a mezőn tartozkodik éppen*/
+    int ermek;  /**<ennyi érme van jelenleg*/
+    int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
 } Jatekos;
 
 typedef struct Mezo {
-    char* tulajdonsag;
-    int id;
-    int erem; /*ennyi érmet ad, negatív, ha elvesz*/
-    int lep; /*rálépéskor ennyit léphetünk előre, (-) ha hátra*/
+    char* tulajdonsag; /**<a mező tulajdonsága*/
+    int id; /**<a mező azonsoítója*/
+    int erem; /**<ennyi érmet ad rálépéskor, negatív, ha elvesz*/
+    int lep; /**<rálépéskor ennyit léphetünk előre, (-) ha hátra*/
 } Mezo;
 
 void jatek_main(void);
 static Jatekos* jatekkezdes(void);
 static void jatekosszam_gombok_kirajzolasa(void);
 static bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
+static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void parbeszed(TTF_Font* betu, char* uzenet, int y);
 static void parbeszed_char(TTF_Font* betu, char karakter, int y);
 static void jatekter_kirajzolasa(void);
