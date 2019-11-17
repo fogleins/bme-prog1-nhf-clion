@@ -20,8 +20,8 @@
 #include "jatek_megjelenites.h"
 
 /** Kirajzolja a menüt */
-SDL_Window* menu_kirajzolasa(void) {
-    /// Háttér beállítása
+void menu_kirajzolasa(void) {
+    // Háttér beállítása
     /* kép forrása:
      * https://www.pexels.com/photo/monopoly-board-game-on-brown-wooden-tabletop-776654/ */
     SDL_Texture* hatter = IMG_LoadTexture(renderer, "bg.jpg");
@@ -31,7 +31,7 @@ SDL_Window* menu_kirajzolasa(void) {
     }
     SDL_RenderCopy(renderer, hatter, NULL, NULL);
 
-    /// Menüpontok kirajzolása
+    // Menüpontok kirajzolása
     TTF_Init();
     TTF_Font *cim = TTF_OpenFont("myfrida-shadow-regular.otf", 65);
     TTF_Font *menupontok = TTF_OpenFont("myfrida-bold.otf", 26);
@@ -120,7 +120,8 @@ static void egeresbillentyu(void) {
                 // ha q (quit)
                 if (esemeny.key.keysym.sym == SDLK_q) {
                     kilepes = true;
-                    SDL_Quit();
+                    ablak_bezarasa();
+                    // SDL_Quit();
                 }
                 break;
             case SDL_QUIT:

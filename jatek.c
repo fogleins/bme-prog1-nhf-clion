@@ -13,17 +13,21 @@
 #include "jatek.h"
 #include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
+#include "fajlkezeles.h"
 #include "menu.h"
 #include "debugmalloc.h"
 
 void jatek_main(void) {
+    Mezo mezok_tombje[40];
+    mezok_beolvasasa(mezok_tombje);
     Jatekos* jatekostomb = jatekkezdes();
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
 
-    ///a tesztelés idejére kikommentelve
+    //a tesztelés idejére kikommentelve
     //TODO: játék vége fgv javítása
-    //jatek_vege(jatekostomb);
+    if (jatekostomb != NULL)
+        jatek_vege(jatekostomb);
 }
 
 
@@ -108,15 +112,18 @@ static Jatekos* jatekkezdes(void) {
                     }
                 }
                 break;
+            //TODO: itt felszabadul a foglalt memória?
             case SDL_QUIT:
                 kilepes = true;
-                SDL_Quit();
+                //jatek_vege(jatekosok_tombje);
+                jatek_vege(NULL);
                 break;
         }
         if (kilepes) {
             kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
         }
     }
+    return jatekosok_tombje;
 }
 
 /** Megkérdezi a felhasználót, hogy biztosan meg szeretné-e kezdeni a játékot
@@ -129,7 +136,9 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
     ablak_tisztitasa(renderer);
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
     boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Fõmenü", (297 + 497) / 2, 340);
     boxRGBA(renderer, 527, 334, 727, 384, szin(zold).r, szin(zold).g, szin(zold).b, 100);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Igen", (527 + 727) / 2, 340);
 
     SDL_RenderPresent(renderer);
     bool megerositette = false;
@@ -201,10 +210,10 @@ static void jatek_vege(Jatekos* jatekostomb) {
 }
 
 //TODO: ez kell?
-/** Kockadobást szimulál */
-static int kocka(void) {
-    return rand() % 6 + 1;
-}
+// Kockadobást szimulál
+//static int kocka(void) {
+//    return rand() % 6 + 1;
+//}
 
 //TODO ez a függvény
 /** Sztring bemenet kezelése */
@@ -221,7 +230,6 @@ char* sdl_sztring(void) {
                     kilepes = true;
                     break;
                 case SDL_TEXTINPUT:
-                    /* Add new text onto the end of our text */
                     strcat(str, esemeny.text.text);
                     break;
             }

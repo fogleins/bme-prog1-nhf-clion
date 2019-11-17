@@ -14,7 +14,7 @@ typedef struct Jatekos {
 } Jatekos;
 
 typedef struct Mezo {
-    char* tulajdonsag; /**<a mező tulajdonsága*/
+    char tulajdonsag[90]; /**<a mező tulajdonsága*/
     int id; /**<a mező azonsoítója*/
     int erem; /**<ennyi érmet ad rálépéskor, negatív, ha elvesz*/
     int lep; /**<rálépéskor ennyit léphetünk előre, (-) ha hátra*/
