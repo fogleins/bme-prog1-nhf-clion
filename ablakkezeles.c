@@ -36,6 +36,7 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
 /** letörli az ablak tartalmát */
 void ablak_tisztitasa(SDL_Renderer* renderer) {
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
     SDL_RenderPresent(renderer);
 }
 
@@ -67,25 +68,41 @@ SDL_Color szin(Szinek szin) {
             g = 0;
             b = 0;
             break;
+        case flatred:
+            r = 0xE7;
+            g = 0x4C;
+            b = 0x3C;
+            a = 80;
+            break;
         case zold:
             r = 0;
             g = 255;
             b = 0;
             break;
+        case flatgreen:
+            r = 46;
+            g = 204;
+            b = 113;
+            a = 99;
+            break;
         case kek:
+//            r = 66;
+//            g = 135;
+//            b = 245;
             r = 66;
-            g = 135;
+            g = 170;
             b = 245;
+            a = 80;
             break;
         case hatter:
-            r = 0xCB; //203
-            g = 0x7D; //125
-            b = 0x7D; //125
+            r = 203; //0xCB; //203
+            g = 125; //0x7D; //125
+            b = 125; //0x7D; //125
             break;
         case hatter_sotet:
-            r = 0xAD;
-            g = 0x66;
-            b = 0x66;
+            r = 173; //0xAD
+            g = 102; //0x66
+            b = 102; //0x66;
             break;
         default:
             // fekete
@@ -120,8 +137,13 @@ TTF_Font* betutipus(Betuk betutipus) {
             nev = "myfrida-bold.otf";
             meret = 36;
             break;
+        case felkover30pt:
+            nev = "myfrida-bold.otf";
+            meret = 30;
+            break;
         default:
             return NULL;
     }
     return TTF_OpenFont(nev, meret);
+    //TODO: ha NULL
 }

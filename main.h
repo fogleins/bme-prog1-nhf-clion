@@ -9,7 +9,9 @@
 typedef enum Szinek {
     feher,
     piros,
+    flatred,
     zold,
+    flatgreen,
     kek,
     hatter,
     hatter_sotet
@@ -18,7 +20,8 @@ typedef enum Szinek {
 typedef enum Betuk {
     felkover60pt,
     felkover48pt,
-    felkover36pt
+    felkover36pt,
+    felkover30pt
 } Betuk;
 
 #endif //TARSAS_MAIN_H

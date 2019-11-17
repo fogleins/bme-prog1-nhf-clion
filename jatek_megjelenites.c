@@ -52,7 +52,9 @@ void parbeszed(TTF_Font* betu, char* uzenet, int y) {
 
 /** Megjeleníti a játékmenet grafikus felületét */
 void jatekter_kirajzolasa(void) {
-    ablak_tisztitasa(renderer);
+    //TODO: háttérszín
+    SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
+    SDL_RenderPresent(renderer);
     //TODO: ezt fel kell szabadítani?
     SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
     SDL_Rect cel = { 448, 0, 576, 576 };
@@ -62,16 +64,55 @@ void jatekter_kirajzolasa(void) {
     }
     SDL_RenderCopy(renderer, tabla, NULL, &cel);
 
-    /*TODO: különféle mezők megjelenítése*/
-
     TTF_Font *menupontok = TTF_OpenFont("myfrida-bold.otf", 26);
     if (menupontok == NULL) {
         SDL_Log("Nem lehetett betolteni a betutipust. (%s)", TTF_GetError());
         exit(1);
     }
-    boxRGBA(renderer, 10, 10, 221, 60, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
 
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Következik:", 4, 20);
+    // "következő" gomb
+    boxRGBA(renderer, 20, 30, 428, 90, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), "Következik:", 448 / 4, 45);
+
+    // dobott szám kiírása
+    boxRGBA(renderer, 20, 110, 214, 160, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    char dobott_szam[2];
+    dobott_szam[0] = (rand() % 6 + 1) + 48;
+    dobott_szam[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
+
+    // érmek kiírása
+    boxRGBA(renderer, 234, 110, 428, 160, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    char ermek_szama[2];
+    //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
+    ermek_szama[0] = '6';
+    ermek_szama[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
+
+    // passzok száma
+    boxRGBA(renderer, 20, 180, 214, 230, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    //TODO: ez a játékos struct passz elemével egyenlő
+    char passzok_szama[2];
+    passzok_szama[0] = (rand() % 3 + 1) + 48;
+    passzok_szama[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, (20 + 214) / 2, 185);
+
+    // passzolás
+    boxRGBA(renderer, 234, 180, 428, 230, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Passz", 330, 185);
+
+    //TODO: színválasztás
+    // mező tartalmának kiírása
+    //boxRGBA(renderer, 20, 258, 428, 468, szin(kek).r, szin(kek).g, szin(kek).b, szin(kek).a);
+    boxRGBA(renderer, 20, 258, 428, 468, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, szin(hatter_sotet).a);
+
+    // kilépés gomb kiírása
+    boxRGBA(renderer, 20, 496, 214, 546, szin(flatred).r, szin(flatred).g, szin(flatred).b, szin(flatred).a);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Kilépés", (20 + 214) / 2, 501);
+
+    // mentés gomb kiírása
+    boxRGBA(renderer, 234, 496, 428, 546, szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
 
     SDL_RenderPresent(renderer);
     SDL_DestroyTexture(tabla);
@@ -102,11 +143,11 @@ void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL
     SDL_DestroyTexture(felirat_t);
 }
 
-/** Visszaadja egy sztring szélességének a felét (középre igazításhoz)
+/** Visszaadja egy sztring közepének a pozícióját adott pixelhez igazításhoz
  *
  * @param szoveg A vizsgált sztring
  * @param betutipus A felirat betűtípusa
- * @param hova Az az x koordináta, ahova a felirat közepét szeretnénk igazítani
+ * @param hova Az az x koordináta, ahova a felirat közepét szeretnénk igazítani, téglalap esetén az x koordináták átlaga
  * @return A sztring szélessége
  */
 int szoveg_poz_x(char* szoveg, TTF_Font* betutipus, int hova) {
@@ -118,7 +159,8 @@ int szoveg_poz_x(char* szoveg, TTF_Font* betutipus, int hova) {
         visszaad = (1024 - felirat->w) / 2;
     // Különben a táblától bel oldali területre igazítjuk
     else {
-        visszaad = (448 - felirat->w) / hova;
+        int kul = 448 - (hova + felirat->w / 2);
+        visszaad = (448 - felirat->w) - kul;
     }
     SDL_FreeSurface(felirat);
     return visszaad;

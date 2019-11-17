@@ -18,6 +18,7 @@
 
 void jatek_main(void) {
     Jatekos* jatekostomb = jatekkezdes();
+    ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
 
     ///a tesztelés idejére kikommentelve
@@ -125,6 +126,7 @@ static Jatekos* jatekkezdes(void) {
  * @return true, ha megkezdi a játékot
  */
 static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
+    ablak_tisztitasa(renderer);
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
     boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
     boxRGBA(renderer, 527, 334, 727, 384, szin(zold).r, szin(zold).g, szin(zold).b, 100);
@@ -159,6 +161,7 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
                         return false;
                     }
                     if (megerosites_esemeny.button.x >= 527 && megerosites_esemeny.button.x <= 727) {
+                        ablak_tisztitasa(renderer);
                         return memfoglalas(tomb, jatekosszam);
                     }
                 }
@@ -200,7 +203,7 @@ static void jatek_vege(Jatekos* jatekostomb) {
 //TODO: ez kell?
 /** Kockadobást szimulál */
 static int kocka(void) {
-    return rand() % 7;
+    return rand() % 6 + 1;
 }
 
 //TODO ez a függvény
