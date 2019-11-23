@@ -80,6 +80,13 @@ void jatekter_kirajzolasa(void) {
     dobott_szam[0] = (rand() % 6 + 1) + 48;
     dobott_szam[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
+    //dobókocka ikon
+    // https://www.flaticon.com/free-icon/dice_2102123
+    SDL_Texture* kocka = IMG_LoadTexture(renderer, "dice3.png");
+    SDL_Rect celterulet_kocka = { 35, 120, 30, 30};
+    SDL_RenderCopy(renderer, kocka, NULL, &celterulet_kocka);
+    SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(kocka);
 
     // érmek kiírása
     boxRGBA(renderer, 234, 110, 428, 160, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
@@ -88,6 +95,14 @@ void jatekter_kirajzolasa(void) {
     ermek_szama[0] = '6';
     ermek_szama[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
+    // érem ikon
+    // https://www.kissclipart.com/medal-png-grey-clipart-gold-medal-silver-medal-h1kus5/download-clipart.html - erem.png
+    // https://www.flaticon.com/free-icon/medal_321854 - medal.png
+    SDL_Texture* erem = IMG_LoadTexture(renderer, "medal.png");
+    SDL_Rect celterulet_erem = { 250, 120, 30, 30 };
+    SDL_RenderCopy(renderer, erem, NULL, &celterulet_erem);
+    SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(erem);
 
     // passzok száma
     boxRGBA(renderer, 20, 180, 214, 230, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);

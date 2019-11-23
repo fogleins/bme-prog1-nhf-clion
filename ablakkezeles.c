@@ -68,6 +68,7 @@ SDL_Color szin(Szinek szin) {
             g = 0;
             b = 0;
             break;
+        //https://flatuicolors.com/
         case flatred:
             r = 0xE7;
             g = 0x4C;
