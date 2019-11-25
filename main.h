@@ -24,4 +24,10 @@ typedef enum Betuk {
     felkover30pt
 } Betuk;
 
+// a menu_kirajzolasa visszatérési értékei
+typedef enum Gomb {
+    uj,
+    megnyit,
+    kilep
+} Gomb;
 #endif //TARSAS_MAIN_H

@@ -4,7 +4,8 @@
 
 /* Ez a modul főleg a menü és a játéktábla megjelenítéséért,
  * valamint az ezeken a képernyőkön fellépő eventek kezeléséért
- * felelős függvényeket tartalmazza. */
+ * felelős függvényeket tartalmazza.
+ */
 
 #include <stdlib.h>
 #include <SDL2/SDL.h>
@@ -23,7 +24,8 @@
 void menu_kirajzolasa(void) {
     // Háttér beállítása
     /* kép forrása:
-     * https://www.pexels.com/photo/monopoly-board-game-on-brown-wooden-tabletop-776654/ */
+     * https://www.pexels.com/photo/monopoly-board-game-on-brown-wooden-tabletop-776654/
+     */
     SDL_Texture* hatter = IMG_LoadTexture(renderer, "bg.jpg");
     if (hatter == NULL) {
         SDL_Log("Nem nyithato meg a kep. (%s)", IMG_GetError());
@@ -53,7 +55,7 @@ void menu_kirajzolasa(void) {
     /*TODO: a renderer nem frissül, a
      * háttér nem jelenik meg, javításch - kész */
     SDL_RenderPresent(renderer);
-    egeresbillentyu();
+    //egeresbillentyu();
     // a kép által foglalt memória felszabadítása
     SDL_DestroyTexture(hatter);
 }
@@ -66,7 +68,6 @@ void menu_kirajzolasa(void) {
  * @param x A szöveg vízszintes helyzete
  * @param y A szöveg függőleges helyzete
  */
-//TODO: a sztring bemenet biztos jó így?
 void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int x, int y) {
     SDL_Surface *felirat;
     SDL_Texture *felirat_t;
@@ -87,7 +88,7 @@ void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int 
 }
 
 /** A menüképernyőn tartózkodás alatt fellépő eseményeket (gombnyomás, kattintás) kezeli.*/
-static void egeresbillentyu(void) {
+Gomb egeresbillentyu(void) {
     bool kilepes = false;
     while (!kilepes) {
         SDL_Event esemeny;
@@ -96,38 +97,46 @@ static void egeresbillentyu(void) {
             case SDL_MOUSEBUTTONDOWN:
                 // ha új játékot kezd
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 255 && esemeny.button.y <= 305) {
-                    jatek_main();
+                    // jatek_main();
                     //TODO: új játék
+                    kilepes = true;
+                    return uj;
                 }
                 // ha játékmenetet tölt be
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 325 && esemeny.button.y <= 375) {
                     //TODO: fájl beolvasása
+                    return megnyit;
                 }
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465) {
-                    kilepes = true;
-                    SDL_Quit();
+                    // kilepes = true;
+                    // SDL_Quit();
+                    return kilep;
                 }
                 break;
             case SDL_KEYDOWN:
                 // ha n (=new)
                 if (esemeny.key.keysym.sym == SDLK_n) {
-                    jatek_main();
+                    // jatek_main();
+                    return uj;
                 }
                 // ha l (load)
                 if (esemeny.key.keysym.sym == SDLK_l) {
-                    /// ld fent
+                    //TODO: ld fent
+                    return megnyit;
                 }
                 // ha q (quit)
                 if (esemeny.key.keysym.sym == SDLK_q) {
                     kilepes = true;
-                    ablak_bezarasa();
+                    // ablak_bezarasa();
                     // SDL_Quit();
+                    return kilep;
                 }
                 break;
             case SDL_QUIT:
-                kilepes = true;
-                ablak_bezarasa();
-                break;
+                return kilep;
+                //kilepes = true;
+                //ablak_bezarasa();
+                //break;
         }
     }
 }

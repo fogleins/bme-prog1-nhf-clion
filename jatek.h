@@ -20,9 +20,13 @@ typedef struct Mezo {
     int lep; /**<rálépéskor ennyit léphetünk előre, (-) ha hátra*/
 } Mezo;
 
+typedef struct Jatek {
+    Jatekos* tomb; /**< a játékosok tulajdonságait tartalmazó tömb */
+    int jatekosszam; /**< a játékosok száma */
+} Jatek;
 void jatek_main(void);
 static Jatekos* jatekkezdes(void);
-static bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
+bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
 static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);

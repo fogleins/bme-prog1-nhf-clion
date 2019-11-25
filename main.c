@@ -2,18 +2,41 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
 #include <string.h>
 
 #include "ablakkezeles.h"
 #include "menu.h"
 #include "debugmalloc.h"
+#include "jatek.h"
 
 int main(int argc, char *argv[]) {
     srand(time(0));
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
-    menu_kirajzolasa();
+    // a játék megkezdéséig loopol, megjeleníti a menüt és regisztrálja a gombnyomásokat, kattintásokat
+    bool megkezdte = false;
+    while (!megkezdte) {
+        menu_kirajzolasa();
+        switch (egeresbillentyu()) {
+            case uj:
+                /* TODO: paraméterek */
+                /* a játékkezdés megerősítése ne kapja meg a 2 paramétert, helyette csak térjen vissza igazzal, ha
+                 * megerősítették a játékkezdést, a memóriafoglalás a jatek_mainből/jatekkezdes.ből is hívható.
+                 */
+                megkezdte = jatekkezdes_megerositese()
+                if (megkezdte)
+                    jatek_main();
+                break;
+            case megnyit:
+                //TODO: fájl beolvasása
+                break;
+            case kilep:
+                SDL_Quit();
+                break;
+        }
+    }
     //TODO: memóriaszivárgás ellenőrzése
     debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
     return 0;

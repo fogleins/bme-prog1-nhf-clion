@@ -8,6 +8,6 @@
 
 void menu_kirajzolasa(void);
 void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int x, int y);
-static void egeresbillentyu(void);
+Gomb egeresbillentyu(void);
 
 #endif //TARSAS_MENU_H

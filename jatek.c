@@ -21,6 +21,9 @@ void jatek_main(void) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
     Jatekos* jatekostomb = jatekkezdes();
+    if (jatekostomb == NULL) {
+        //TODO: visszatérés a mainbe
+    }
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
 
@@ -119,12 +122,22 @@ static Jatekos* jatekkezdes(void) {
                 jatek_vege(NULL);
                 break;
         }
-        if (kilepes) {
-            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
-        }
+//        if (kilepes) {
+//            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
+//        }
     }
     return jatekosok_tombje;
 }
+
+//TODO: ez a függvény
+/** Visszaadja a jelenlegi játékmenet tulajdnoságait (pl. játékosszám)
+ *
+ * @return A játék jellemzői
+ */
+//Jatek tulajdonsagok(void) {
+//    jatek = Jatek {};
+//    return jatek;
+//}
 
 /** Megkérdezi a felhasználót, hogy biztosan meg szeretné-e kezdeni a játékot
  *
@@ -132,7 +145,7 @@ static Jatekos* jatekkezdes(void) {
  * @param jatekosszam A játékosok száma
  * @return true, ha megkezdi a játékot
  */
-static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
+bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
     ablak_tisztitasa(renderer);
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
     boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
@@ -152,12 +165,6 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
                     case SDLK_i:
                     case SDLK_y:
                         return memfoglalas(tomb, jatekosszam);
-                    case SDLK_n:
-                        megerositette = true;
-                        //ablak_tisztitasa(renderer);
-                        // parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 6);
-                        jatekosszam_gombok_kirajzolasa();
-                        break;
                     case SDLK_m:
                     case SDLK_f:
                         menu_kirajzolasa();
@@ -190,7 +197,7 @@ static bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
  * @return true, ha a memóriafoglalás sikerült
  */
 static bool memfoglalas(Jatekos* tomb, int jatekosszam) {
-    tomb = (Jatekos *) malloc(jatekosszam * sizeof(Jatekos));
+    tomb = (Jatekos*) malloc(jatekosszam * sizeof(Jatekos));
     //TODO: itt lehetne kilepes = false-szal továbblépni?
     if (tomb == NULL) {
         SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
