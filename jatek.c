@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 #include <string.h>
+#include <windows.h> //TODO: windows.h-t kivenni
 
 #include "main.h"
 #include "jatek.h"
@@ -17,15 +18,16 @@
 #include "menu.h"
 #include "debugmalloc.h"
 
-void jatek_main(void) {
+void jatek_main(Jatekos* jatekostomb) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
-    Jatekos* jatekostomb = jatekkezdes();
+    //jatekostomb = jatekkezdes();
     if (jatekostomb == NULL) {
         //TODO: visszatérés a mainbe
     }
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
+    Sleep(5000);
 
     //a tesztelés idejére kikommentelve
     //TODO: játék vége fgv javítása
@@ -38,7 +40,7 @@ void jatek_main(void) {
  * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
  * @return Dinamikusan foglalt memóriaterületre mutató Játékos típusú pointer
  */
-static Jatekos* jatekkezdes(void) {
+Jatekos* jatekkezdes(void) {
     //TODO: ez null?
     Jatekos *jatekosok_tombje = NULL;
     bool kilepes = false;
@@ -145,7 +147,7 @@ static Jatekos* jatekkezdes(void) {
  * @param jatekosszam A játékosok száma
  * @return true, ha megkezdi a játékot
  */
-bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
+bool jatekkezdes_megerositese(void) {
     ablak_tisztitasa(renderer);
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
     boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
@@ -159,31 +161,35 @@ bool jatekkezdes_megerositese(Jatekos* tomb, int jatekosszam) {
         SDL_Event megerosites_esemeny;
         SDL_WaitEvent(&megerosites_esemeny);
         switch (megerosites_esemeny.type) {
-            //TODO: ezek működjenek egérrel is
             case SDL_KEYDOWN:
                 switch (megerosites_esemeny.key.keysym.sym) {
                     case SDLK_i:
                     case SDLK_y:
-                        return memfoglalas(tomb, jatekosszam);
+                        megerositette = true;
+                        return true;
                     case SDLK_m:
                     case SDLK_f:
-                        menu_kirajzolasa();
+                        //menu_kirajzolasa();
+                        megerositette = true;
                         return false;
                 }
             case SDL_MOUSEBUTTONDOWN:
                 if (megerosites_esemeny.button.y >= 334 && megerosites_esemeny.button.y <= 384) {
                     if (megerosites_esemeny.button.x >= 297 && megerosites_esemeny.button.x <= 497) {
-                        menu_kirajzolasa();
+                        //menu_kirajzolasa();
+                        megerositette = true;
                         return false;
                     }
                     if (megerosites_esemeny.button.x >= 527 && megerosites_esemeny.button.x <= 727) {
                         ablak_tisztitasa(renderer);
-                        return memfoglalas(tomb, jatekosszam);
+                        megerositette = true;
+                        return true;
                     }
                 }
                 break;
             case SDL_QUIT:
                 // itt még nem kell felszabadítani memóriát
+                megerositette = true;
                 SDL_Quit();
                 break;
         }

@@ -34,10 +34,10 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
 }
 
 /** letörli az ablak tartalmát */
-void ablak_tisztitasa(SDL_Renderer* renderer) {
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
-    SDL_RenderPresent(renderer);
+void ablak_tisztitasa(SDL_Renderer* megjelenito) {
+    SDL_RenderClear(megjelenito);
+    SDL_SetRenderDrawColor(megjelenito, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+    SDL_RenderPresent(megjelenito);
 }
 
 //TODO: ez nem kell (?)

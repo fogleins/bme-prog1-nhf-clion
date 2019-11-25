@@ -24,9 +24,10 @@ typedef struct Jatek {
     Jatekos* tomb; /**< a játékosok tulajdonságait tartalmazó tömb */
     int jatekosszam; /**< a játékosok száma */
 } Jatek;
-void jatek_main(void);
-static Jatekos* jatekkezdes(void);
-bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
+void jatek_main(Jatekos* jatekostomb);
+Jatekos* jatekkezdes(void);
+bool jatekkezdes_megerositese(void);
+//bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
 static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);

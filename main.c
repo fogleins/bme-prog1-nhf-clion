@@ -10,9 +10,11 @@
 #include "menu.h"
 #include "debugmalloc.h"
 #include "jatek.h"
+#include "jatek_megjelenites.h"
 
 int main(int argc, char *argv[]) {
     srand(time(0));
+    Jatekos* jatekostomb = NULL;
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
     // a játék megkezdéséig loopol, megjeleníti a menüt és regisztrálja a gombnyomásokat, kattintásokat
@@ -25,14 +27,17 @@ int main(int argc, char *argv[]) {
                 /* a játékkezdés megerősítése ne kapja meg a 2 paramétert, helyette csak térjen vissza igazzal, ha
                  * megerősítették a játékkezdést, a memóriafoglalás a jatek_mainből/jatekkezdes.ből is hívható.
                  */
-                megkezdte = jatekkezdes_megerositese()
+                jatekosszam_gombok_kirajzolasa();
+                    jatekostomb = jatekkezdes();
+                megkezdte = jatekkezdes_megerositese();
                 if (megkezdte)
-                    jatek_main();
+                    jatek_main(jatekostomb);
                 break;
             case megnyit:
                 //TODO: fájl beolvasása
                 break;
             case kilep:
+                megkezdte = true;
                 SDL_Quit();
                 break;
         }
