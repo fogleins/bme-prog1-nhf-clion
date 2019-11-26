@@ -27,8 +27,17 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
 //    }
     // a játéksok adatainak bekérése, játékostömb felépítése
     int* foglalt_szinek = (int*) malloc(*jatekosszam * sizeof(int));
-    for (int i = 0; i < *jatekosszam; ++i) {
+    int i;
+    for (i = 0; i < *jatekosszam; ++i) {
         foglalt_szinek[i] = jatekos_szinvalasztas(foglalt_szinek);
+        if (foglalt_szinek[i] == -1)
+            break;
+    }
+    // TODO: valami szebb megoldás a kilépésre + szabadításra?
+    if (foglalt_szinek[i] == -1) {
+        free(foglalt_szinek);
+        SDL_Quit();
+        exit(0);
     }
     free(foglalt_szinek);
     ablak_tisztitasa(renderer);

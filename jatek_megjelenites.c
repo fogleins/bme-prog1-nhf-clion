@@ -279,10 +279,11 @@ Jatekosszin jatekos_szinvalasztas(int* foglalt_szinek) {
                 }
             case SDL_QUIT:
                 //TODO: játék vége, memóriaszabadítás
-                kilepes = true;
-                free(foglalt_szinek);
-                SDL_Quit();
-                exit(0);
+                return -1;
+//                kilepes = true;
+//                free(foglalt_szinek);
+//                SDL_Quit();
+//                exit(0);
         }
     }
 }
