@@ -21,17 +21,19 @@ int main(int argc, char *argv[]) {
     bool megkezdte = false;
     while (!megkezdte) {
         menu_kirajzolasa();
+        int jatekosszam;
         switch (egeresbillentyu()) {
             case uj:
                 /* TODO: paraméterek */
                 /* a játékkezdés megerősítése ne kapja meg a 2 paramétert, helyette csak térjen vissza igazzal, ha
                  * megerősítették a játékkezdést, a memóriafoglalás a jatek_mainből/jatekkezdes.ből is hívható.
                  */
-                jatekosszam_gombok_kirajzolasa();
-                    jatekostomb = jatekkezdes();
+                //TODO: gombok kirajzolása?
+                // jatekosszam_gombok_kirajzolasa();
+                jatekostomb = jatekkezdes(&jatekosszam);
                 megkezdte = jatekkezdes_megerositese();
                 if (megkezdte)
-                    jatek_main(jatekostomb);
+                    jatek_main(jatekostomb, &jatekosszam);
                 break;
             case megnyit:
                 //TODO: fájl beolvasása

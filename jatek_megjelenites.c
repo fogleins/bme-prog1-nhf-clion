@@ -180,3 +180,109 @@ int szoveg_poz_x(char* szoveg, TTF_Font* betutipus, int hova) {
     SDL_FreeSurface(felirat);
     return visszaad;
 }
+
+/** A játékosk által választható színek
+ *
+ * @param szin A szín neve
+ * @return SDL_Color típusú szín
+ */
+SDL_Color jatekosszin(Jatekosszin szin) {
+    SDL_Color color;
+    switch (szin) {
+        case j_piros:
+            color = (SDL_Color) { 235, 64, 52, 255 };
+            break;
+        case j_narancs:
+            color = (SDL_Color) { 252, 186, 3, 255 };
+            break;
+        case j_sarga:
+            color = (SDL_Color) { 248, 255, 0, 255 };
+            break;
+        case j_zold:
+            color = (SDL_Color) { 50, 168, 82, 255 };
+            break;
+        case j_kek:
+            color = (SDL_Color) { 66, 135, 245, 255 };
+            break;
+        case j_lila:
+            color = (SDL_Color) { 128, 0, 128, 255 };
+            break;
+    }
+    return color;
+}
+
+// TODO: kell?
+/** SDL_Color-t alakít vissza enummá
+ *
+ * @return A szín neve
+ */
+Jatekosszin szinenumma(SDL_Color szin) {
+    // piros
+    if (szin.r == 235 && szin.g == 64 && szin.b == 52)
+        return j_piros;
+    // sárga
+    if (szin.r == 248 && szin.g == 255 && szin.b == 0)
+        return j_sarga;
+    // zöld
+    if (szin.r == 50 && szin.g == 168 && szin.b == 82)
+        return j_zold;
+    // kék
+    if (szin.r == 66 && szin.g == 135 && szin.b == 245)
+        return j_kek;
+    // lila
+    if (szin.r == 128 && szin.g == 0 && szin.b == 128)
+        return j_lila;
+    // narancssárga
+    if (szin.r == 252 && szin.g == 186 && szin.b == 3)
+        return j_narancs;
+}
+
+/** Kirajzol egy képernyőt, melyen a játékosok színeket választhatnak
+ *
+ * @return A szín neve
+ */
+Jatekosszin jatekos_szinvalasztas(int* foglalt_szinek) {
+    ablak_tisztitasa(renderer);
+    fancy_szoveget_kiir(betutipus(felkover48pt), szin(feher), "Válassz színt:", 0, 100);
+    SDL_Rect kulvonal;
+    for (int i = 0; i < 6; ++i) {
+        kulvonal = (SDL_Rect) { 222 + i * 100, 250, 80, 80 };
+        // TODO: miért kell levonni 2-t ahhoz, hogy ne lógjon ki a szín a keretből?
+        boxRGBA(renderer, kulvonal.x, kulvonal.y, kulvonal.x + kulvonal.w - 2, kulvonal.y + kulvonal.h - 2,
+                jatekosszin(j_piros + i).r, jatekosszin(j_piros + i).g,
+                jatekosszin(j_piros + i).b, jatekosszin(j_piros + i).a);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderDrawRect(renderer, &kulvonal);
+    }
+    SDL_RenderPresent(renderer);
+    // eventek kezelése
+    bool kilepes = false;
+    while (!kilepes) {
+        SDL_Event esemeny;
+        SDL_WaitEvent(&esemeny);
+        switch (esemeny.type) {
+            case SDL_MOUSEBUTTONDOWN:
+                if (esemeny.button.y >= 200 && esemeny.button.y <= 250) {
+                    if (esemeny.button.x >= 222 && esemeny.button.x <= 302)
+                        return j_piros;
+                    if (esemeny.button.x >= 322 && esemeny.button.x <= 402)
+                        return j_narancs;
+                    if (esemeny.button.x >= 422 && esemeny.button.x <= 502)
+                        return j_sarga;
+                    if (esemeny.button.x >= 522 && esemeny.button.x <= 602)
+                        return j_zold;
+                    if (esemeny.button.x >= 622 && esemeny.button.x <= 702)
+                        return j_kek;
+                    if (esemeny.button.x >= 722 && esemeny.button.x <= 802)
+                        return j_lila;
+                    kilepes = true;
+                }
+            case SDL_QUIT:
+                //TODO: játék vége, memóriaszabadítás
+                kilepes = true;
+                free(foglalt_szinek);
+                SDL_Quit();
+                exit(0);
+        }
+    }
+}

@@ -17,6 +17,15 @@ typedef enum Szinek {
     hatter_sotet
 } Szinek;
 
+typedef enum Jatekosszin {
+    j_piros,
+    j_narancs,
+    j_sarga,
+    j_zold,
+    j_kek,
+    j_lila
+} Jatekosszin;
+
 typedef enum Betuk {
     felkover60pt,
     felkover48pt,

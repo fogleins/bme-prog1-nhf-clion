@@ -6,6 +6,7 @@
 #define TARSAS_JATEK_MEGJELENITES_H
 
 #include <SDL_ttf.h>
+#include "main.h"
 
 void jatekosszam_gombok_kirajzolasa(void);
 void parbeszed(TTF_Font* betu, char* uzenet, int y);
@@ -13,5 +14,8 @@ void parbeszed(TTF_Font* betu, char* uzenet, int y);
 void jatekter_kirajzolasa(void);
 void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL_Color betuszin, SDL_Color hatterszin);
 int szoveg_poz_x(char* szoveg, TTF_Font* betutipus, int hova);
+SDL_Color jatekosszin(Jatekosszin szin);
+Jatekosszin szinenumma(SDL_Color szin);
+Jatekosszin jatekos_szinvalasztas(int* foglalt_szinek);
 
 #endif //TARSAS_JATEK_MEGJELENITES_H

@@ -18,13 +18,19 @@
 #include "menu.h"
 #include "debugmalloc.h"
 
-void jatek_main(Jatekos* jatekostomb) {
+void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
     //jatekostomb = jatekkezdes();
-    if (jatekostomb == NULL) {
-        //TODO: visszatérés a mainbe
+//    if (jatekostomb == NULL) {
+//        //TODO: visszatérés a mainbe
+//    }
+    // a játéksok adatainak bekérése, játékostömb felépítése
+    int* foglalt_szinek = (int*) malloc(*jatekosszam * sizeof(int));
+    for (int i = 0; i < *jatekosszam; ++i) {
+        foglalt_szinek[i] = jatekos_szinvalasztas(foglalt_szinek);
     }
+    free(foglalt_szinek);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
     Sleep(5000);
@@ -40,13 +46,11 @@ void jatek_main(Jatekos* jatekostomb) {
  * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
  * @return Dinamikusan foglalt memóriaterületre mutató Játékos típusú pointer
  */
-Jatekos* jatekkezdes(void) {
+Jatekos* jatekkezdes(int* jatekosok_szama) {
     //TODO: ez null?
     Jatekos *jatekosok_tombje = NULL;
     bool kilepes = false;
-    int jatekosok_szama;
-    TTF_Font *betu = betutipus(felkover48pt);
-    parbeszed(betu, "Add meg a játékosok számát: ", 576 / 8);
+    parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 8);
     jatekosszam_gombok_kirajzolasa();
     while (!kilepes) {
         SDL_Event esemeny;
@@ -61,58 +65,55 @@ Jatekos* jatekkezdes(void) {
                 switch (esemeny.key.keysym.sym) {
                     case SDLK_2:
                     case SDLK_KP_2:
-                        jatekosok_szama = 2;
+                        *jatekosok_szama = 2;
                         kilepes = true;
                         break;
                     case SDLK_3:
                     case SDLK_KP_3:
-                        jatekosok_szama = 3;
+                        *jatekosok_szama = 3;
                         kilepes = true;
                         break;
                     case SDLK_4:
                     case SDLK_KP_4:
-                        jatekosok_szama = 4;
+                        *jatekosok_szama = 4;
                         kilepes = true;
                         break;
                     case SDLK_5:
                     case SDLK_KP_5:
-                        jatekosok_szama = 5;
+                        *jatekosok_szama = 5;
                         kilepes = true;
                         break;
                     case SDLK_6:
                     case SDLK_KP_6:
-                        jatekosok_szama = 6;
+                        *jatekosok_szama = 6;
                         kilepes = true;
-                        break;
-                    default:
-                        kilepes = false;
                         break;
                 }
             case SDL_MOUSEBUTTONDOWN:
                 if (esemeny.button.x >= 452 && esemeny.button.x <= 572) {
                     // 2
                     if (esemeny.button.y >= 192 && esemeny.button.y <= 232) {
-                        jatekosok_szama = 2;
+                        *jatekosok_szama = 2;
                         kilepes = true;
                     }
                     // 3
                     if (esemeny.button.y >= 262 && esemeny.button.y <= 302) {
-                        jatekosok_szama = 3;
+                        *jatekosok_szama = 3;
                         kilepes = true;
                     }
                     // 4
                     if (esemeny.button.y >= 332 && esemeny.button.y <= 372) {
-                        jatekosok_szama = 4;
+                        *jatekosok_szama = 4;
                         kilepes = true;
                     }
                     // 5
                     if (esemeny.button.y >= 402 && esemeny.button.y <= 442) {
-                        jatekosok_szama = 5;
+                        *jatekosok_szama = 5;
                         kilepes = true;
                     }
                     // 6
                     if (esemeny.button.y >= 472 && esemeny.button.y <= 512) {
-                        jatekosok_szama = 6;
+                        *jatekosok_szama = 6;
                         kilepes = true;
                     }
                 }
@@ -120,9 +121,13 @@ Jatekos* jatekkezdes(void) {
             //TODO: itt felszabadul a foglalt memória?
             case SDL_QUIT:
                 kilepes = true;
-                //jatek_vege(jatekosok_tombje);
-                jatek_vege(NULL);
+                jatek_vege(jatekosok_tombje);
+                SDL_Quit();
+                exit(0);
                 break;
+//                //jatek_vege(jatekosok_tombje);
+//                jatek_vege(NULL);
+//                break;
         }
 //        if (kilepes) {
 //            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
@@ -190,6 +195,7 @@ bool jatekkezdes_megerositese(void) {
             case SDL_QUIT:
                 // itt még nem kell felszabadítani memóriát
                 megerositette = true;
+                exit(0);
                 SDL_Quit();
                 break;
         }
