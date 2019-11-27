@@ -241,7 +241,7 @@ Jatekosszin szinenumma(SDL_Color szin) {
  *
  * @return A szín neve
  */
-Jatekosszin jatekos_szinvalasztas(int* foglalt_szinek) {
+Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betutipus(felkover48pt), szin(feher), "Válassz színt:", 0, 100);
     SDL_Rect kulvonal;
@@ -262,24 +262,29 @@ Jatekosszin jatekos_szinvalasztas(int* foglalt_szinek) {
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
             case SDL_MOUSEBUTTONDOWN:
-                if (esemeny.button.y >= 200 && esemeny.button.y <= 250) {
-                    if (esemeny.button.x >= 222 && esemeny.button.x <= 302)
+                if (esemeny.button.y >= 250 && esemeny.button.y <= 330) {
+                    if (!foglalt_szinek[j_piros] && esemeny.button.x >= 222 && esemeny.button.x <= 302)
                         return j_piros;
-                    if (esemeny.button.x >= 322 && esemeny.button.x <= 402)
+                    if (!foglalt_szinek[j_narancs] && esemeny.button.x >= 322 && esemeny.button.x <= 402)
                         return j_narancs;
-                    if (esemeny.button.x >= 422 && esemeny.button.x <= 502)
+                    if (!foglalt_szinek[j_sarga] && esemeny.button.x >= 422 && esemeny.button.x <= 502)
                         return j_sarga;
-                    if (esemeny.button.x >= 522 && esemeny.button.x <= 602)
+                    if (!foglalt_szinek[j_zold] && esemeny.button.x >= 522 && esemeny.button.x <= 602)
                         return j_zold;
-                    if (esemeny.button.x >= 622 && esemeny.button.x <= 702)
+                    if (!foglalt_szinek[j_kek] && esemeny.button.x >= 622 && esemeny.button.x <= 702)
                         return j_kek;
-                    if (esemeny.button.x >= 722 && esemeny.button.x <= 802)
+                    if (!foglalt_szinek[j_lila] && esemeny.button.x >= 722 && esemeny.button.x <= 802)
                         return j_lila;
                     kilepes = true;
                 }
+                break;
             case SDL_QUIT:
                 //TODO: játék vége, memóriaszabadítás
-                return -1;
+                //SDL_Quit();
+                kilepes = true;
+                /* TODO: ha a jatek.c 50, sorában freelem a visszatérés után, akkor debugmalloc hibát ad*/
+                //free(foglalt_szinek);
+                return j_kilep;
 //                kilepes = true;
 //                free(foglalt_szinek);
 //                SDL_Quit();

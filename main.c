@@ -13,7 +13,7 @@
 #include "jatek_megjelenites.h"
 
 int main(int argc, char *argv[]) {
-    srand(time(0));
+    srand(time(NULL));
     Jatekos* jatekostomb = NULL;
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
                  */
                 //TODO: gombok kirajzolása?
                 // jatekosszam_gombok_kirajzolasa();
-                jatekostomb = jatekkezdes(&jatekosszam);
+                jatekkezdes(&jatekosszam);
                 megkezdte = jatekkezdes_megerositese();
                 if (megkezdte)
                     jatek_main(jatekostomb, &jatekosszam);

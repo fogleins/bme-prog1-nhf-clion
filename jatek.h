@@ -5,9 +5,12 @@
 #ifndef TARSAS_JATEK_H
 #define TARSAS_JATEK_H
 
+#include "main.h"
+
 typedef struct Jatekos {
     char* nev;
     int id;     /**<a játékos azonosítója*/
+    Jatekosszin szin; /**<a játékos bábujának színe*/
     int mezo;   /**<ezen a mezőn tartozkodik éppen*/
     int ermek;  /**<ennyi érme van jelenleg*/
     int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
@@ -24,8 +27,9 @@ typedef struct Jatek {
     Jatekos* tomb; /**< a játékosok tulajdonságait tartalmazó tömb */
     int jatekosszam; /**< a játékosok száma */
 } Jatek;
+
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam);
-Jatekos* jatekkezdes(int* jatekosok_szama);
+void jatekkezdes(int* jatekosok_szama);
 bool jatekkezdes_megerositese(void);
 //bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
 static bool memfoglalas(Jatekos* tomb, int jatekosszam);

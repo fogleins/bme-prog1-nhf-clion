@@ -23,7 +23,8 @@ typedef enum Jatekosszin {
     j_sarga,
     j_zold,
     j_kek,
-    j_lila
+    j_lila,
+    j_kilep
 } Jatekosszin;
 
 typedef enum Betuk {

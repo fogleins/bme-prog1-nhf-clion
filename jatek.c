@@ -26,20 +26,40 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
 //        //TODO: visszatérés a mainbe
 //    }
     // a játéksok adatainak bekérése, játékostömb felépítése
-    int* foglalt_szinek = (int*) malloc(*jatekosszam * sizeof(int));
+//    if (!memfoglalas(jatekostomb, *jatekosszam)) {
+//        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
+//        exit(1);
+//    }
+    jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
+    if (jatekostomb == NULL) {
+        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
+        exit(1);
+    }
+    // hamis, ha nem foglalták még, egyébként igaz
+    bool* foglalt_szinek = (bool*) malloc(*jatekosszam * sizeof(bool));
+    if (foglalt_szinek == NULL) {
+        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
+        exit(1);
+    }
+    for (int j = 0; j < *jatekosszam; ++j) {
+        foglalt_szinek[j] = false;
+    }
     int i;
+    Jatekosszin valasztott_szin;
     for (i = 0; i < *jatekosszam; ++i) {
-        foglalt_szinek[i] = jatekos_szinvalasztas(foglalt_szinek);
-        if (foglalt_szinek[i] == -1)
+        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
+        foglalt_szinek[valasztott_szin] = true;
+        jatekostomb->szin = valasztott_szin;
+        if (valasztott_szin == j_kilep)
             break;
     }
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
-    if (foglalt_szinek[i] == -1) {
+    if (valasztott_szin == j_kilep) {
         free(foglalt_szinek);
         SDL_Quit();
         exit(0);
     }
-    free(foglalt_szinek);
+    //free(foglalt_szinek);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
     Sleep(5000);
@@ -55,7 +75,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
  * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
  * @return Dinamikusan foglalt memóriaterületre mutató Játékos típusú pointer
  */
-Jatekos* jatekkezdes(int* jatekosok_szama) {
+void jatekkezdes(int* jatekosok_szama) {
     //TODO: ez null?
     Jatekos *jatekosok_tombje = NULL;
     bool kilepes = false;
@@ -142,7 +162,6 @@ Jatekos* jatekkezdes(int* jatekosok_szama) {
 //            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
 //        }
     }
-    return jatekosok_tombje;
 }
 
 //TODO: ez a függvény
@@ -183,10 +202,10 @@ bool jatekkezdes_megerositese(void) {
                         return true;
                     case SDLK_m:
                     case SDLK_f:
-                        //menu_kirajzolasa();
                         megerositette = true;
                         return false;
                 }
+                break;
             case SDL_MOUSEBUTTONDOWN:
                 if (megerosites_esemeny.button.y >= 334 && megerosites_esemeny.button.y <= 384) {
                     if (megerosites_esemeny.button.x >= 297 && megerosites_esemeny.button.x <= 497) {
@@ -211,21 +230,21 @@ bool jatekkezdes_megerositese(void) {
     }
 }
 
-/** memóriát foglal a játékosok számára
+/** Memóriát foglal a játékosok számára
  *
  * @param tomb Ez a pointer fog a foglalt memóriaterületre mutatni
  * @param jatekosszam A játékosok száma
  * @return true, ha a memóriafoglalás sikerült
  */
-static bool memfoglalas(Jatekos* tomb, int jatekosszam) {
-    tomb = (Jatekos*) malloc(jatekosszam * sizeof(Jatekos));
-    //TODO: itt lehetne kilepes = false-szal továbblépni?
-    if (tomb == NULL) {
-        SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
-        return false;
-    }
-    else return true;
-}
+//static bool memfoglalas(Jatekos* tomb, int jatekosszam) {
+//    tomb = (Jatekos*) malloc(jatekosszam * sizeof(Jatekos));
+//    //TODO: itt lehetne kilepes = false-szal továbblépni?
+//    if (tomb == NULL) {
+//        SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
+//        return false;
+//    }
+//    else return true;
+//}
 
 /** A játék befejezésekor kerül hívásra. Felszabadítja a lefoglalt memóriát és bezárja az ablakot
  *
