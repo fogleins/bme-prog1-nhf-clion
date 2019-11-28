@@ -21,15 +21,7 @@
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
-    //jatekostomb = jatekkezdes();
-//    if (jatekostomb == NULL) {
-//        //TODO: visszatérés a mainbe
-//    }
-    // a játéksok adatainak bekérése, játékostömb felépítése
-//    if (!memfoglalas(jatekostomb, *jatekosszam)) {
-//        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
-//        exit(1);
-//    }
+
     jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
     if (jatekostomb == NULL) {
         SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
@@ -55,9 +47,10 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     }
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
-        free(foglalt_szinek);
-        SDL_Quit();
-        exit(0);
+        jatek_vege(jatekostomb);
+//        free(foglalt_szinek);
+//        SDL_Quit();
+//        exit(0);
     }
     //free(foglalt_szinek);
     ablak_tisztitasa(renderer);
@@ -153,14 +146,7 @@ void jatekkezdes(int* jatekosok_szama) {
                 jatek_vege(jatekosok_tombje);
                 SDL_Quit();
                 exit(0);
-                break;
-//                //jatek_vege(jatekosok_tombje);
-//                jatek_vege(NULL);
-//                break;
         }
-//        if (kilepes) {
-//            kilepes = jatekkezdes_megerositese(jatekosok_tombje, jatekosok_szama);
-//        }
     }
 }
 

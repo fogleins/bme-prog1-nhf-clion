@@ -280,7 +280,6 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
                 break;
             case SDL_QUIT:
                 //TODO: játék vége, memóriaszabadítás
-                //SDL_Quit();
                 kilepes = true;
                 /* TODO: ha a jatek.c 50, sorában freelem a visszatérés után, akkor debugmalloc hibát ad*/
                 //free(foglalt_szinek);

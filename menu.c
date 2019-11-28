@@ -134,9 +134,6 @@ Gomb egeresbillentyu(void) {
                 break;
             case SDL_QUIT:
                 return kilep;
-                //kilepes = true;
-                //ablak_bezarasa();
-                //break;
         }
     }
 }
