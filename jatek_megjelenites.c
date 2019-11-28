@@ -254,6 +254,10 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 jatekosszin(j_piros + i).b, jatekosszin(j_piros + i).a);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &kulvonal);
+        if (foglalt_szinek[i]) {
+            fancy_szoveget_kiir(betutipus(normal120pt), szin(piros), "X",
+                    (kulvonal.x + kulvonal.x + kulvonal.w) / 2, kulvonal.y - 50);
+        }
     }
     SDL_RenderPresent(renderer);
     // eventek kezelése
@@ -282,14 +286,7 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 break;
             case SDL_QUIT:
                 //TODO: játék vége, memóriaszabadítás
-                //kilepes = true;
-                /* TODO: ha a jatek.c 50, sorában freelem a visszatérés után, akkor debugmalloc hibát ad*/
-                //free(foglalt_szinek);
                 return j_kilep;
-//                kilepes = true;
-//                free(foglalt_szinek);
-//                SDL_Quit();
-//                exit(0);
         }
     }
 }

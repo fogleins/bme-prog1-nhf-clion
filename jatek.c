@@ -27,12 +27,10 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     }
     // hamis, ha nem foglalták még, egyébként igaz
     bool foglalt_szinek[6];
-    for (int j = 0; j < *jatekosszam; ++j) {
+    for (int j = 0; j < 6; ++j)
         foglalt_szinek[j] = false;
-    }
-    int i;
     Jatekosszin valasztott_szin;
-    for (i = 0; i < *jatekosszam; ++i) {
+    for (int i = 0; i < *jatekosszam; ++i) {
         ablak_tisztitasa(renderer);
         valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
         if (valasztott_szin == j_kilep)

@@ -89,23 +89,23 @@ SDL_Color szin(Szinek szin) {
  *  @return NULL, ha nem definiált betűtípust ad meg a hívó
  */
 TTF_Font* betutipus(Betuk betutipus) {
-    char* nev;
+    char* nev = "myfrida-bold.otf";
     int meret;
     switch (betutipus) {
+        case normal120pt:
+            nev = "myfrida-regular.otf";
+            meret = 150;
+            break;
         case felkover60pt:
-            nev = "myfrida-bold.otf";
             meret = 60;
             break;
         case felkover48pt:
-            nev = "myfrida-bold.otf";
             meret = 48;
             break;
         case felkover36pt:
-            nev = "myfrida-bold.otf";
             meret = 36;
             break;
         case felkover30pt:
-            nev = "myfrida-bold.otf";
             meret = 30;
             break;
         default:

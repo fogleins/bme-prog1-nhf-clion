@@ -28,6 +28,7 @@ typedef enum Jatekosszin {
 } Jatekosszin;
 
 typedef enum Betuk {
+    normal120pt,
     felkover60pt,
     felkover48pt,
     felkover36pt,
