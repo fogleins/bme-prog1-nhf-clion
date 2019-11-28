@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 #include <stdbool.h>
 #include <string.h>
 #include <windows.h> //TODO: windows.h-t kivenni
@@ -28,11 +26,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         exit(1);
     }
     // hamis, ha nem foglalták még, egyébként igaz
-    bool* foglalt_szinek = (bool*) malloc(*jatekosszam * sizeof(bool));
-    if (foglalt_szinek == NULL) {
-        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
-        exit(1);
-    }
+    bool foglalt_szinek[6];
     for (int j = 0; j < *jatekosszam; ++j) {
         foglalt_szinek[j] = false;
     }
@@ -49,11 +43,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
         free(jatekostomb);
-        free(foglalt_szinek);
         SDL_Quit();
         return;
     }
-    //free(foglalt_szinek);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
     Sleep(5000);
@@ -145,7 +137,9 @@ void jatekkezdes(int* jatekosok_szama) {
                 kilepes = true;
                 jatek_vege(jatekosok_tombje);
                 SDL_Quit();
+                // TODO: ne exit(0)-val lépjen ki
                 exit(0);
+                //return;
         }
     }
 }

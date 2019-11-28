@@ -2,9 +2,7 @@
 // Created by Simon on 2019-11-07.
 //
 #include <stdlib.h>
-#include <math.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_ttf.h>
 
 #include "main.h"

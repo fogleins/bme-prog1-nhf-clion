@@ -1,10 +1,7 @@
-#include <stdio.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include <string.h>
 
 #include "ablakkezeles.h"
 #include "menu.h"
@@ -48,8 +45,11 @@ int main(int argc, char *argv[]) {
     }
     //TODO: memóriaszivárgás ellenőrzése
     debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
+
     return 0;
 }
+
+// TODO: dokumentációhoz telepítés
 
 /*TODO: gombok megnyomására nyíljon új játék
  * (legyen megadható a játékosok száma!),
