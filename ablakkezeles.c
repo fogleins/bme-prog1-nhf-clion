@@ -40,80 +40,48 @@ void ablak_tisztitasa(SDL_Renderer* megjelenito) {
     SDL_RenderPresent(megjelenito);
 }
 
-//TODO: ez nem kell (?)
-void ablak_bezarasa(void) {
-//    /* varunk a kilepesre */
-//    SDL_Event ev;
-//    //while (SDL_WaitEvent(&ev) && ev.type != SDL_QUIT) {}
-//
-//    /* ablak bezarasa */
-    SDL_Quit();
-}
-
 /** visszaad egy SDL_Color típusú színt
  *
  *  @param szin main.h-ban definiált színek valamelyike
  *  @return Egy SDL_Color típusú rgb szín
  */
 SDL_Color szin(Szinek szin) {
-    int r, g, b, a = 255;
+    int a = 255;
+    SDL_Color color;
     switch (szin) {
         case feher:
-            r = 255;
-            g = 255;
-            b = 255;
+            color = (SDL_Color) { 255, 255, 255, a };
             break;
         case piros:
-            r = 255;
-            g = 0;
-            b = 0;
+            color = (SDL_Color) { 255, 0, 0, a };
             break;
-        //https://flatuicolors.com/
         case flatred:
-            r = 0xE7;
-            g = 0x4C;
-            b = 0x3C;
-            a = 80;
+            // https://flatuicolors.com/
+            color = (SDL_Color) { 0xE7, 0x4C, 0x3C, 80 };
             break;
         case zold:
-            r = 0;
-            g = 255;
-            b = 0;
+            color = (SDL_Color) { 0, 255, 0, a };
             break;
         case flatgreen:
-            r = 46;
-            g = 204;
-            b = 113;
-            a = 99;
+            color = (SDL_Color) { 46, 204, 113, 99 };
             break;
         case kek:
 //            r = 66;
 //            g = 135;
 //            b = 245;
-            r = 66;
-            g = 170;
-            b = 245;
-            a = 80;
+            color = (SDL_Color) { 66, 170, 245, 80 };
             break;
         case hatter:
-            r = 203; //0xCB; //203
-            g = 125; //0x7D; //125
-            b = 125; //0x7D; //125
+            color = (SDL_Color) { 203, 125, 125, a };
             break;
         case hatter_sotet:
-            r = 173; //0xAD
-            g = 102; //0x66
-            b = 102; //0x66;
+            color = (SDL_Color) { 173, 102, 102, a };
             break;
         default:
-            // fekete
-            //TODO
-            r = 0;
-            g = 0;
-            b = 0;
+            //TODO: fekete?
+            color = (SDL_Color) { 0, 0, 0, a };
             break;
     }
-    SDL_Color color = { r, g, b, a };
     return color;
 }
 
