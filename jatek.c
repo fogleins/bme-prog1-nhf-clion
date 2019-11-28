@@ -41,17 +41,17 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     for (i = 0; i < *jatekosszam; ++i) {
         ablak_tisztitasa(renderer);
         valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
-        foglalt_szinek[valasztott_szin] = true;
-        jatekostomb[0].szin = valasztott_szin;
         if (valasztott_szin == j_kilep)
             break;
+        foglalt_szinek[valasztott_szin] = true;
+        jatekostomb[i].szin = valasztott_szin;
     }
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
-        jatek_vege(jatekostomb);
-//        free(foglalt_szinek);
-//        SDL_Quit();
-//        exit(0);
+        free(jatekostomb);
+        free(foglalt_szinek);
+        SDL_Quit();
+        return;
     }
     //free(foglalt_szinek);
     ablak_tisztitasa(renderer);
@@ -60,8 +60,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
 
     //a tesztelés idejére kikommentelve
     //TODO: játék vége fgv javítása
-    if (jatekostomb != NULL)
-        jatek_vege(jatekostomb);
+    jatek_vege(jatekostomb);
 }
 
 

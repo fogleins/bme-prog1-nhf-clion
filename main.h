@@ -18,7 +18,7 @@ typedef enum Szinek {
 } Szinek;
 
 typedef enum Jatekosszin {
-    j_piros,
+    j_piros = 0,
     j_narancs,
     j_sarga,
     j_zold,

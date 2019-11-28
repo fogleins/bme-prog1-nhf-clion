@@ -263,6 +263,7 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
             case SDL_MOUSEBUTTONDOWN:
+                // TODO: ne legyen sorminta
                 if (esemeny.button.y >= 250 && esemeny.button.y <= 330) {
                     if (!foglalt_szinek[j_piros] && esemeny.button.x >= 222 && esemeny.button.x <= 302)
                         return j_piros;
@@ -281,7 +282,7 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 break;
             case SDL_QUIT:
                 //TODO: játék vége, memóriaszabadítás
-                kilepes = true;
+                //kilepes = true;
                 /* TODO: ha a jatek.c 50, sorában freelem a visszatérés után, akkor debugmalloc hibát ad*/
                 //free(foglalt_szinek);
                 return j_kilep;
