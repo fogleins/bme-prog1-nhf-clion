@@ -53,6 +53,7 @@ void parbeszed(TTF_Font* betu, char* uzenet, int y) {
 /** Megjeleníti a játékmenet grafikus felületét */
 void jatekter_kirajzolasa(void) {
     //TODO: háttérszín
+    ablak_tisztitasa(renderer);
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
     SDL_RenderPresent(renderer);
     //TODO: ezt fel kell szabadítani?

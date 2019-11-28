@@ -26,10 +26,11 @@
 /** Beolvassa egy korábban elmentett játékmenet adatait.
  *
  * @param fajlnev A beolvasandó fájl elérési útja
- * @return A beolvasott adatokkal feltöltött Jatekos típusú tömbre mutató pointer
+ * @return A beolvasott adatokkal feltöltött Jatekos típusú tömbre mutató pointer; NULL, ha a fájl nem nyitható meg
  */
 Jatekos* beolvas(char* fajlnev) {
     FILE* fp = fopen(fajlnev, "rt");
+    if (fp == NULL) return NULL;
     int jatekosok_szama, kov_jatekos;
     // a fájl első sora: [int] jatekosok_szama [int] kov_jatekos_id
     fscanf(fp, "%d %d", &jatekosok_szama, &kov_jatekos);

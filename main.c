@@ -10,6 +10,7 @@
 #include "menu.h"
 #include "debugmalloc.h"
 #include "jatek.h"
+#include "fajlkezeles.h"
 #include "jatek_megjelenites.h"
 
 int main(int argc, char *argv[]) {
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
                 break;
             case megnyit:
                 //TODO: fájl beolvasása
+                jatekostomb = beolvas("jatekmenet.txt");
                 break;
             case kilep:
                 megkezdte = true;
