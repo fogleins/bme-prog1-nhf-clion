@@ -41,7 +41,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     for (i = 0; i < *jatekosszam; ++i) {
         valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
         foglalt_szinek[valasztott_szin] = true;
-        jatekostomb->szin = valasztott_szin;
+        jatekostomb[0].szin = valasztott_szin;
         if (valasztott_szin == j_kilep)
             break;
     }

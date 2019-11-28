@@ -241,7 +241,7 @@ Jatekosszin szinenumma(SDL_Color szin) {
  *
  * @return A szín neve
  */
-Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
+Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betutipus(felkover48pt), szin(feher), "Válassz színt:", 0, 100);
     SDL_Rect kulvonal;

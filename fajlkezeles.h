@@ -7,7 +7,9 @@
 
 #include "jatek.h"
 
-bool beolvas(char* fajlnev);
+//bool beolvas(char* fajlnev);
+Jatekos* beolvas(char* fajlnev);
+void mentes(char* fajlnev, int jatekosszam, int kov_id, Jatekos* jatekostomb);
 void mezok_beolvasasa(Mezo* mezok_tombje);
 
 
