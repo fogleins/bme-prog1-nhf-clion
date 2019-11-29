@@ -29,8 +29,8 @@ typedef struct Jatek {
 } Jatek;
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam);
-void jatekkezdes(int* jatekosok_szama);
-bool jatekkezdes_megerositese(void);
+void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny);
+bool jatekkezdes_megerositese(bool* sdlquit_esemeny);
 //bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
 static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);

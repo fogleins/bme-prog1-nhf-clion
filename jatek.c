@@ -21,7 +21,6 @@
 #else
 #include <unistd.h>
 #endif
-                    //TODO: windows.h-t kivenni
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
@@ -45,8 +44,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         jatekostomb[i].id = i;
         jatekostomb[i].szin = valasztott_szin;
         jatekostomb[i].mezo = 0;
+        jatekostomb[i].ermek = 0;
+        jatekostomb[i].passz = 3;
     }
-    // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
         free(jatekostomb);
         SDL_Quit();
@@ -57,7 +57,6 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     jatekter_kirajzolasa();
     Sleep(15000);
 
-    //a tesztelés idejére kikommentelve
     //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
 }
@@ -65,9 +64,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
 
 /**
  * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
- * @return Dinamikusan foglalt memóriaterületre mutató Játékos típusú pointer
+ * @param jatekosok_szama A játékosok száma
  */
-void jatekkezdes(int* jatekosok_szama) {
+void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
     //TODO: ez null?
     Jatekos *jatekosok_tombje = NULL;
     bool kilepes = false;
@@ -141,12 +140,9 @@ void jatekkezdes(int* jatekosok_szama) {
                 break;
             //TODO: itt felszabadul a foglalt memória?
             case SDL_QUIT:
-                kilepes = true;
                 jatek_vege(jatekosok_tombje);
-                SDL_Quit();
-                // TODO: ne exit(0)-val lépjen ki
-                exit(0);
-                //return;
+                *sdlquit_esemeny = true;
+                return;
         }
     }
 }
@@ -167,7 +163,7 @@ void jatekkezdes(int* jatekosok_szama) {
  * @param jatekosszam A játékosok száma
  * @return true, ha megkezdi a játékot
  */
-bool jatekkezdes_megerositese(void) {
+bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
     ablak_tisztitasa(renderer);
     parbeszed(betutipus(felkover48pt), "Folytatod?", 150);
     boxRGBA(renderer, 297, 334, 497, 384, szin(kek).r, szin(kek).g, szin(kek).b, 100);
@@ -209,10 +205,8 @@ bool jatekkezdes_megerositese(void) {
                 break;
             case SDL_QUIT:
                 // itt még nem kell felszabadítani memóriát
-                megerositette = true;
-                exit(0);
-                SDL_Quit();
-                break;
+                *sdlquit_esemeny = true;
+                return false;
         }
     }
 }

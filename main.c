@@ -16,22 +16,20 @@ int main(int argc, char *argv[]) {
     //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
     // a játék megkezdéséig loopol, megjeleníti a menüt és regisztrálja a gombnyomásokat, kattintásokat
-    bool megkezdte = false;
+    bool megkezdte = false, sdlquit_esemeny = false; /* SDL_QUIT event esetén true lesz, így a többi kód  */
     while (!megkezdte) {
         menu_kirajzolasa();
         int jatekosszam;
         switch (egeresbillentyu()) {
             case uj:
-                /* TODO: paraméterek */
-                /* a játékkezdés megerősítése ne kapja meg a 2 paramétert, helyette csak térjen vissza igazzal, ha
-                 * megerősítették a játékkezdést, a memóriafoglalás a jatek_mainből/jatekkezdes.ből is hívható.
-                 */
-                //TODO: gombok kirajzolása?
-                // jatekosszam_gombok_kirajzolasa();
-                jatekkezdes(&jatekosszam);
-                megkezdte = jatekkezdes_megerositese();
-                if (megkezdte)
-                    jatek_main(jatekostomb, &jatekosszam);
+                jatekkezdes(&jatekosszam, &sdlquit_esemeny);
+                if (!sdlquit_esemeny) {
+                    megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
+                    if (megkezdte)
+                        jatek_main(jatekostomb, &jatekosszam);
+                }
+                else
+                    megkezdte = true;
                 break;
             case megnyit:
                 //TODO: fájl beolvasása
@@ -43,6 +41,17 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
+
+    //TODO: talán lehet while is
+    if (!sdlquit_esemeny) {
+        /*
+         * bábuk kirajzolása
+         * dobás -> bábuk mozgatása + megfelelő szövegek kiírása
+         * játék vége ellenőrzése
+         *
+         */
+    }
+
     //TODO: memóriaszivárgás ellenőrzése
     debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
 
