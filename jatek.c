@@ -30,9 +30,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     for (int j = 0; j < 6; ++j)
         foglalt_szinek[j] = false;
     Jatekosszin valasztott_szin;
+    SDL_RenderClear(renderer);
     for (int i = 0; i < *jatekosszam; ++i) {
-        ablak_tisztitasa(renderer);
-        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek, jatekosszam);
+        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
         if (valasztott_szin == j_kilep)
             break;
         jatekostomb[i].szin = valasztott_szin;

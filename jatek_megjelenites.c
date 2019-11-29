@@ -244,7 +244,6 @@ Jatekosszin szinenumma(SDL_Color szin) {
  * @return A szín neve
  */
 Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
-    ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betutipus(felkover48pt), szin(feher), "Válassz színt:", 0, 100);
     SDL_Rect kulvonal;
     for (int i = 0; i < 6; ++i) {
@@ -261,7 +260,7 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
     // eventek kezelése
     bool valasztott = false; /* az adott játékos választott-e új színt (=amit még mások nem) */
     int valasztottak_szama_event_elott = valasztott_szinek_szama(foglalt_szinek);
-    while (!valasztott && valasztott_szinek_szama(foglalt_szinek) != *jatekosszam) {
+    while (!valasztott) {
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
