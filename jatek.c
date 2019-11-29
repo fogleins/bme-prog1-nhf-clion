@@ -46,6 +46,10 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         jatekostomb[i].mezo = 0;
         jatekostomb[i].ermek = 0;
         jatekostomb[i].passz = 3;
+        jatekostomb[i].kimarad = 0;
+        jatekostomb[i].nev[0] = ((char) (48 + i + 1));
+        jatekostomb[i].nev[1] = '\0';
+        strcat(jatekostomb[i].nev, ". jatekos");
     }
     if (valasztott_szin == j_kilep) {
         free(jatekostomb);
@@ -55,6 +59,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Sleep(300);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
+    szovegek_megjelenitese(&jatekostomb[2]);
     Sleep(15000);
 
     //TODO: játék vége fgv javítása

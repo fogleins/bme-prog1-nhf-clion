@@ -8,6 +8,7 @@
 #include <SDL_ttf.h>
 #include <stdbool.h>
 #include "main.h"
+#include "jatek.h"
 
 void jatekosszam_gombok_kirajzolasa(void);
 void parbeszed(TTF_Font* betu, char* uzenet, int y);
@@ -21,5 +22,6 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek);
 static int valasztott_szinek_szama(const bool* foglalt_szinek);
 static void xet_rajzol(const bool* foglalt_szinek, SDL_Rect kulvonal);
 static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect* kulvonal);
+void szovegek_megjelenitese(Jatekos* soronkovetkezo);
 
 #endif //TARSAS_JATEK_MEGJELENITES_H

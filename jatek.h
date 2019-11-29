@@ -8,12 +8,13 @@
 #include "main.h"
 
 typedef struct Jatekos {
-    char* nev;
+    char nev[11];
     int id;     /**<a játékos azonosítója*/
     Jatekosszin szin; /**<a játékos bábujának színe*/
     int mezo;   /**<ezen a mezőn tartozkodik éppen*/
     int ermek;  /**<ennyi érme van jelenleg*/
     int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
+    int kimarad; /**<ennyiszer marad ki a dobásból*/
 } Jatekos;
 
 typedef struct Mezo {

@@ -8,10 +8,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_image.h>
+#include <string.h>
 
 #include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
 #include "menu.h"
+#include "jatek.h"
 
 
 /** Kirajzolja a játékosszám egérrel való megadásához szükséges gombokat */
@@ -65,22 +67,15 @@ void jatekter_kirajzolasa(void) {
     }
     SDL_RenderCopy(renderer, tabla, NULL, &cel);
 
-    TTF_Font *menupontok = TTF_OpenFont("myfrida-bold.otf", 26);
-    if (menupontok == NULL) {
-        SDL_Log("Nem lehetett betolteni a betutipust. (%s)", TTF_GetError());
-        exit(1);
-    }
-
     // "következő" gomb
-    boxRGBA(renderer, 20, 30, 428, 90, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), "Következik:", 448 / 4, 45);
+    boxRGBA(renderer, 20, 30, 428, 90,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    fancy_szoveget_kiir(betutipus(felkover30pt),
+            szin(feher), "Következik:", 448 / 4, 45);
 
     // dobott szám kiírása
-    boxRGBA(renderer, 20, 110, 214, 160, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    char dobott_szam[2];
-    dobott_szam[0] = (rand() % 6 + 1) + 48;
-    dobott_szam[1] = '\0';
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
+    boxRGBA(renderer, 20, 110, 214, 160,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
     //dobókocka ikon
     // https://www.flaticon.com/free-icon/dice_2102123
     SDL_Texture* kocka = IMG_LoadTexture(renderer, "dice3.png");
@@ -90,12 +85,8 @@ void jatekter_kirajzolasa(void) {
     SDL_DestroyTexture(kocka);
 
     // érmek kiírása
-    boxRGBA(renderer, 234, 110, 428, 160, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    char ermek_szama[2];
-    //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
-    ermek_szama[0] = '6';
-    ermek_szama[1] = '\0';
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
+    boxRGBA(renderer, 234, 110, 428, 160,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
     // érem ikon
     // https://www.kissclipart.com/medal-png-grey-clipart-gold-medal-silver-medal-h1kus5/download-clipart.html - erem.png
     // https://www.flaticon.com/free-icon/medal_321854 - medal.png
@@ -106,28 +97,28 @@ void jatekter_kirajzolasa(void) {
     SDL_DestroyTexture(erem);
 
     // passzok száma
-    boxRGBA(renderer, 20, 180, 214, 230, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    //TODO: ez a játékos struct passz elemével egyenlő
-    char passzok_szama[2];
-    passzok_szama[0] = (rand() % 3 + 1) + 48;
-    passzok_szama[1] = '\0';
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, (20 + 214) / 2, 185);
+    boxRGBA(renderer, 20, 180, 214, 230,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
 
     // passzolás
-    boxRGBA(renderer, 234, 180, 428, 230, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    boxRGBA(renderer, 234, 180, 428, 230,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Passz", 330, 185);
 
-    //TODO: színválasztás
-    // mező tartalmának kiírása
+    //TODO: mező tartalmának kiírása
     //boxRGBA(renderer, 20, 258, 428, 468, szin(kek).r, szin(kek).g, szin(kek).b, szin(kek).a);
-    boxRGBA(renderer, 20, 258, 428, 468, szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, szin(hatter_sotet).a);
+    boxRGBA(renderer, 20, 258, 428, 468,
+            szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, szin(hatter_sotet).a);
 
     // kilépés gomb kiírása
-    boxRGBA(renderer, 20, 496, 214, 546, szin(flatred).r, szin(flatred).g, szin(flatred).b, szin(flatred).a);
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Kilépés", (20 + 214) / 2, 501);
+    boxRGBA(renderer, 20, 496, 214, 546,
+            szin(flatred).r, szin(flatred).g, szin(flatred).b, szin(flatred).a);
+    fancy_szoveget_kiir(betutipus(felkover36pt),
+            szin(feher), "Kilépés", (20 + 214) / 2, 501);
 
     // mentés gomb kiírása
-    boxRGBA(renderer, 234, 496, 428, 546, szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
+    boxRGBA(renderer, 234, 496, 428, 546,
+            szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
 
     SDL_RenderPresent(renderer);
@@ -330,4 +321,33 @@ static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect
     foglalt_szinek[szin] = true;
     xet_rajzol(foglalt_szinek, *korvonal);
     return szin;
+}
+
+/** A játéktáblán az aktuális játékos váltásakor megváltozó feliratokat írja ki
+ *
+ * @param soronkovetkezo A következő játékos
+ */
+void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
+    char dobott_szam[2];
+    dobott_szam[0] = (char) ((rand() % 6 + 1) + 48);
+    dobott_szam[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
+
+    //TODO: ez a játékos struct passz elemével egyenlő
+    char passzok_szama[2];
+    passzok_szama[0] = (char) (soronkovetkezo->passz + 48);
+    passzok_szama[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, (20 + 214) / 2, 185);
+
+    char ermek_szama[2];
+    //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
+    ermek_szama[0] = (char) (soronkovetkezo->ermek + 48);
+    ermek_szama[1] = '\0';
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
+
+    SDL_RenderPresent(renderer);
+}
+
+void babuk_megjelenitese(Jatekos* jatekostomb) {
+
 }

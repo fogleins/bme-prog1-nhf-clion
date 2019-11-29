@@ -61,7 +61,7 @@ void mentes(char* fajlnev, int jatekosszam, int kov_id, Jatekos* jatekostomb) {
 }
 
 void mezok_beolvasasa(Mezo* mezok_tombje) {
-    // A fájl felépítése: mezo_id\taranyermek\tlepes\tleiras
+    // A fájl felépítése: mezo_id;aranyermek;lepes;kimarad;leiras
     //mezok_tombje = (Mezo*) malloc(40 * sizeof(Mezo));
     FILE* mezok = fopen("mezok.csv.txt", "rt");
     if (mezok == NULL) {
