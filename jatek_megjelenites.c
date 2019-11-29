@@ -240,9 +240,10 @@ Jatekosszin szinenumma(SDL_Color szin) {
 
 /** Kirajzol egy képernyőt, melyen a játékosok színeket választhatnak
  *
+ * @param foglalt_szinek A lefoglalt színek tömbje
  * @return A szín neve
  */
-Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
+Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betutipus(felkover48pt), szin(feher), "Válassz színt:", 0, 100);
     SDL_Rect kulvonal;
@@ -254,15 +255,13 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 jatekosszin(j_piros + i).b, jatekosszin(j_piros + i).a);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderDrawRect(renderer, &kulvonal);
-        if (foglalt_szinek[i]) {
-            fancy_szoveget_kiir(betutipus(normal120pt), szin(piros), "X",
-                    (kulvonal.x + kulvonal.x + kulvonal.w) / 2, kulvonal.y - 50);
-        }
+        xet_rajzol(foglalt_szinek, kulvonal);
     }
     SDL_RenderPresent(renderer);
     // eventek kezelése
-    bool kilepes = false;
-    while (!kilepes) {
+    bool valasztott = false; /* az adott játékos választott-e új színt (=amit még mások nem) */
+    int valasztottak_szama_event_elott = valasztott_szinek_szama(foglalt_szinek);
+    while (!valasztott && valasztott_szinek_szama(foglalt_szinek) != *jatekosszam) {
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
@@ -270,18 +269,19 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 // TODO: ne legyen sorminta
                 if (esemeny.button.y >= 250 && esemeny.button.y <= 330) {
                     if (!foglalt_szinek[j_piros] && esemeny.button.x >= 222 && esemeny.button.x <= 302)
-                        return j_piros;
+                        return szinfoglalas(j_piros, foglalt_szinek, &kulvonal);
                     if (!foglalt_szinek[j_narancs] && esemeny.button.x >= 322 && esemeny.button.x <= 402)
-                        return j_narancs;
+                        return szinfoglalas(j_narancs, foglalt_szinek, &kulvonal);
                     if (!foglalt_szinek[j_sarga] && esemeny.button.x >= 422 && esemeny.button.x <= 502)
-                        return j_sarga;
+                        return szinfoglalas(j_sarga, foglalt_szinek, &kulvonal);
                     if (!foglalt_szinek[j_zold] && esemeny.button.x >= 522 && esemeny.button.x <= 602)
-                        return j_zold;
+                        return szinfoglalas(j_zold, foglalt_szinek, &kulvonal);
                     if (!foglalt_szinek[j_kek] && esemeny.button.x >= 622 && esemeny.button.x <= 702)
-                        return j_kek;
+                        return szinfoglalas(j_kek, foglalt_szinek, &kulvonal);
                     if (!foglalt_szinek[j_lila] && esemeny.button.x >= 722 && esemeny.button.x <= 802)
-                        return j_lila;
-                    kilepes = true;
+                        return szinfoglalas(j_lila, foglalt_szinek, &kulvonal);
+                    if (valasztott_szinek_szama(foglalt_szinek) == valasztottak_szama_event_elott + 1)
+                        valasztott = true;
                 }
                 break;
             case SDL_QUIT:
@@ -289,4 +289,46 @@ Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek) {
                 return j_kilep;
         }
     }
+}
+
+/** Visszadja, hogy eddig hány szín lett kiválasztva
+ *
+ * @param foglalt_szinek A színek foglalását tároló bool tömb
+ * @return A foglalt színek száma
+ */
+static int valasztott_szinek_szama(const bool* foglalt_szinek) {
+    int valasztott_szinek_szama = 0;
+    for (int i = 0; i > 6; i++) {
+        if (foglalt_szinek[i])
+            valasztott_szinek_szama++;
+    }
+    return valasztott_szinek_szama;
+}
+
+/** A már kivalasztott színek gombjára x-et tesz
+ *
+ * @param foglalt_szinek A foglalt színeket tároló bool tömb
+ * @param kulvonal A színek gombjainak koordinátái
+ */
+static void xet_rajzol(const bool* foglalt_szinek, SDL_Rect kulvonal) {
+    for (int i = 0; i < 6; ++i) {
+        kulvonal.x = 222 + i * 100;
+        if (foglalt_szinek[i])
+            fancy_szoveget_kiir(betutipus(normal120pt), szin(piros), "X",
+                    (kulvonal.x + kulvonal.x + kulvonal.w) / 2, kulvonal.y - 50);
+    }
+    SDL_RenderPresent(renderer);
+}
+
+/** Lefoglal egy színt egy-egy játékosnak, a már foglalt színekre x-et tesz
+ *
+ * @param szin A lefoglalt szín
+ * @param foglalt_szinek A foglalt színeket tároló tömb
+ * @param kulvonal A gomb koordinátái
+ * @return A lefoglalt szín
+ */
+static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect* kulvonal) {
+    foglalt_szinek[szin] = true;
+    xet_rajzol(foglalt_szinek, *kulvonal);
+    return szin;
 }

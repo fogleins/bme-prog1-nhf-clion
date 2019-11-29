@@ -17,6 +17,9 @@ void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL
 int szoveg_poz_x(char* szoveg, TTF_Font* betutipus, int hova);
 SDL_Color jatekosszin(Jatekosszin szin);
 Jatekosszin szinenumma(SDL_Color szin);
-Jatekosszin jatekos_szinvalasztas(const bool* foglalt_szinek);
+Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek);
+static int valasztott_szinek_szama(const bool* foglalt_szinek);
+static void xet_rajzol(const bool* foglalt_szinek, SDL_Rect kulvonal);
+static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect* kulvonal);
 
 #endif //TARSAS_JATEK_MEGJELENITES_H

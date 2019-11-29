@@ -32,11 +32,11 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Jatekosszin valasztott_szin;
     for (int i = 0; i < *jatekosszam; ++i) {
         ablak_tisztitasa(renderer);
-        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
+        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek, jatekosszam);
         if (valasztott_szin == j_kilep)
             break;
-        foglalt_szinek[valasztott_szin] = true;
         jatekostomb[i].szin = valasztott_szin;
+        SDL_RenderPresent(renderer);
     }
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
@@ -44,6 +44,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_Quit();
         return;
     }
+    Sleep(500);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
     Sleep(5000);
