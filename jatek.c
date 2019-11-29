@@ -6,7 +6,6 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
 #include <string.h>
-#include <windows.h> //TODO: windows.h-t kivenni
 
 #include "main.h"
 #include "jatek.h"
@@ -15,6 +14,14 @@
 #include "fajlkezeles.h"
 #include "menu.h"
 #include "debugmalloc.h"
+
+// Hogy a Sleep linuxon is működjön
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+                    //TODO: windows.h-t kivenni
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
@@ -35,8 +42,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
         if (valasztott_szin == j_kilep)
             break;
+        jatekostomb[i].id = i;
         jatekostomb[i].szin = valasztott_szin;
-        SDL_RenderPresent(renderer);
+        jatekostomb[i].mezo = 0;
     }
     // TODO: valami szebb megoldás a kilépésre + szabadításra?
     if (valasztott_szin == j_kilep) {
@@ -44,10 +52,10 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_Quit();
         return;
     }
-    Sleep(500);
+    Sleep(300);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
-    Sleep(5000);
+    Sleep(15000);
 
     //a tesztelés idejére kikommentelve
     //TODO: játék vége fgv javítása
