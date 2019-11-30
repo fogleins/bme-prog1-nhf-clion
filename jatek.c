@@ -25,6 +25,9 @@
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
+    for (int i = 0; i < 40; ++i) {
+        mezok_tombje[i].kozep = mezo_kozepe(i);
+    }
 
     jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
     if (jatekostomb == NULL) {
@@ -60,6 +63,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
     szovegek_megjelenitese(&jatekostomb[2]);
+    babuk_megjelenitese(&jatekostomb[2]);
     Sleep(15000);
 
     //TODO: játék vége fgv javítása
@@ -269,4 +273,34 @@ char* sdl_sztring(void) {
         }
     }
     return str;
+}
+
+/** Visszaadja egy mező közepének koordinátáit
+ *
+ * @param mezo_id A mező száma
+ * @return A mező közepének koordinátái
+ */
+Mezokoord mezo_kozepe(int mezo_id) {
+    //500; 523 #0;; 500; 462 #1;; 500; 418 #2;; 500; 375 #3 500, 331
+    //          61           44             43              44
+    Mezokoord kozep0 = { 500, 523 };
+    Mezokoord kozep10 = { 500, 53 };
+    Mezokoord kozep20 = { 970, 53 };
+    Mezokoord kozep30 = { 970, 523 };
+    if (mezo_id == 0)
+        return kozep0;
+    if (mezo_id < 10)
+        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (mezo_id - 1) };
+    if (mezo_id == 10)
+        return kozep10;
+    if (mezo_id < 20)
+        return (Mezokoord) { kozep10.x + 61 + 44 * (mezo_id - 1), kozep10.y };
+    if (mezo_id == 20)
+        return kozep20;
+    if (mezo_id < 30)
+        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (mezo_id - 1) };
+    if (mezo_id == 30)
+        return kozep30;
+    if (mezo_id < 40)
+        return (Mezokoord) { kozep30.x - 61 - 44 * (mezo_id - 1), kozep0.y };
 }

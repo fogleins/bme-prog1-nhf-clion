@@ -348,6 +348,11 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
     SDL_RenderPresent(renderer);
 }
 
-void babuk_megjelenitese(Jatekos* jatekostomb) {
+void babuk_megjelenitese(Jatekos* soronkovetkezo) {
+    int x = 200, y = 200, r = 8;
+    SDL_Color szin = jatekosszin(soronkovetkezo->szin);
+    filledCircleRGBA(renderer, x, y, r, szin.r, szin.g, szin.b, szin.a);
+    circleRGBA(renderer, x, y, r, 0, 0, 0, 255);
 
+    SDL_RenderPresent(renderer);
 }

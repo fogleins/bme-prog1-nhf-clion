@@ -17,9 +17,15 @@ typedef struct Jatekos {
     int kimarad; /**<ennyiszer marad ki a dobásból*/
 } Jatekos;
 
+typedef struct Mezokoord {
+    int x;
+    int y;
+} Mezokoord;
+
 typedef struct Mezo {
     char tulajdonsag[90]; /**<a mező tulajdonsága*/
     int id; /**<a mező azonsoítója*/
+    Mezokoord kozep; /**< a mező közepének koordinátái az ablakon*/
     int erem; /**<ennyi érmet ad rálépéskor, negatív, ha elvesz*/
     int lep; /**<rálépéskor ennyit léphetünk előre, (-) ha hátra*/
 } Mezo;
@@ -37,5 +43,6 @@ static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);
 char* sdl_sztring(void);
+Mezokoord mezo_kozepe(int mezo_id);
 
 #endif //TARSAS_JATEK_H
