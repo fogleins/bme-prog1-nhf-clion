@@ -25,9 +25,8 @@
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
-    for (int i = 0; i < 40; ++i) {
-        mezok_tombje[i].kozep = mezo_kozepe(i);
-    }
+    for (int i = 0; i < 40; ++i)
+        mezok_tombje[i].kozep = mezo_kozepe(&i);
 
     jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
     if (jatekostomb == NULL) {
@@ -62,9 +61,14 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Sleep(300);
     ablak_tisztitasa(renderer);
     jatekter_kirajzolasa();
-    szovegek_megjelenitese(&jatekostomb[2]);
-    babuk_megjelenitese(&jatekostomb[2]);
-    Sleep(15000);
+    // TODO
+    szovegek_megjelenitese(&jatekostomb[0]);
+    for (int i = 0; i < *jatekosszam; ++i) {
+        babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo));
+        //Sleep(1000);
+    }
+
+    Sleep(150000);
 
     //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
@@ -120,27 +124,22 @@ void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
                 }
             case SDL_MOUSEBUTTONDOWN:
                 if (esemeny.button.x >= 452 && esemeny.button.x <= 572) {
-                    // 2
                     if (esemeny.button.y >= 192 && esemeny.button.y <= 232) {
                         *jatekosok_szama = 2;
                         kilepes = true;
                     }
-                    // 3
                     if (esemeny.button.y >= 262 && esemeny.button.y <= 302) {
                         *jatekosok_szama = 3;
                         kilepes = true;
                     }
-                    // 4
                     if (esemeny.button.y >= 332 && esemeny.button.y <= 372) {
                         *jatekosok_szama = 4;
                         kilepes = true;
                     }
-                    // 5
                     if (esemeny.button.y >= 402 && esemeny.button.y <= 442) {
                         *jatekosok_szama = 5;
                         kilepes = true;
                     }
-                    // 6
                     if (esemeny.button.y >= 472 && esemeny.button.y <= 512) {
                         *jatekosok_szama = 6;
                         kilepes = true;
@@ -280,27 +279,27 @@ char* sdl_sztring(void) {
  * @param mezo_id A mező száma
  * @return A mező közepének koordinátái
  */
-Mezokoord mezo_kozepe(int mezo_id) {
+Mezokoord mezo_kozepe(const int* mezo_id) {
     //500; 523 #0;; 500; 462 #1;; 500; 418 #2;; 500; 375 #3 500, 331
     //          61           44             43              44
     Mezokoord kozep0 = { 500, 523 };
     Mezokoord kozep10 = { 500, 53 };
     Mezokoord kozep20 = { 970, 53 };
     Mezokoord kozep30 = { 970, 523 };
-    if (mezo_id == 0)
+    if (*mezo_id == 0)
         return kozep0;
-    if (mezo_id < 10)
-        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (mezo_id - 1) };
-    if (mezo_id == 10)
+    if (*mezo_id < 10)
+        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (*mezo_id - 1) };
+    if (*mezo_id == 10)
         return kozep10;
-    if (mezo_id < 20)
-        return (Mezokoord) { kozep10.x + 61 + 44 * (mezo_id - 1), kozep10.y };
-    if (mezo_id == 20)
+    if (*mezo_id < 20)
+        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 1), kozep10.y };
+    if (*mezo_id == 20)
         return kozep20;
-    if (mezo_id < 30)
-        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (mezo_id - 1) };
-    if (mezo_id == 30)
+    if (*mezo_id < 30)
+        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 1) };
+    if (*mezo_id == 30)
         return kozep30;
-    if (mezo_id < 40)
-        return (Mezokoord) { kozep30.x - 61 - 44 * (mezo_id - 1), kozep0.y };
+    if (*mezo_id < 40)
+        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 1), kozep0.y };
 }

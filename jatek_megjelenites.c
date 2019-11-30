@@ -348,11 +348,35 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
     SDL_RenderPresent(renderer);
 }
 
-void babuk_megjelenitese(Jatekos* soronkovetkezo) {
-    int x = 200, y = 200, r = 8;
+void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
+    int r = 8;
     SDL_Color szin = jatekosszin(soronkovetkezo->szin);
-    filledCircleRGBA(renderer, x, y, r, szin.r, szin.g, szin.b, szin.a);
-    circleRGBA(renderer, x, y, r, 0, 0, 0, 255);
+    switch (soronkovetkezo->szin) {
+        case j_piros:
+            hova.x -= 2 * r + 3;
+            hova.y += r + 10;
+            break;
+        case j_narancs:
+            hova.y += r + 10;
+            break;
+        case j_sarga:
+            hova.x += 2 * r + 3;
+            hova.y += r + 10;
+            break;
+        case j_zold:
+            hova.x -= 2 * r + 3;
+            hova.y -= r - 7;
+            break;
+        case j_kek:
+            hova.y -= r - 7;
+            break;
+        case j_lila:
+            hova.x += 2 * r + 3;
+            hova.y += r - 9;
+            break;
+    }
+    filledCircleRGBA(renderer, hova.x, hova.y, r, szin.r, szin.g, szin.b, szin.a);
+    circleRGBA(renderer, hova.x, hova.y, r, 0, 0, 0, 255);
 
     SDL_RenderPresent(renderer);
 }

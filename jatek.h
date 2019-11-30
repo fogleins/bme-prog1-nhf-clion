@@ -43,6 +43,6 @@ static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
 static int kocka(void);
 char* sdl_sztring(void);
-Mezokoord mezo_kozepe(int mezo_id);
+Mezokoord mezo_kozepe(const int* mezo_id);
 
 #endif //TARSAS_JATEK_H

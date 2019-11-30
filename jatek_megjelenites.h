@@ -23,6 +23,6 @@ static int valasztott_szinek_szama(const bool* foglalt_szinek);
 static void xet_rajzol(const bool* foglalt_szinek, SDL_Rect kulvonal);
 static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect* kulvonal);
 void szovegek_megjelenitese(Jatekos* soronkovetkezo);
-void babuk_megjelenitese(Jatekos* jatekos);
+void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova);
 
 #endif //TARSAS_JATEK_MEGJELENITES_H
