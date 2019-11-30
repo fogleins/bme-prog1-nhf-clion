@@ -6,6 +6,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "main.h"
 #include "jatek.h"
@@ -27,6 +28,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     mezok_beolvasasa(mezok_tombje);
     for (int i = 0; i < 40; ++i)
         mezok_tombje[i].kozep = mezo_kozepe(&i);
+    for (int i = 0; i < 10; ++i) {
+        printf("%s\n", mezok_tombje[i].tulajdonsag);
+    }
 
     jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
     if (jatekostomb == NULL) {
@@ -45,13 +49,15 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
             break;
         jatekostomb[i].id = i;
         jatekostomb[i].szin = valasztott_szin;
-        jatekostomb[i].mezo = 0;
+        jatekostomb[i].mezo_id = 0;
+        jatekostomb[i].mezo = mezok_tombje[jatekostomb[i].mezo_id];
         jatekostomb[i].ermek = 0;
         jatekostomb[i].passz = 3;
         jatekostomb[i].kimarad = 0;
         jatekostomb[i].nev[0] = ((char) (48 + i + 1));
         jatekostomb[i].nev[1] = '\0';
-        strcat(jatekostomb[i].nev, ". jatekos");
+        //strcat(jatekostomb[i].nev, ". jatekos");
+        SDL_strlcat(jatekostomb[i].nev, ". játékos", 13);
     }
     if (valasztott_szin == j_kilep) {
         free(jatekostomb);
@@ -59,14 +65,31 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         return;
     }
     Sleep(300);
-    ablak_tisztitasa(renderer);
-    jatekter_kirajzolasa();
-    // TODO
-    szovegek_megjelenitese(&jatekostomb[0]);
-    for (int i = 0; i < *jatekosszam; ++i) {
-        babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo));
-        //Sleep(1000);
+    bool vege = false;
+    int kov_jatekos = 0;
+    SDL_RenderClear(renderer);
+    while (!vege) {
+        //SDL_RenderPresent(renderer);
+        //SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+        jatekter_kirajzolasa();
+        Sleep(20);
+//        SDL_RenderPresent(renderer);
+//        SDL_RenderClear(renderer);
+        szovegek_megjelenitese(&jatekostomb[kov_jatekos]);
+
+        // TODO: ne villogjon (legyenek a függvények által rajzolt alakzatok egy texturbe rakva?)
+        for (int i = 0; i < *jatekosszam; ++i) {
+            babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo.id));
+        }
+        Sleep(1000);
+        if (kov_jatekos == *jatekosszam - 1)
+            kov_jatekos = 0;
+        else kov_jatekos++;
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
     }
+
 
     Sleep(150000);
 

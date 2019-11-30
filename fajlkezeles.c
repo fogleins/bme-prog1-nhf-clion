@@ -67,14 +67,16 @@ void mezok_beolvasasa(Mezo* mezok_tombje) {
     if (mezok == NULL) {
         SDL_Log("A fajl megnyitasa sikertelen. %s", SDL_GetError());
         SDL_Quit();
+        exit(1);
     }
-    int mezo_id, mezo_ermek, mezo_lepes;
-    char mezo_tul[90];
+    int mezo_id, mezo_ermek, mezo_lepes, mezo_dobas;
+    char mezo_tul[110];
     for (int i = 0; i < 40; ++i) {
-        fscanf(mezok, "%d;%d;%d;%[^\n] ", &mezo_id, &mezo_ermek, &mezo_lepes, mezo_tul);
+        fscanf(mezok, "%d;%d;%d;%d;%[^\n] ", &mezo_id, &mezo_ermek, &mezo_lepes, &mezo_dobas, mezo_tul);
         mezok_tombje[i].id = mezo_id;
         mezok_tombje[i].erem = mezo_ermek;
         mezok_tombje[i].lep = mezo_lepes;
-        strcpy(mezok_tombje[i].tulajdonsag, mezo_tul);
+        mezok_tombje[i].dob = mezo_dobas;
+        SDL_strlcpy(mezok_tombje[i].tulajdonsag, mezo_tul, 110);
     }
 }

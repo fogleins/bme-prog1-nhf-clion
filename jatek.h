@@ -7,28 +7,30 @@
 
 #include "main.h"
 
-typedef struct Jatekos {
-    char nev[11];
-    int id;     /**<a játékos azonosítója*/
-    Jatekosszin szin; /**<a játékos bábujának színe*/
-    int mezo;   /**<ezen a mezőn tartozkodik éppen*/
-    int ermek;  /**<ennyi érme van jelenleg*/
-    int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
-    int kimarad; /**<ennyiszer marad ki a dobásból*/
-} Jatekos;
-
 typedef struct Mezokoord {
     int x;
     int y;
 } Mezokoord;
 
 typedef struct Mezo {
-    char tulajdonsag[90]; /**<a mező tulajdonsága*/
+    char tulajdonsag[100]; /**<a mező tulajdonsága*/
     int id; /**<a mező azonsoítója*/
     Mezokoord kozep; /**< a mező közepének koordinátái az ablakon*/
     int erem; /**<ennyi érmet ad rálépéskor, negatív, ha elvesz*/
     int lep; /**<rálépéskor ennyit léphetünk előre, (-) ha hátra*/
+    int dob; /**< (-) ha megint dobhat, (+) ha kimarad*/
 } Mezo;
+
+typedef struct Jatekos {
+    char nev[11];
+    int id;     /**<a játékos azonosítója*/
+    Jatekosszin szin; /**<a játékos bábujának színe*/
+    int mezo_id; /**<ezen a sorszámú mezőn tartózkodik*/
+    Mezo mezo;   /**<ezen a mezőn tartozkodik éppen*/
+    int ermek;  /**<ennyi érme van jelenleg*/
+    int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
+    int kimarad; /**<ennyiszer marad ki a dobásból*/
+} Jatekos;
 
 typedef struct Jatek {
     Jatekos* tomb; /**< a játékosok tulajdonságait tartalmazó tömb */

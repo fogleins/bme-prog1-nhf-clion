@@ -32,7 +32,8 @@ typedef enum Betuk {
     felkover60pt,
     felkover48pt,
     felkover36pt,
-    felkover30pt
+    felkover30pt,
+    felkover24pt
 } Betuk;
 
 // a menu_kirajzolasa visszatérési értékei

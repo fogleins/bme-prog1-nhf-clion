@@ -49,7 +49,7 @@ void jatekosszam_gombok_kirajzolasa(void) {
 void parbeszed(TTF_Font* betu, char* uzenet, int y) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betu, szin(feher), uzenet, 0, y);
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
 }
 
 /** Megjeleníti a játékmenet grafikus felületét */
@@ -57,7 +57,7 @@ void jatekter_kirajzolasa(void) {
     //TODO: háttérszín
     ablak_tisztitasa(renderer);
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
     //TODO: ezt fel kell szabadítani?
     SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
     SDL_Rect cel = { 448, 0, 576, 576 };
@@ -66,12 +66,11 @@ void jatekter_kirajzolasa(void) {
         exit(1);
     }
     SDL_RenderCopy(renderer, tabla, NULL, &cel);
+    SDL_DestroyTexture(tabla);
 
     // "következő" gomb
     boxRGBA(renderer, 20, 30, 428, 90,
             szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    fancy_szoveget_kiir(betutipus(felkover30pt),
-            szin(feher), "Következik:", 448 / 4, 45);
 
     // dobott szám kiírása
     boxRGBA(renderer, 20, 110, 214, 160,
@@ -81,7 +80,7 @@ void jatekter_kirajzolasa(void) {
     SDL_Texture* kocka = IMG_LoadTexture(renderer, "dice3.png");
     SDL_Rect celterulet_kocka = { 35, 120, 30, 30};
     SDL_RenderCopy(renderer, kocka, NULL, &celterulet_kocka);
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
     SDL_DestroyTexture(kocka);
 
     // érmek kiírása
@@ -93,7 +92,7 @@ void jatekter_kirajzolasa(void) {
     SDL_Texture* erem = IMG_LoadTexture(renderer, "medal.png");
     SDL_Rect celterulet_erem = { 250, 120, 30, 30 };
     SDL_RenderCopy(renderer, erem, NULL, &celterulet_erem);
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
     SDL_DestroyTexture(erem);
 
     // passzok száma
@@ -122,7 +121,7 @@ void jatekter_kirajzolasa(void) {
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
 
     SDL_RenderPresent(renderer);
-    SDL_DestroyTexture(tabla);
+    //SDL_DestroyTexture(tabla);
 }
 
 /** Hátteres élsimított szöveget ír ki
@@ -328,8 +327,19 @@ static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect
  * @param soronkovetkezo A következő játékos
  */
 void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
+    char kov_nev1[13 + 13] = "Következik: ";
+    char kov_nev2[13];
+    SDL_strlcpy(kov_nev2, soronkovetkezo->nev, 26);
+    SDL_strlcat(kov_nev1, kov_nev2, 26);
+    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), kov_nev1,(20 + 428) / 2, 45);
+    Jatekosszin szin0 = soronkovetkezo->szin;
+    SDL_Color babuszin = jatekosszin(szin0);
+    boxRGBA(renderer, 20, 30, 40, 90, babuszin.r, babuszin.g, babuszin.b, babuszin.a);
+
+    int dobokocka = (rand() % 6 + 1);
+    soronkovetkezo->mezo_id += dobokocka;
     char dobott_szam[2];
-    dobott_szam[0] = (char) ((rand() % 6 + 1) + 48);
+    dobott_szam[0] = (char) (dobokocka + 48);
     dobott_szam[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
 
@@ -344,6 +354,10 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
     ermek_szama[0] = (char) (soronkovetkezo->ermek + 48);
     ermek_szama[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
+
+    // mező tartalma
+    // x1 20, y1 258, x2 428, y2 468,
+    fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), soronkovetkezo->mezo.tulajdonsag, (20 + 428) / 2, 280);
 
     SDL_RenderPresent(renderer);
 }
@@ -378,5 +392,5 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     filledCircleRGBA(renderer, hova.x, hova.y, r, szin.r, szin.g, szin.b, szin.a);
     circleRGBA(renderer, hova.x, hova.y, r, 0, 0, 0, 255);
 
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
 }

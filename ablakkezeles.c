@@ -108,6 +108,9 @@ TTF_Font* betutipus(Betuk betutipus) {
         case felkover30pt:
             meret = 30;
             break;
+        case felkover24pt:
+            meret = 24;
+            break;
         default:
             return NULL;
     }
