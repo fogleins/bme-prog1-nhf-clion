@@ -32,18 +32,22 @@ typedef struct Jatekos {
     int kimarad; /**<ennyiszer marad ki a dobásból*/
 } Jatekos;
 
-typedef struct Jatek {
-    Jatekos* tomb; /**< a játékosok tulajdonságait tartalmazó tömb */
-    int jatekosszam; /**< a játékosok száma */
-} Jatek;
+/** A játékmenet közben a dobókockára kattintáskor vagy kilépéskor kell*/
+typedef enum Jatek_event {
+    dob, /**<ha dob a kockával*/
+    passz, /**<ha elhasznál egy passzot*/
+    ment, /**<ha elmenti a játékmenetet*/
+    bezar /**<ha bezárja az ablakot vagy kilépésre kattint*/
+} Jatek_event;
+
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam);
+Jatek_event kattintas(void);
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny);
 bool jatekkezdes_megerositese(bool* sdlquit_esemeny);
 //bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
 static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
-static int kocka(void);
 char* sdl_sztring(void);
 Mezokoord mezo_kozepe(const int* mezo_id);
 

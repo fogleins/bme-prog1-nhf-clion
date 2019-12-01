@@ -93,17 +93,16 @@ void jatekter_kirajzolasa(void) {
     //SDL_RenderPresent(renderer);
     SDL_DestroyTexture(erem);
 
-    // passzok száma
+    // kockadobás
     boxRGBA(renderer, 20, 180, 214, 230,
             szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
+    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), "Kockadobás", (20 + 214) / 2, 190);
 
     // passzolás
     boxRGBA(renderer, 234, 180, 428, 230,
             szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, 0xC7);
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Passz", 330, 185);
 
-    //TODO: mező tartalmának kiírása
-    //boxRGBA(renderer, 20, 258, 428, 468, szin(kek).r, szin(kek).g, szin(kek).b, szin(kek).a);
+    // mező tartalma
     boxRGBA(renderer, 20, 258, 428, 468,
             szin(hatter_sotet).r, szin(hatter_sotet).g, szin(hatter_sotet).b, szin(hatter_sotet).a);
 
@@ -117,9 +116,6 @@ void jatekter_kirajzolasa(void) {
     boxRGBA(renderer, 234, 496, 428, 546,
             szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
-
-    //SDL_RenderPresent(renderer);
-    //SDL_DestroyTexture(tabla);
 }
 
 /** Hátteres élsimított szöveget ír ki
@@ -325,11 +321,9 @@ static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect
  * @param soronkovetkezo A következő játékos
  */
 void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
-    char kov_nev1[13 + 13] = "Következik: ";
-    char kov_nev2[13];
-    SDL_strlcpy(kov_nev2, soronkovetkezo->nev, 26);
-    SDL_strlcat(kov_nev1, kov_nev2, 26);
-    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), kov_nev1,(20 + 428) / 2, 45);
+    char kov_nev[13 + 13] = "Következik: ";
+    SDL_strlcat(kov_nev, soronkovetkezo->nev, 26);
+    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), kov_nev,(20 + 428) / 2, 45);
     Jatekosszin szin0 = soronkovetkezo->szin;
     SDL_Color babuszin = jatekosszin(szin0);
     boxRGBA(renderer, 20, 30, 40, 90, babuszin.r, babuszin.g, babuszin.b, babuszin.a);
@@ -340,10 +334,13 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
 
     //TODO: ez a játékos struct passz elemével egyenlő
-    char passzok_szama[2];
-    passzok_szama[0] = (char) (soronkovetkezo->passz + 48);
-    passzok_szama[1] = '\0';
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, (20 + 214) / 2, 185);
+    char passzok_szama[11] = "Passz [";
+    char seged[3];
+    seged[0] = (char) (soronkovetkezo->passz + 48);
+    seged[1] = ']';
+    seged[2] = '\0';
+    SDL_strlcat(passzok_szama, seged, 11);
+    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, 330, 185);
 
     char ermek_szama[2];
     //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
@@ -367,10 +364,6 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     SDL_RenderCopy(renderer, felirat_t, NULL, &hova);
     SDL_FreeSurface(felirat);
     SDL_DestroyTexture(felirat_t);
-
-    //fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), soronkovetkezo->mezo.tulajdonsag, (20 + 428) / 2, 280);
-
-    //SDL_RenderPresent(renderer);
 }
 
 void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
@@ -418,4 +411,7 @@ void gyoztes_megjelenitese(Jatekos* gyoztes) {
     SDL_DestroyTexture(erem);
 
     SDL_RenderPresent(renderer);
+
+    SDL_Event bezar;
+    while (SDL_WaitEvent(&bezar) && bezar.type != SDL_QUIT) {}
 }

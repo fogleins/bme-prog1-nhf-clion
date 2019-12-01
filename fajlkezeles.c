@@ -36,7 +36,7 @@ Jatekos* beolvas(char* fajlnev) {
     fscanf(fp, "%d %d", &jatekosok_szama, &kov_jatekos);
     Jatekos* jatekostomb = (Jatekos*) malloc(jatekosok_szama* sizeof(Jatekos));
     for (int i = 0; i < jatekosok_szama; ++i) {
-        fscanf(fp, "%d %d %d %d %d", &jatekostomb[i].id, &jatekostomb[i].mezo, &jatekostomb[i].ermek,
+        fscanf(fp, "%d %d %d %d %d", &jatekostomb[i].id, &jatekostomb[i].mezo_id, &jatekostomb[i].ermek,
                 &jatekostomb[i].szin, &jatekostomb[i].passz);
     }
     fclose(fp);
@@ -52,9 +52,9 @@ Jatekos* beolvas(char* fajlnev) {
  */
 void mentes(char* fajlnev, int jatekosszam, int kov_id, Jatekos* jatekostomb) {
     FILE* fp = fopen(fajlnev, "wt");
-    fprintf(fp, "%d %d", jatekosszam, kov_id);
+    fprintf(fp, "%d %d\n", jatekosszam, kov_id);
     for (int i = 0; i < jatekosszam; ++i) {
-        fprintf(fp, "%d %d %d %d %d", jatekostomb[i].id, jatekostomb[i].mezo, jatekostomb[i].ermek,
+        fprintf(fp, "%d %d %d %d %d\n", jatekostomb[i].id, jatekostomb[i].mezo_id, jatekostomb[i].ermek,
                 jatekostomb[i].szin, jatekostomb[i].passz);
     }
     fclose(fp);

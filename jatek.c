@@ -61,49 +61,97 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_Quit();
         return;
     }
-    Sleep(300);
-    bool vege = false;
-    int kov_jatekos = 0, elozo_mezo, kov_mezo, dobokocka;
-    Jatekos* gyoztes = NULL;
+    Sleep(100);
+    bool elso = true, vege = false;
+    int aktualis_jatekos = 0, elozo_mezo, kov_mezo, dobokocka;
+    Jatekos *soron_levo;
+    Jatekos *gyoztes = NULL;
+    Jatek_event mire_kattintott;
+    SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+    SDL_RenderClear(renderer);
+    jatekter_kirajzolasa();
+    SDL_RenderPresent(renderer);
     while (!vege) {
-        SDL_RenderClear(renderer);
+        soron_levo = &jatekostomb[aktualis_jatekos];
         SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+        SDL_RenderClear(renderer);
         jatekter_kirajzolasa();
 
-        dobokocka = (rand() % 6 + 1);
-        elozo_mezo = jatekostomb[kov_jatekos].mezo_id;
-        kov_mezo = jatekostomb[kov_jatekos].mezo_id += dobokocka;
-        if (elozo_mezo < 40 && kov_mezo >= 40)
-            jatekostomb[kov_jatekos].mezo_id -= 40;
-        jatekostomb[kov_jatekos].mezo = mezok_tombje[jatekostomb[kov_jatekos].mezo_id];
-        szovegek_megjelenitese(&jatekostomb[kov_jatekos], &dobokocka);
-
-        for (int i = 0; i < *jatekosszam; ++i)
-            babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo.id));
-
-        SDL_Delay(1000);
-
-        if (jatekostomb[kov_jatekos].ermek >= 15 && jatekostomb[kov_jatekos].mezo_id == 29) {
-            vege = true;
-            *gyoztes = jatekostomb[kov_jatekos];
+        //TODO: első kilépésnél az egyik 2x jön
+        if (elso) {
+            dobokocka = 0;
+            szovegek_megjelenitese(soron_levo, &dobokocka);
+            SDL_RenderPresent(renderer);
+            aktualis_jatekos++;
+            elso = false;
         }
 
-        if (kov_jatekos == *jatekosszam - 1)
-            kov_jatekos = 0;
-        else kov_jatekos++;
+        if (aktualis_jatekos == *jatekosszam - 1)
+            aktualis_jatekos = 0;
+        else aktualis_jatekos++;
 
-        SDL_RenderPresent(renderer);
-        if (vege)
+        mire_kattintott = kattintas();
+        if (mire_kattintott == dob) {
+            dobokocka = (rand() % 6 + 1);
+            elozo_mezo = soron_levo->mezo_id;
+            kov_mezo = soron_levo->mezo_id += dobokocka;
+            if (elozo_mezo < 40 && kov_mezo >= 40)
+                soron_levo->mezo_id -= 40;
+            soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
+            szovegek_megjelenitese(&jatekostomb[aktualis_jatekos], &dobokocka);
+
+            for (int i = 0; i < *jatekosszam; ++i)
+                babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo.id));
+            SDL_RenderPresent(renderer);
+
+            if (soron_levo->ermek >= 15 && soron_levo->mezo_id == 29) {
+                vege = true;
+                gyoztes = soron_levo;
+                break;
+            }
+
+        }
+        if (mire_kattintott == passz && soron_levo->passz > 0)
+            soron_levo->passz--;
+        if (mire_kattintott == ment) {
+            //TODO: fájlnév
+            mentes("teszt.txt", *jatekosszam, aktualis_jatekos, jatekostomb);
+        }
+        if (mire_kattintott == bezar) {
+            mentes("teszt.txt", *jatekosszam, aktualis_jatekos, jatekostomb);
             break;
+        }
     }
-
-    gyoztes_megjelenitese(gyoztes);
-
-    SDL_Event bezar;
-    while (SDL_WaitEvent(&bezar) && bezar.type != SDL_QUIT) {}
+    if (vege)
+        gyoztes_megjelenitese(gyoztes);
 
     //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
+}
+
+/** A játék során mire kattint a játékos
+ *
+ * @return Kockadobás vagy kilépés
+ */
+Jatek_event kattintas(void) {
+    while (true) {
+        SDL_Event esemeny;
+        SDL_WaitEvent(&esemeny);
+        switch (esemeny.type) {
+            case SDL_MOUSEBUTTONDOWN:
+                if (esemeny.button.x >= 234 && esemeny.button.y >= 180 && esemeny.button.x <= 428 && esemeny.button.y <= 230)
+                    return passz;
+                if (esemeny.button.x >= 20 && esemeny.button.y >= 180 && esemeny.button.x <= 214 && esemeny.button.y <= 230)
+                    return dob;
+                if (esemeny.button.x >= 234 && esemeny.button.y >= 496 && esemeny.button.x <= 428 && esemeny.button.y <= 546)
+                    return ment;
+                if (esemeny.button.x >= 20 && esemeny.button.y >= 496 && esemeny.button.x <= 214 && esemeny.button.y <= 546)
+                    return bezar;
+                break;
+            case SDL_QUIT:
+                return bezar;
+        }
+    }
 }
 
 /**

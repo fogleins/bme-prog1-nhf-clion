@@ -13,7 +13,6 @@
 int main(int argc, char *argv[]) {
     srand(time(NULL));
     Jatekos* jatekostomb = NULL;
-    //main_renderer = renderer;
     ablak_letrehozasa(1024, 576);
     // a játék megkezdéséig loopol, megjeleníti a menüt és regisztrálja a gombnyomásokat, kattintásokat
     bool megkezdte = false, sdlquit_esemeny = false; /* SDL_QUIT event esetén true lesz, így a többi kód  */
