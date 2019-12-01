@@ -5,14 +5,15 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "main.h"
 #include "ablakkezeles.h"
 #include "debugmalloc.h"
 
 
-/** Létrehoz egy ablakot és egy renderert */
-//TODO: pointereket adjon vissza (window és rederer)
-//TODO: ablakot is fel kell szabadítani?
+/** Létrehoz egy ablakot és egy renderert
+ *
+ * @param szelesseg Az ablak szélessége
+ * @param magassag Az ablak magassága
+ */
 void ablak_letrehozasa(int szelesseg, int magassag) {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         SDL_Log("Nem indithato az SDL: %s", SDL_GetError());
@@ -31,17 +32,17 @@ void ablak_letrehozasa(int szelesseg, int magassag) {
     SDL_RenderClear(renderer);
 }
 
-/** letörli az ablak tartalmát */
+/** Letörli az ablak tartalmát */
 void ablak_tisztitasa(SDL_Renderer* megjelenito) {
     SDL_RenderClear(megjelenito);
     SDL_SetRenderDrawColor(megjelenito, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
     SDL_RenderPresent(megjelenito);
 }
 
-/** visszaad egy SDL_Color típusú színt
+/** Visszaad egy SDL_Color típusú színt
  *
  *  @param szin main.h-ban definiált színek valamelyike
- *  @return Egy SDL_Color típusú rgb szín
+ *  @return Egy SDL_Color típusú szín
  */
 SDL_Color szin(Szinek szin) {
     int a = 255;
@@ -78,7 +79,7 @@ SDL_Color szin(Szinek szin) {
 
 /** Visszaad egy TTF_Font típusú betűtípusra mutató pointert
  *
- *  @param betutipus A main.h-ban definiált betűtípusok valamelyike
+ *  @param betutipus Az ablakkezeles.h-ban definiált betűtípusok valamelyike
  *  @return NULL, ha nem definiált betűtípust ad meg a hívó
  */
 TTF_Font* betutipus(Betuk betutipus) {

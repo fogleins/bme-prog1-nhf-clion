@@ -286,7 +286,6 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), passzok_szama, 330, 192);
 
     char ermek_szama[3];
-    //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
     sprintf(ermek_szama, "%d", soronkovetkezo->ermek);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
 
@@ -308,6 +307,11 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     SDL_DestroyTexture(felirat_t);
 }
 
+/** A bábuk mozgatásához szükséges koordináták kiszámolása, majd a bábuk megjelenítése
+ *
+ * @param soronkovetkezo Az éppen következő játékos
+ * @param hova A mező közepének koordinátái
+ */
 void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     int r = 8;
     SDL_Color szin = jatekosszin(soronkovetkezo->szin);
@@ -373,6 +377,10 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     circleRGBA(renderer, hova.x, hova.y, r, 0, 0, 0, 255);
 }
 
+/** Játék végén kerül hívásra, kiírja, hogy melyik játékos nyert
+ *
+ * @param gyoztes A győztes játékos
+ */
 void gyoztes_megjelenitese(Jatekos* gyoztes) {
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
     SDL_RenderClear(renderer);

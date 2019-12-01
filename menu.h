@@ -3,6 +3,8 @@
 //
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
+#include "main.h"
+
 #ifndef TARSAS_MENU_H
 #define TARSAS_MENU_H
 

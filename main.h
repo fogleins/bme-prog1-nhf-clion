@@ -5,6 +5,15 @@
 #ifndef TARSAS_MAIN_H
 #define TARSAS_MAIN_H
 
+typedef enum Betuk {
+    normal120pt,
+    felkover60pt,
+    felkover48pt,
+    felkover36pt,
+    felkover30pt,
+    felkover24pt
+} Betuk;
+
 /** Értékeket lásd: ablakkezeles.c szin függvényében */
 typedef enum Szinek {
     feher,
@@ -27,19 +36,11 @@ typedef enum Jatekosszin {
     j_kilep
 } Jatekosszin;
 
-typedef enum Betuk {
-    normal120pt,
-    felkover60pt,
-    felkover48pt,
-    felkover36pt,
-    felkover30pt,
-    felkover24pt
-} Betuk;
-
 // a menu_kirajzolasa visszatérési értékei
 typedef enum Gomb {
     uj,
     megnyit,
     kilep
 } Gomb;
+
 #endif //TARSAS_MAIN_H

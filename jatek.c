@@ -6,7 +6,6 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
 
-#include "main.h"
 #include "jatek.h"
 #include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
@@ -14,6 +13,14 @@
 #include "menu.h"
 #include "debugmalloc.h"
 
+/** A fő játékfüggvény, ebből hívódnak a szabályok
+ *
+ * @param jatekostomb A játékosok tömbje
+ * @param elozo_jatekos Az előző játékos sorszáma
+ * @param kov_jatekos A következő játékos sorszáma
+ * @param jatekosszam A játékosok száma
+ * @param beolvasott Igaz, ha fájlbeolvasásból indul játék
+ */
 void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, const int* jatekosszam, bool beolvasott) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
@@ -106,7 +113,6 @@ void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, cons
             *aktualis_jatekos += 1;
 
         mire_kattintott = kattintas();
-        //TODO: első kilépésnél az egyik 2x jön
         if (elso) {
             mire_kattintott = dob;
             *aktualis_jatekos = jatekostomb[0].id;
@@ -214,7 +220,7 @@ Jatek_event kattintas(void) {
     }
 }
 
-/** Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
+/** Letisztítja az ablakot, bekér egy 6-nál nem nagyobb számot (játékosok száma)
  *
  * @param sdlquit_esemeny True, ha a játékosszám-foglalás közben bezárja az ablakot
  * @param jatekosok_szama A játékosok száma
@@ -340,7 +346,6 @@ bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
  * @param jatekostomb A felszabadítandó memóriaterületre mutató Jatekos típusú pointer
  */
 static void jatek_vege(Jatekos* jatekostomb) {
-    /*TODO: eredménykijelzés, stb*/
     free(jatekostomb);
     SDL_Quit();
 }
@@ -351,8 +356,6 @@ static void jatek_vege(Jatekos* jatekostomb) {
  * @return A mező közepének koordinátái
  */
 Mezokoord mezo_kozepe(const int* mezo_id) {
-    //500; 523 #0;; 500; 462 #1;; 500; 418 #2;; 500; 375 #3 500, 331
-    //          61           44             43              44
     Mezokoord kozep0 = { 500, 523 };
     Mezokoord kozep10 = { 500, 53 };
     Mezokoord kozep20 = { 970, 53 };

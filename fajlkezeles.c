@@ -1,10 +1,9 @@
 //
 // Created by Simon on 2019-11-12.
 //
-// https://lazyfoo.net/tutorials/SDL/33_file_readi  ng_and_writing/index.php
+
 #include <SDL2/SDL.h>
 #include <stdbool.h>
-#include <string.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -12,20 +11,7 @@
 #include "jatek.h"
 #include "debugmalloc.h"
 
-/** Beolvas egy korábbi játékmenetet
- * @param fajlnev A beolvasandó fájl neve
- * @return igaz, ha a fájlt sikerült beolvasni
- */
-// TODO: pointerként adja vissza a fájlt
-//bool beolvas(char* fajlnev) {
-//    SDL_RWops* fajl = SDL_RWFromFile(fajlnev, "r");
-//    if (fajl == NULL) {
-//        return false;
-//    }
-//    return true;
-//}
-
-/** Beolvassa egy korábban elmentett játékmenet adatait.
+/** Beolvassa egy korábban elmentett játékmenet adatait. A fájl jatekmenet.txt kell legyen
  *
  * @param fajlnev A beolvasandó fájl elérési útja
  * @return A beolvasott adatokkal feltöltött Jatekos típusú tömbre mutató pointer; NULL, ha a fájl nem nyitható meg
@@ -33,8 +19,7 @@
 Jatekos* beolvas(char* fajlnev, int* jatekosok_szama, int* elozo_jatekos, int* kov_jatekos) {
     FILE* fp = fopen(fajlnev, "rt");
     if (fp == NULL) return NULL;
-    // a fájl első sora: [int] jatekosok_szama [int] kov_jatekos_id
-    fscanf(fp, "%d %d", jatekosok_szama, kov_jatekos);
+    fscanf(fp, "%d %d %d", jatekosok_szama, elozo_jatekos, kov_jatekos);
     Jatekos* jatekostomb = (Jatekos*) malloc(*jatekosok_szama * sizeof(Jatekos));
     for (int i = 0; i < *jatekosok_szama; ++i) {
         fscanf(fp, "%d %d %d %d %d", &jatekostomb[i].id, &jatekostomb[i].mezo_id, &jatekostomb[i].ermek,
@@ -83,6 +68,10 @@ void mezok_beolvasasa(Mezo* mezok_tombje) {
     }
 }
 
+/** Létrehoz egy aktuális időponot tartalmazó sztringet, így mentéskor egyedi néven kerül mentésre az állás
+ *
+ * @return A fájl neve
+ */
 char* fajlnev(void) {
     char* nev = (char*) malloc(20 * sizeof(char));
     time_t ido = time(NULL);

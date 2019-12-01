@@ -14,7 +14,6 @@
 #include <stdbool.h>
 
 #include "ablakkezeles.h"
-#include "jatek.h"
 #include "menu.h"
 #include "debugmalloc.h"
 #include "jatek_megjelenites.h"
@@ -80,7 +79,10 @@ void fancy_szoveget_kiir(TTF_Font *betutipus, SDL_Color szin, char* szoveg, int 
     SDL_DestroyTexture(felirat_t);
 }
 
-/** A menüképernyőn tartózkodás alatt fellépő eseményeket (gombnyomás, kattintás) kezeli.*/
+/** A menüképernyőn tartózkodás alatt fellépő eseményeket (gombnyomás, kattintás) kezeli
+ *
+ * @return A megnyomott gomb
+ */
 Gomb egeresbillentyu(void) {
     bool kilepes = false;
     while (!kilepes) {

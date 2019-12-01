@@ -8,7 +8,6 @@
 #include "debugmalloc.h"
 #include "jatek.h"
 #include "fajlkezeles.h"
-#include "jatek_megjelenites.h"
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]) {
             case uj:
                 jatekkezdes(&jatekosszam, &sdlquit_esemeny);
                 if (!sdlquit_esemeny) {
-                    //megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
+                    // megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
                     megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
                     if (megkezdte)
                         jatek_main(jatekostomb, elozo_jatekos, kov_jatekos, &jatekosszam, beolvasott);
@@ -52,21 +51,5 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    //TODO: talán lehet while is
-//    if (!sdlquit_esemeny) {
-//        /*
-//         * bábuk kirajzolása
-//         * dobás -> bábuk mozgatása + megfelelő szövegek kiírása
-//         * játék vége ellenőrzése
-//         *
-//         */
-//    }
-
-    //TODO: memóriaszivárgás ellenőrzése
-    //debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
-
     return 0;
 }
-
-/*TODO: az ablak és renderer által foglalt
- * memória felszabadítása*/
