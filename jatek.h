@@ -48,7 +48,7 @@ void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const i
 Jatek_event kattintas(void);
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny);
 bool jatekkezdes_megerositese(bool* sdlquit_esemeny);
-static void jatek_vege(Jatekos* jatekostomb);
+void jatek_vege(Jatekos* jatekostomb);
 Mezokoord mezo_kozepe(const int* mezo_id);
 
 #endif //TARSAS_JATEK_H

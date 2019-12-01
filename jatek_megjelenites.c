@@ -53,10 +53,8 @@ void parbeszed(TTF_Font* betu, char* uzenet, int y) {
 
 /** Megjeleníti a játékmenet grafikus felületét */
 void jatekter_kirajzolasa(void) {
-    //TODO: háttérszín
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
-    //TODO: ezt fel kell szabadítani?
     SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi_szines_invert.jpg");
     SDL_Rect cel = { 448, 0, 576, 576 };
     if (tabla == NULL) {

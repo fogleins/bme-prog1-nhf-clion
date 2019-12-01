@@ -95,7 +95,6 @@ Gomb egeresbillentyu(void) {
                     return uj;
                 // ha játékmenetet tölt be
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 325 && esemeny.button.y <= 375)
-                    //TODO: fájl beolvasása
                     return megnyit;
                 if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465)
                     return kilep;
@@ -106,7 +105,6 @@ Gomb egeresbillentyu(void) {
                     return uj;
                 // ha l (load)
                 if (esemeny.key.keysym.sym == SDLK_l)
-                    //TODO: ld fent
                     return megnyit;
                 // ha q (quit)
                 if (esemeny.key.keysym.sym == SDLK_q)

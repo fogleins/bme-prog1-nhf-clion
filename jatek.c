@@ -345,7 +345,7 @@ bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
  *
  * @param jatekostomb A felszabadítandó memóriaterületre mutató Jatekos típusú pointer
  */
-static void jatek_vege(Jatekos* jatekostomb) {
+void jatek_vege(Jatekos* jatekostomb) {
     free(jatekostomb);
     SDL_Quit();
 }
