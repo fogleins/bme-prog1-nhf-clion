@@ -28,9 +28,6 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     mezok_beolvasasa(mezok_tombje);
     for (int i = 0; i < 40; ++i)
         mezok_tombje[i].kozep = mezo_kozepe(&i);
-    for (int i = 0; i < 10; ++i) {
-        printf("%s\n", mezok_tombje[i].tulajdonsag);
-    }
 
     jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
     if (jatekostomb == NULL) {
@@ -66,37 +63,48 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     }
     Sleep(300);
     bool vege = false;
-    int kov_jatekos = 0;
-    SDL_RenderClear(renderer);
+    int kov_jatekos = 0, elozo_mezo, kov_mezo, dobokocka;
+    Jatekos* gyoztes = NULL;
     while (!vege) {
-        //SDL_RenderPresent(renderer);
-        //SDL_RenderClear(renderer);
+        SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
         jatekter_kirajzolasa();
-        Sleep(20);
-//        SDL_RenderPresent(renderer);
-//        SDL_RenderClear(renderer);
-        szovegek_megjelenitese(&jatekostomb[kov_jatekos]);
 
-        // TODO: ne villogjon (legyenek a függvények által rajzolt alakzatok egy texturbe rakva?)
-        for (int i = 0; i < *jatekosszam; ++i) {
+        dobokocka = (rand() % 6 + 1);
+        elozo_mezo = jatekostomb[kov_jatekos].mezo_id;
+        kov_mezo = jatekostomb[kov_jatekos].mezo_id += dobokocka;
+        if (elozo_mezo < 40 && kov_mezo >= 40)
+            jatekostomb[kov_jatekos].mezo_id -= 40;
+        jatekostomb[kov_jatekos].mezo = mezok_tombje[jatekostomb[kov_jatekos].mezo_id];
+        szovegek_megjelenitese(&jatekostomb[kov_jatekos], &dobokocka);
+
+        for (int i = 0; i < *jatekosszam; ++i)
             babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo.id));
+
+        SDL_Delay(1000);
+
+        if (jatekostomb[kov_jatekos].ermek >= 15 && jatekostomb[kov_jatekos].mezo_id == 29) {
+            vege = true;
+            *gyoztes = jatekostomb[kov_jatekos];
         }
-        Sleep(1000);
+
         if (kov_jatekos == *jatekosszam - 1)
             kov_jatekos = 0;
         else kov_jatekos++;
+
         SDL_RenderPresent(renderer);
-        SDL_RenderClear(renderer);
+        if (vege)
+            break;
     }
 
+    gyoztes_megjelenitese(gyoztes);
 
-    Sleep(150000);
+    SDL_Event bezar;
+    while (SDL_WaitEvent(&bezar) && bezar.type != SDL_QUIT) {}
 
     //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
 }
-
 
 /**
  * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
@@ -267,12 +275,6 @@ static void jatek_vege(Jatekos* jatekostomb) {
     free(jatekostomb);
     SDL_Quit();
 }
-
-//TODO: ez kell?
-// Kockadobást szimulál
-//static int kocka(void) {
-//    return rand() % 6 + 1;
-//}
 
 //TODO ez a függvény
 /** Sztring bemenet kezelése */

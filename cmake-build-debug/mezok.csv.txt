@@ -1,4 +1,4 @@
-0;6;0;0;START: belépésnél 6 aranyérem,\n áthaladásnál 3 aranyérem +0
+0;6;0;0;START: belépésnél 6 aranyérem, áthaladásnál 3 aranyérem +
 1;1;0;0;Lépj a 24-es mezõre és kapsz 1 aranyérmet! +
 2;0;-2;0;Nem követted az edzõd utasításait, lépj vissza 2 mezõt! -
 3;0;0;0;" "

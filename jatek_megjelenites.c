@@ -55,11 +55,10 @@ void parbeszed(TTF_Font* betu, char* uzenet, int y) {
 /** Megjeleníti a játékmenet grafikus felületét */
 void jatekter_kirajzolasa(void) {
     //TODO: háttérszín
-    ablak_tisztitasa(renderer);
+    SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
-    //SDL_RenderPresent(renderer);
     //TODO: ezt fel kell szabadítani?
-    SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi.jpg");
+    SDL_Texture* tabla = IMG_LoadTexture(renderer, "tabla_kicsi_szines_invert.jpg");
     SDL_Rect cel = { 448, 0, 576, 576 };
     if (tabla == NULL) {
         SDL_Log("Nem nyithato meg a kep. (%s)", IMG_GetError());
@@ -80,7 +79,6 @@ void jatekter_kirajzolasa(void) {
     SDL_Texture* kocka = IMG_LoadTexture(renderer, "dice3.png");
     SDL_Rect celterulet_kocka = { 35, 120, 30, 30};
     SDL_RenderCopy(renderer, kocka, NULL, &celterulet_kocka);
-    //SDL_RenderPresent(renderer);
     SDL_DestroyTexture(kocka);
 
     // érmek kiírása
@@ -120,7 +118,7 @@ void jatekter_kirajzolasa(void) {
             szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
 
-    SDL_RenderPresent(renderer);
+    //SDL_RenderPresent(renderer);
     //SDL_DestroyTexture(tabla);
 }
 
@@ -326,7 +324,7 @@ static Jatekosszin szinfoglalas(Jatekosszin szin, bool* foglalt_szinek, SDL_Rect
  *
  * @param soronkovetkezo A következő játékos
  */
-void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
+void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     char kov_nev1[13 + 13] = "Következik: ";
     char kov_nev2[13];
     SDL_strlcpy(kov_nev2, soronkovetkezo->nev, 26);
@@ -336,10 +334,8 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
     SDL_Color babuszin = jatekosszin(szin0);
     boxRGBA(renderer, 20, 30, 40, 90, babuszin.r, babuszin.g, babuszin.b, babuszin.a);
 
-    int dobokocka = (rand() % 6 + 1);
-    soronkovetkezo->mezo_id += dobokocka;
     char dobott_szam[2];
-    dobott_szam[0] = (char) (dobokocka + 48);
+    dobott_szam[0] = (char) (*dobokocka + 48);
     dobott_szam[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
 
@@ -356,10 +352,25 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo) {
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
 
     // mező tartalma
-    // x1 20, y1 258, x2 428, y2 468,
-    fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), soronkovetkezo->mezo.tulajdonsag, (20 + 428) / 2, 280);
+    int x = 45, y = 280;
+    SDL_Surface *felirat;
+    SDL_Texture *felirat_t;
+    SDL_Rect hova = { 0, 0, 0, 0 };
 
-    SDL_RenderPresent(renderer);
+    felirat = TTF_RenderUTF8_Blended_Wrapped(betutipus(felkover24pt),
+            soronkovetkezo->mezo.tulajdonsag, szin(feher), 368);
+    felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
+    hova.x = x;
+    hova.y = y;
+    hova.w = felirat->w;
+    hova.h = felirat->h;
+    SDL_RenderCopy(renderer, felirat_t, NULL, &hova);
+    SDL_FreeSurface(felirat);
+    SDL_DestroyTexture(felirat_t);
+
+    //fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), soronkovetkezo->mezo.tulajdonsag, (20 + 428) / 2, 280);
+
+    //SDL_RenderPresent(renderer);
 }
 
 void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
@@ -391,6 +402,20 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     }
     filledCircleRGBA(renderer, hova.x, hova.y, r, szin.r, szin.g, szin.b, szin.a);
     circleRGBA(renderer, hova.x, hova.y, r, 0, 0, 0, 255);
+}
 
-    //SDL_RenderPresent(renderer);
+void gyoztes_megjelenitese(Jatekos* gyoztes) {
+    SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, szin(hatter).a);
+    SDL_RenderClear(renderer);
+    char gyoztes_felirat[20];
+    SDL_strlcpy(gyoztes_felirat, gyoztes->nev, 13);
+    SDL_strlcat(gyoztes_felirat, " nyert!", 20);
+    fancy_szoveget_kiir(betutipus(felkover60pt), szin(feher), gyoztes_felirat, 0, 75);
+
+    SDL_Texture* erem = IMG_LoadTexture(renderer, "erem.png");
+    SDL_Rect celterulet_erem = { 362, 180, 300, 300 };
+    SDL_RenderCopy(renderer, erem, NULL, &celterulet_erem);
+    SDL_DestroyTexture(erem);
+
+    SDL_RenderPresent(renderer);
 }

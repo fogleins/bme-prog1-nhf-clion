@@ -43,34 +43,20 @@ int main(int argc, char *argv[]) {
     }
 
     //TODO: talán lehet while is
-    if (!sdlquit_esemeny) {
-        /*
-         * bábuk kirajzolása
-         * dobás -> bábuk mozgatása + megfelelő szövegek kiírása
-         * játék vége ellenőrzése
-         *
-         */
-    }
+//    if (!sdlquit_esemeny) {
+//        /*
+//         * bábuk kirajzolása
+//         * dobás -> bábuk mozgatása + megfelelő szövegek kiírása
+//         * játék vége ellenőrzése
+//         *
+//         */
+//    }
 
     //TODO: memóriaszivárgás ellenőrzése
     debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
 
     return 0;
 }
-
-// TODO: dokumentációhoz telepítés
-
-/*TODO: gombok megnyomására nyíljon új játék
- * (legyen megadható a játékosok száma!),
- * lehessen betölteni régi játékmenetet,
- * lehessen menteni az aktuális állást*/
-
-/*TODO: játékmenet modul (structok, szabályok)
- * esetleg 3 élet, hogy lehessen passzolni a
- * rossz mezőket?*/
-
-/*TODO: mezők tulajdonságainak megadása,
- * pálya véglegesítése (mezők száma, szín)*/
 
 /*TODO: az ablak és renderer által foglalt
  * memória felszabadítása*/
