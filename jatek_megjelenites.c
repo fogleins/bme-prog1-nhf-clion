@@ -279,7 +279,7 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
 
     char passzok_szama[13] = "bónusz [";
     char seged[3];
-    seged[0] = (char) (soronkovetkezo->kov->passz + 48);
+    seged[0] = (char) (soronkovetkezo->passz + 48);
     seged[1] = ']';
     seged[2] = '\0';
     SDL_strlcat(passzok_szama, seged, 13);

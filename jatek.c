@@ -116,7 +116,7 @@ void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, cons
             szabalyok(&vege, jatekosszam, jatekostomb, aktualis_jatekos, mezok_tombje);
         }
         if (mire_kattintott == passz && soron_levo->passz > 0) {
-            soron_levo->ermek += 1;
+            soron_levo->kov->ermek += 1;
             soron_levo->kov->passz--;
         }
         if (mire_kattintott == ment)
@@ -125,7 +125,6 @@ void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, cons
             mentes(*jatekosszam, soron_levo->elozo->id, *aktualis_jatekos, jatekostomb);
             break;
         }
-        SDL_RenderPresent(renderer);
     }
     jatek_vege(jatekostomb);
 }
@@ -229,11 +228,6 @@ void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
         SDL_Event esemeny;
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
-            /*TODO: visszatérési értékként kéne megkapni a megadott számot
-             * talán ez:
-             * https://wiki.libsdl.org/SDLKeycodeLookup ?
-             * https://wiki.libsdl.org/SDL_GetKeyName
-             */
             case SDL_KEYDOWN:
                 switch (esemeny.key.keysym.sym) {
                     case SDLK_2:
@@ -286,7 +280,6 @@ void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
                     }
                 }
                 break;
-            //TODO: itt felszabadul a foglalt memória?
             case SDL_QUIT:
                 jatek_vege(jatekosok_tombje);
                 *sdlquit_esemeny = true;
@@ -367,17 +360,17 @@ Mezokoord mezo_kozepe(const int* mezo_id) {
     if (*mezo_id == 0)
         return kozep0;
     if (*mezo_id < 10)
-        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 45 * (*mezo_id - 1) };
+        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (*mezo_id - 1) };
     if (*mezo_id == 10)
         return kozep10;
     if (*mezo_id < 20)
-        return (Mezokoord) { kozep10.x + 61 + 45 * (*mezo_id - 11), kozep10.y };
+        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 11), kozep10.y };
     if (*mezo_id == 20)
         return kozep20;
     if (*mezo_id < 30)
-        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 45 * (*mezo_id - 20) };
+        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 21) };
     if (*mezo_id == 30)
         return kozep30;
     if (*mezo_id < 40)
-        return (Mezokoord) { kozep30.x - 61 - 45 * (*mezo_id - 31), kozep0.y };
+        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 31), kozep0.y };
 }
