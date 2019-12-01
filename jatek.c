@@ -47,14 +47,16 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         jatekostomb[i].id = i;
         jatekostomb[i].szin = valasztott_szin;
         jatekostomb[i].mezo_id = 0;
-        jatekostomb[i].mezo = mezok_tombje[jatekostomb[i].mezo_id];
+        jatekostomb[i].mezo = &mezok_tombje[jatekostomb[i].mezo_id];
         jatekostomb[i].ermek = 0;
         jatekostomb[i].passz = 3;
         jatekostomb[i].kimarad = 0;
         jatekostomb[i].nev[0] = ((char) (48 + i + 1));
         jatekostomb[i].nev[1] = '\0';
-        //strcat(jatekostomb[i].nev, ". jatekos");
         SDL_strlcat(jatekostomb[i].nev, ". játékos", 13);
+        if (i != *jatekosszam - 1)
+            jatekostomb[i].kov = &jatekostomb[i + 1];
+        else jatekostomb[i].kov = &jatekostomb[0];
     }
     if (valasztott_szin == j_kilep) {
         free(jatekostomb);
@@ -63,52 +65,87 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     }
     Sleep(100);
     bool elso = true, vege = false;
-    int aktualis_jatekos = 0, elozo_mezo, kov_mezo, dobokocka;
+    int p = 0;
+    int* aktualis_jatekos = &p;
     Jatekos *soron_levo;
-    Jatekos *gyoztes = NULL;
-    Jatek_event mire_kattintott, mire_kattintott2 = bezar; /* a második a passzok kezeléséhez kell */
+    Jatek_event mire_kattintott;
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
     SDL_RenderClear(renderer);
     jatekter_kirajzolasa();
     SDL_RenderPresent(renderer);
 
     while (!vege) {
-        soron_levo = &jatekostomb[aktualis_jatekos];
+        soron_levo = &jatekostomb[*aktualis_jatekos];
         SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
         SDL_RenderClear(renderer);
         jatekter_kirajzolasa();
 
         //TODO: első kilépésnél az egyik 2x jön
-        if (elso) {
-            dobokocka = 0;
-            szovegek_megjelenitese(soron_levo, &dobokocka);
-            SDL_RenderPresent(renderer);
-            aktualis_jatekos++;
-            elso = false;
-            SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
-            SDL_RenderClear(renderer);
-            jatekter_kirajzolasa();
-        }
+//        if (elso) {
+//            int dobokocka = 0;
+//            szovegek_megjelenitese(&jatekostomb[0], &dobokocka);
+//            SDL_RenderPresent(renderer);
+//            elso = false;
+//            SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+//            SDL_RenderClear(renderer);
+//            jatekter_kirajzolasa();
+//            szabalyok(&vege, jatekosszam, jatekostomb, aktualis_jatekos, mezok_tombje);
+//        }
 
-        if (aktualis_jatekos == *jatekosszam - 1)
-            aktualis_jatekos = 0;
-        else aktualis_jatekos++;
-
+        if (*aktualis_jatekos == *jatekosszam - 1 && soron_levo->kimarad < 0)
+            { /* nem változik */ }
+        else if (*aktualis_jatekos == *jatekosszam - 1)
+            *aktualis_jatekos = 0;
+        else
+            *aktualis_jatekos += 1;
 
         mire_kattintott = kattintas();
-        // a passzolás kezelése
-//        if (mire_kattintott == mire_kattintott2 && mire_kattintott2 != passz)
-//            mire_kattintott = mire_kattintott2;
+        if (elso) {
+            mire_kattintott = dob;
+            *aktualis_jatekos = jatekostomb[0].id;
+            elso = false;
+        }
         if (mire_kattintott == dob) {
-            dobokocka = (rand() % 6 + 1);
-            elozo_mezo = soron_levo->mezo_id;
-            kov_mezo = soron_levo->mezo_id += dobokocka;
-            if (elozo_mezo < 40 && kov_mezo >= 40)
-                soron_levo->mezo_id -= 40;
-            soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
+            szabalyok(&vege, jatekosszam, jatekostomb, aktualis_jatekos, mezok_tombje);
+        }
+        if (mire_kattintott == passz && soron_levo->passz > 0)
+            soron_levo->passz--;
+        if (mire_kattintott == ment) {
+            //TODO: fájlnév
+            mentes("teszt.txt", *jatekosszam, *aktualis_jatekos, jatekostomb);
+        }
+        if (mire_kattintott == bezar) {
+            mentes("teszt.txt", *jatekosszam, *aktualis_jatekos, jatekostomb);
+            break;
+        }
+    }
 
-            //TODO
-            // mezők speciális tulajdonságai átvétele a játékosoknak
+    //TODO: játék vége fgv javítása
+    jatek_vege(jatekostomb);
+}
+
+void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, int* aktualis_jatekos, Mezo* mezok_tombje) {
+    int dobokocka, elozo_mezo, kov_mezo;
+    Jatekos* soron_levo;
+    Jatekos *gyoztes = NULL;
+
+//    if (*aktualis_jatekos == *jatekosszam - 1)
+//        *aktualis_jatekos = 0;
+//    else
+//        *aktualis_jatekos += 1;
+    soron_levo = &jatekostomb[*aktualis_jatekos];
+
+
+
+    dobokocka = (rand() % 6 + 1);
+    elozo_mezo = soron_levo->mezo_id;
+    kov_mezo = soron_levo->mezo_id += dobokocka;
+    if (elozo_mezo < 40 && kov_mezo >= 40)
+        soron_levo->mezo_id -= 40;
+    soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+
+    //TODO
+    // mezők speciális tulajdonságai átvétele a játékosoknak
 //            soron_levo->ermek += soron_levo->mezo.erem;
 //            soron_levo->mezo_id += soron_levo->mezo.lep;
 //            soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
@@ -124,37 +161,20 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
 //                soron_levo->ermek = 0;
 //            if (soron_levo->mezo_id < 0)
 //                soron_levo->mezo_id += 40;
-            szovegek_megjelenitese(&jatekostomb[aktualis_jatekos], &dobokocka);
+    if (soron_levo->kimarad < 0)
+        szovegek_megjelenitese(soron_levo, &dobokocka);
+    else
+        szovegek_megjelenitese(jatekostomb[*aktualis_jatekos].kov, &dobokocka);
 
-            for (int i = 0; i < *jatekosszam; ++i)
-                babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo.id));
-            SDL_RenderPresent(renderer);
+    for (int i = 0; i < *jatekosszam; ++i)
+        babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo->id));
+    SDL_RenderPresent(renderer);
 
-            if (soron_levo->ermek >= 15 && soron_levo->mezo_id == 29) {
-                vege = true;
-                gyoztes = soron_levo;
-                break;
-            }
-//            mire_kattintott2 = kattintas();
-//            if (mire_kattintott2 == passz)
-//                soron_levo->passz--;
-        }
-        if (mire_kattintott == passz && soron_levo->passz > 0)
-            soron_levo->passz--;
-        if (mire_kattintott == ment) {
-            //TODO: fájlnév
-            mentes("teszt.txt", *jatekosszam, aktualis_jatekos, jatekostomb);
-        }
-        if (mire_kattintott == bezar) {
-            mentes("teszt.txt", *jatekosszam, aktualis_jatekos, jatekostomb);
-            break;
-        }
-    }
-    if (vege)
+    if (soron_levo->ermek >= 15 && soron_levo->mezo_id == 29) {
+        *vege = true;
+        gyoztes = soron_levo;
         gyoztes_megjelenitese(gyoztes);
-
-    //TODO: játék vége fgv javítása
-    jatek_vege(jatekostomb);
+    }
 }
 
 /** A játék során mire kattint a játékos
@@ -390,17 +410,17 @@ Mezokoord mezo_kozepe(const int* mezo_id) {
     if (*mezo_id == 0)
         return kozep0;
     if (*mezo_id < 10)
-        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (*mezo_id - 1) };
+        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 45 * (*mezo_id - 1) };
     if (*mezo_id == 10)
         return kozep10;
     if (*mezo_id < 20)
-        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 11), kozep10.y };
+        return (Mezokoord) { kozep10.x + 61 + 45 * (*mezo_id - 11), kozep10.y };
     if (*mezo_id == 20)
         return kozep20;
     if (*mezo_id < 30)
-        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 20) };
+        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 45 * (*mezo_id - 20) };
     if (*mezo_id == 30)
         return kozep30;
     if (*mezo_id < 40)
-        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 31), kozep0.y };
+        return (Mezokoord) { kozep30.x - 61 - 45 * (*mezo_id - 31), kozep0.y };
 }

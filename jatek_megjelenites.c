@@ -355,7 +355,7 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     SDL_Rect hova = { 0, 0, 0, 0 };
 
     felirat = TTF_RenderUTF8_Blended_Wrapped(betutipus(felkover24pt),
-            soronkovetkezo->mezo.tulajdonsag, szin(feher), 368);
+            soronkovetkezo->mezo->tulajdonsag, szin(feher), 368);
     felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
     hova.x = x;
     hova.y = y;
@@ -371,26 +371,60 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     SDL_Color szin = jatekosszin(soronkovetkezo->szin);
     switch (soronkovetkezo->szin) {
         case j_piros:
-            hova.x -= 2 * r + 3;
-            hova.y += r + 10;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                    || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
+                hova.x -= 2 * r + 3;
+                hova.y += r + 10;
+            }
+            else {
+                hova.y -= 2 * r + 3;
+                hova.x += r + 10;
+            }
             break;
         case j_narancs:
-            hova.y += r + 10;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30))
+                    hova.y += r + 10;
+            else hova.x += r + 10;
             break;
         case j_sarga:
-            hova.x += 2 * r + 3;
-            hova.y += r + 10;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
+                    hova.x += 2 * r + 3;
+                    hova.y += r + 10;
+            }
+            else {
+                hova.y += 2 * r + 3;
+                hova.x += r + 10;
+            }
             break;
         case j_zold:
-            hova.x -= 2 * r + 3;
-            hova.y -= r - 7;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
+                    hova.x -= 2 * r + 3;
+                    hova.y -= r - 7;
+            }
+            else {
+                hova.y -= 2 * r + 3;
+                hova.x -= r - 7;
+            }
             break;
         case j_kek:
-            hova.y -= r - 7;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30))
+                    hova.y -= r - 7;
+            else hova.x -= r - 7;
             break;
         case j_lila:
-            hova.x += 2 * r + 3;
-            hova.y += r - 9;
+            if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
+                    hova.x += 2 * r + 3;
+                    hova.y += r - 9;
+            }
+            else {
+                hova.y += 2 * r + 3;
+                hova.x += r - 9;
+            }
             break;
     }
     filledCircleRGBA(renderer, hova.x, hova.y, r, szin.r, szin.g, szin.b, szin.a);
