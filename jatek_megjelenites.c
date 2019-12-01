@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_image.h>
+#include <stdio.h>
 
 #include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
@@ -279,7 +280,6 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     dobott_szam[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
 
-    //TODO: ez a játékos struct passz elemével egyenlő
     char passzok_szama[11] = "Passz [";
     char seged[3];
     seged[0] = (char) (soronkovetkezo->passz + 48);
@@ -288,10 +288,9 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     SDL_strlcat(passzok_szama, seged, 11);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, 330, 185);
 
-    char ermek_szama[2];
+    char ermek_szama[3];
     //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
-    ermek_szama[0] = (char) (soronkovetkezo->ermek + 48);
-    ermek_szama[1] = '\0';
+    sprintf(ermek_szama, "%d", soronkovetkezo->ermek);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), ermek_szama, 330, 115);
 
     // mező tartalma

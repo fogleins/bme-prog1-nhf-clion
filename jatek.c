@@ -132,27 +132,23 @@ void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const i
     dobokocka = (rand() % 6 + 1);
     elozo_mezo = soron_levo->mezo_id;
     kov_mezo = soron_levo->mezo_id += dobokocka;
-    if (elozo_mezo < 40 && kov_mezo >= 40)
+    if (elozo_mezo < 40 && kov_mezo >= 40) {
         soron_levo->mezo_id -= 40;
-    soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+        soron_levo->ermek += 4; /* Starton áthaladáskor 4 érem jár */
+    }
 
-    //TODO
-    // mezők speciális tulajdonságai átvétele a játékosoknak
-//            soron_levo->ermek += soron_levo->mezo.erem;
-//            soron_levo->mezo_id += soron_levo->mezo.lep;
-//            soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
-//            soron_levo->kimarad += soron_levo->mezo.dob;
-//            soron_levo->kimarad += soron_levo->mezo.dob;
-//            while (soron_levo->kimarad < 0) {
-//                soron_levo->ermek += soron_levo->mezo.erem;
-//                soron_levo->mezo_id += soron_levo->mezo.lep;
-//                soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
-//                soron_levo->kimarad += soron_levo->mezo.dob;
-//            }
-//            if (soron_levo->ermek < 0)
-//                soron_levo->ermek = 0;
-//            if (soron_levo->mezo_id < 0)
-//                soron_levo->mezo_id += 40;
+    soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+    if (soron_levo->mezo->lep != 0) {
+        soron_levo->mezo_id += soron_levo->mezo->lep;
+        if (soron_levo->mezo_id >= 40)
+            soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id - 40];
+        else if (soron_levo->mezo_id < 0)
+            soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id + 40];
+        else soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+    }
+    soron_levo->ermek += soron_levo->mezo->erem;
+    soron_levo->kimarad = soron_levo->mezo->dob;
+
     if (soron_levo->kimarad < 0)
         szovegek_megjelenitese(soron_levo, &dobokocka);
     else
@@ -162,7 +158,7 @@ void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const i
         babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo->id));
     SDL_RenderPresent(renderer);
 
-    if (soron_levo->ermek >= 15 && soron_levo->mezo_id == 29) {
+    if (soron_levo->ermek >= 15 && (soron_levo->mezo_id == 29 || soron_levo->mezo_id == 8)) {
         *vege = true;
         gyoztes = soron_levo;
         gyoztes_megjelenitese(gyoztes);

@@ -1,4 +1,4 @@
-0;6;0;0;START: belépésnél 6 aranyérem, áthaladásnál 3 aranyérem
+0;2;0;0;START: belépésnél 6 aranyérem, áthaladásnál 3 aranyérem
 1;1;0;0;Lépj a 24-es mezõre és kapsz 1 aranyérmet!
 2;0;-2;0;Nem követted az edzõd utasításait, lépj vissza 2 mezõt!
 3;0;0;0;
@@ -6,7 +6,7 @@
 5;0;0;0;
 6;0;0;0;
 7;0;0;3;Edzés helyett a barátaiddal moziba mentél, háromszor kimaradsz a dobásból!
-8;0;0;0;
+8;0;0;0;Kijutsz az olimpiára, ha összegyûjtöttél 15 aranyérmet! Ezzel megnyerheted a versenyt!
 9;0;3;0;Hétvégén önszorgalomból elmentél edzésre, lépj elõre 3 mezõt!
 10;0;0;0;
 11;3;0;0;Jól szerepeltél a versenyen, kapsz 3 aranyérmet.

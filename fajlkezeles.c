@@ -50,7 +50,7 @@ Jatekos* beolvas(char* fajlnev) {
  * @param kov_id A soron következő játékos azonosítója
  * @param jatekostomb A játékosok adatait tartalmazó tömb
  */
-void mentes(char* fajlnev, int jatekosszam, int kov_id, Jatekos* jatekostomb) {
+void mentes(char* fajlnev, const int jatekosszam, const int kov_id, Jatekos* jatekostomb) {
     FILE* fp = fopen(fajlnev, "wt");
     fprintf(fp, "%d %d\n", jatekosszam, kov_id);
     for (int i = 0; i < jatekosszam; ++i) {
