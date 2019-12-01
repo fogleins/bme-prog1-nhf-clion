@@ -71,18 +71,6 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_RenderClear(renderer);
         jatekter_kirajzolasa();
 
-        //TODO: első kilépésnél az egyik 2x jön
-//        if (elso) {
-//            int dobokocka = 0;
-//            szovegek_megjelenitese(&jatekostomb[0], &dobokocka);
-//            SDL_RenderPresent(renderer);
-//            elso = false;
-//            SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
-//            SDL_RenderClear(renderer);
-//            jatekter_kirajzolasa();
-//            szabalyok(&vege, jatekosszam, jatekostomb, aktualis_jatekos, mezok_tombje);
-//        }
-
         if (*aktualis_jatekos == *jatekosszam - 1 && soron_levo->kimarad < 0)
             { /* nem változik */ }
         else if (*aktualis_jatekos == *jatekosszam - 1)
@@ -91,6 +79,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
             *aktualis_jatekos += 1;
 
         mire_kattintott = kattintas();
+        //TODO: első kilépésnél az egyik 2x jön
         if (elso) {
             mire_kattintott = dob;
             *aktualis_jatekos = jatekostomb[0].id;
@@ -101,16 +90,13 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         }
         if (mire_kattintott == passz && soron_levo->passz > 0)
             soron_levo->passz--;
-        if (mire_kattintott == ment) {
-            //TODO: fájlnév
-            mentes("teszt.txt", *jatekosszam, *aktualis_jatekos, jatekostomb);
-        }
+        if (mire_kattintott == ment)
+            mentes(*jatekosszam, *aktualis_jatekos, jatekostomb);
         if (mire_kattintott == bezar) {
-            mentes("teszt.txt", *jatekosszam, *aktualis_jatekos, jatekostomb);
+            mentes(*jatekosszam, *aktualis_jatekos, jatekostomb);
             break;
         }
     }
-
     //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
 }

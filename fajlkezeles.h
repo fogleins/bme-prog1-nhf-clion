@@ -9,8 +9,9 @@
 
 //bool beolvas(char* fajlnev);
 Jatekos* beolvas(char* fajlnev);
-void mentes(char* fajlnev, int jatekosszam, int kov_id, Jatekos* jatekostomb);
+void mentes(int jatekosszam, int kov_id, Jatekos* jatekostomb);
 void mezok_beolvasasa(Mezo* mezok_tombje);
+char* fajlnev(void);
 
 
 #endif //TARSAS_FAJLKEZELES_H
