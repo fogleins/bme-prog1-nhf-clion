@@ -8,8 +8,8 @@
 #include "jatek.h"
 
 //bool beolvas(char* fajlnev);
-Jatekos* beolvas(char* fajlnev);
-void mentes(int jatekosszam, int kov_id, Jatekos* jatekostomb);
+Jatekos* beolvas(char* fajlnev, int* jatekosok_szama, int* elozo_jatekos, int* kov_jatekos);
+void mentes(int jatekosszam, int elozo_id, int kov_id, Jatekos* jatekostomb);
 void mezok_beolvasasa(Mezo* mezok_tombje);
 char* fajlnev(void);
 

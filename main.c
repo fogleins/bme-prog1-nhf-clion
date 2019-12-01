@@ -15,7 +15,9 @@ int main(int argc, char *argv[]) {
     Jatekos* jatekostomb = NULL;
     ablak_letrehozasa(1024, 576);
     // a játék megkezdéséig loopol, megjeleníti a menüt és regisztrálja a gombnyomásokat, kattintásokat
-    bool megkezdte = false, sdlquit_esemeny = false; /* SDL_QUIT event esetén true lesz, így a többi kód  */
+    bool megkezdte = false, beolvasott  = false, sdlquit_esemeny = false; /* SDL_QUIT event esetén true lesz, így a többi kód  */
+    int jatekosnp = 0;
+    int *kov_jatekos = &jatekosnp, *elozo_jatekos = &jatekosnp;
     while (!megkezdte) {
         menu_kirajzolasa();
         int jatekosszam;
@@ -23,16 +25,25 @@ int main(int argc, char *argv[]) {
             case uj:
                 jatekkezdes(&jatekosszam, &sdlquit_esemeny);
                 if (!sdlquit_esemeny) {
+                    //megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
                     megkezdte = jatekkezdes_megerositese(&sdlquit_esemeny);
                     if (megkezdte)
-                        jatek_main(jatekostomb, &jatekosszam);
+                        jatek_main(jatekostomb, elozo_jatekos, kov_jatekos, &jatekosszam, beolvasott);
                 }
                 else
                     megkezdte = true;
                 break;
             case megnyit:
-                //TODO: fájl beolvasása
-                jatekostomb = beolvas("jatekmenet.txt");
+                jatekostomb = beolvas("jatekmenet.txt", &jatekosszam, elozo_jatekos, kov_jatekos);
+                if (jatekostomb == NULL) {
+                    SDL_Log("Nem sikerult a fájl beolvasasa. Biztosan letezik jatekmenet.txt allomany? (%s)",
+                            SDL_GetError());
+                    SDL_Quit();
+                    exit(1);
+                }
+                megkezdte = true;
+                beolvasott = true;
+                jatek_main(jatekostomb, elozo_jatekos, kov_jatekos, &jatekosszam, beolvasott);
                 break;
             case kilep:
                 megkezdte = true;
@@ -52,7 +63,7 @@ int main(int argc, char *argv[]) {
 //    }
 
     //TODO: memóriaszivárgás ellenőrzése
-    debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
+    //debugmalloc_log_file("C:\\Users\\Simon\\Google Drive\\BME\\prog1\\debugmalloc_output.txt");
 
     return 0;
 }

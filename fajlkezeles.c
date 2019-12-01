@@ -30,14 +30,13 @@
  * @param fajlnev A beolvasandó fájl elérési útja
  * @return A beolvasott adatokkal feltöltött Jatekos típusú tömbre mutató pointer; NULL, ha a fájl nem nyitható meg
  */
-Jatekos* beolvas(char* fajlnev) {
+Jatekos* beolvas(char* fajlnev, int* jatekosok_szama, int* elozo_jatekos, int* kov_jatekos) {
     FILE* fp = fopen(fajlnev, "rt");
     if (fp == NULL) return NULL;
-    int jatekosok_szama, kov_jatekos;
     // a fájl első sora: [int] jatekosok_szama [int] kov_jatekos_id
-    fscanf(fp, "%d %d", &jatekosok_szama, &kov_jatekos);
-    Jatekos* jatekostomb = (Jatekos*) malloc(jatekosok_szama* sizeof(Jatekos));
-    for (int i = 0; i < jatekosok_szama; ++i) {
+    fscanf(fp, "%d %d", jatekosok_szama, kov_jatekos);
+    Jatekos* jatekostomb = (Jatekos*) malloc(*jatekosok_szama * sizeof(Jatekos));
+    for (int i = 0; i < *jatekosok_szama; ++i) {
         fscanf(fp, "%d %d %d %d %d", &jatekostomb[i].id, &jatekostomb[i].mezo_id, &jatekostomb[i].ermek,
                 &jatekostomb[i].szin, &jatekostomb[i].passz);
     }
@@ -52,11 +51,11 @@ Jatekos* beolvas(char* fajlnev) {
  * @param kov_id A soron következő játékos azonosítója
  * @param jatekostomb A játékosok adatait tartalmazó tömb
  */
-void mentes(const int jatekosszam, const int kov_id, Jatekos* jatekostomb) {
+void mentes(const int jatekosszam, const int elozo_id, const int kov_id, Jatekos* jatekostomb) {
     char* nev = fajlnev();
     FILE* fp = fopen(nev, "wt");
     free(nev);
-    fprintf(fp, "%d %d\n", jatekosszam, kov_id);
+    fprintf(fp, "%d %d %d\n", jatekosszam, elozo_id, kov_id);
     for (int i = 0; i < jatekosszam; ++i) {
         fprintf(fp, "%d %d %d %d %d\n", i, jatekostomb[i].mezo_id, jatekostomb[i].ermek,
                 jatekostomb[i].szin, jatekostomb[i].passz);

@@ -1,11 +1,11 @@
-0;2;0;0;START: belépésnél 6 aranyérem, áthaladásnál 3 aranyérem
-1;1;0;0;Lépj a 24-es mezõre és kapsz 1 aranyérmet!
+0;4;0;0;START: belépésnél 6 aranyérem, áthaladásnál 2 aranyérem
+1;0;22;0;Lépj a 24-es mezõre és kapsz 1 aranyérmet!
 2;0;-2;0;Nem követted az edzõd utasításait, lépj vissza 2 mezõt!
 3;0;0;0;
 4;0;0;-1;A héten minden edzésen részt vettél és jól dolgoztál, jutalmul dobj kétszer!
 5;0;0;0;
 6;0;0;0;
-7;0;0;3;Edzés helyett a barátaiddal moziba mentél, háromszor kimaradsz a dobásból!
+7;0;0;2;Edzés helyett a barátaiddal moziba mentél, kétszer kimaradsz a dobásból!
 8;0;0;0;Kijutsz az olimpiára, ha összegyûjtöttél 15 aranyérmet! Ezzel megnyerheted a versenyt!
 9;0;3;0;Hétvégén önszorgalomból elmentél edzésre, lépj elõre 3 mezõt!
 10;0;0;0;
@@ -19,10 +19,10 @@
 18;0;3;0;Nagyon jó idõket úsztál az edzésen, lépj elõre 3 mezõt!
 19;3;0;0;Versenyen aranyjelvényes szintidõt úsztál, kapsz 3 aranyérmet.
 20;0;0;1;Sípszó elõtt a medencébe ugrottál a versenyen, ezért 1 körbõl kimaradsz.
-21;0;-3;0;A versenyen nem teljesítettél jól, lépj vissza 3 mezõt!
+21;0;0;0;
 22;0;0;0;
-23;0;0;0;
-24;0;0;0;
+23;0;-3;0;A versenyen nem teljesítettél jól, lépj vissza 3 mezõt!
+24;1;0;0;
 25;0;0;0;
 26;2;0;0;Részt vettél egy sporttáplálkozásról szóló elõadáson, lépj elõre 2 mezõt!
 27;0;0;0;
@@ -37,4 +37,4 @@
 36;0;0;0;
 37;0;0;0;
 38;0;0;0;
-39;1;0;0;Megnyertétek a váltóversenyt, kapsz 1 aranyérmet.
+39;2;0;0;Megnyertétek a váltóversenyt, kapsz 2 aranyérmet.

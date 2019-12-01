@@ -179,7 +179,6 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
     SDL_Rect korvonal;
     for (int i = 0; i < 6; ++i) {
         korvonal = (SDL_Rect) { 222 + i * 100, 250, 80, 80 };
-        // TODO: miért kell levonni 2-t ahhoz, hogy ne lógjon ki a szín a keretből?
         boxRGBA(renderer, korvonal.x, korvonal.y, korvonal.x + korvonal.w - 2, korvonal.y + korvonal.h - 2,
                 jatekosszin(j_piros + i).r, jatekosszin(j_piros + i).g,
                 jatekosszin(j_piros + i).b, jatekosszin(j_piros + i).a);
@@ -196,7 +195,6 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
         SDL_WaitEvent(&esemeny);
         switch (esemeny.type) {
             case SDL_MOUSEBUTTONDOWN:
-                // TODO: ne legyen sorminta
                 if (esemeny.button.y >= 250 && esemeny.button.y <= 330) {
                     if (!foglalt_szinek[j_piros] && esemeny.button.x >= 222 && esemeny.button.x <= 302)
                         return szinfoglalas(j_piros, foglalt_szinek, &korvonal);
@@ -215,7 +213,6 @@ Jatekosszin jatekos_szinvalasztas(bool* foglalt_szinek) {
                 }
                 break;
             case SDL_QUIT:
-                //TODO: játék vége, memóriaszabadítás
                 return j_kilep;
         }
     }
@@ -280,13 +277,13 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     dobott_szam[1] = '\0';
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), dobott_szam, (20 + 214) / 2, 115);
 
-    char passzok_szama[11] = "Passz [";
+    char passzok_szama[13] = "bónusz [";
     char seged[3];
-    seged[0] = (char) (soronkovetkezo->passz + 48);
+    seged[0] = (char) (soronkovetkezo->kov->passz + 48);
     seged[1] = ']';
     seged[2] = '\0';
-    SDL_strlcat(passzok_szama, seged, 11);
-    fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), passzok_szama, 330, 185);
+    SDL_strlcat(passzok_szama, seged, 13);
+    fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), passzok_szama, 330, 192);
 
     char ermek_szama[3];
     //TODO: ez a játékos structból, a 6-os csak a teszteléshez van
@@ -323,7 +320,7 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
             }
             else {
                 hova.y -= 2 * r + 3;
-                hova.x += r + 10;
+                hova.x += r + 10 + 2*r+3;
             }
             break;
         case j_narancs:
@@ -340,7 +337,7 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
             }
             else {
                 hova.y += 2 * r + 3;
-                hova.x += r + 10;
+                hova.x += r + 10 + 2*r+3;
             }
             break;
         case j_zold:
@@ -351,7 +348,7 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
             }
             else {
                 hova.y -= 2 * r + 3;
-                hova.x -= r - 7;
+                hova.x -= r - 7 + 2*r+3;
             }
             break;
         case j_kek:
@@ -368,7 +365,7 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
             }
             else {
                 hova.y += 2 * r + 3;
-                hova.x += r - 9;
+                hova.x += r - 9 + 2*r+3;
             }
             break;
     }

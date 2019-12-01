@@ -14,50 +14,77 @@
 #include "menu.h"
 #include "debugmalloc.h"
 
-void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
+void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, const int* jatekosszam, bool beolvasott) {
     Mezo mezok_tombje[40];
     mezok_beolvasasa(mezok_tombje);
     for (int i = 0; i < 40; ++i)
         mezok_tombje[i].kozep = mezo_kozepe(&i);
 
-    jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
-    if (jatekostomb == NULL) {
-        SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
-        exit(1);
-    }
-    // hamis, ha nem foglalták még, egyébként igaz
-    bool foglalt_szinek[6];
-    for (int j = 0; j < 6; ++j)
-        foglalt_szinek[j] = false;
-    Jatekosszin valasztott_szin;
-    SDL_RenderClear(renderer);
-    for (int i = 0; i < *jatekosszam; ++i) {
-        valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
-        if (valasztott_szin == j_kilep)
-            break;
-        jatekostomb[i].id = i;
-        jatekostomb[i].szin = valasztott_szin;
-        jatekostomb[i].mezo_id = 0;
-        jatekostomb[i].mezo = &mezok_tombje[jatekostomb[i].mezo_id];
-        jatekostomb[i].ermek = 0;
-        jatekostomb[i].passz = 3;
-        jatekostomb[i].kimarad = 0;
-        jatekostomb[i].nev[0] = ((char) (48 + i + 1));
-        jatekostomb[i].nev[1] = '\0';
-        SDL_strlcat(jatekostomb[i].nev, ". játékos", 13);
-        if (i != *jatekosszam - 1)
-            jatekostomb[i].kov = &jatekostomb[i + 1];
-        else jatekostomb[i].kov = &jatekostomb[0];
-    }
-    if (valasztott_szin == j_kilep) {
-        free(jatekostomb);
-        SDL_Quit();
-        return;
-    }
-    SDL_Delay(100);
-    bool elso = true, vege = false;
+
+    bool elso, vege = false;
     int p = 0;
     int* aktualis_jatekos = &p;
+
+    if (!beolvasott) {
+        jatekostomb = (Jatekos*) malloc(*jatekosszam * sizeof(Jatekos));
+        if (jatekostomb == NULL) {
+            SDL_Log("A memóriafoglalás sikertelen: %s", SDL_GetError());
+            exit(1);
+        }
+        // hamis, ha nem foglalták még, egyébként igaz
+        bool foglalt_szinek[6];
+        for (int j = 0; j < 6; ++j)
+            foglalt_szinek[j] = false;
+        Jatekosszin valasztott_szin;
+        SDL_RenderClear(renderer);
+        for (int i = 0; i < *jatekosszam; ++i) {
+            valasztott_szin = jatekos_szinvalasztas(foglalt_szinek);
+            if (valasztott_szin == j_kilep)
+                break;
+            jatekostomb[i].id = i;
+            jatekostomb[i].szin = valasztott_szin;
+            jatekostomb[i].mezo_id = 0;
+            jatekostomb[i].mezo = &mezok_tombje[jatekostomb[i].mezo_id];
+            jatekostomb[i].ermek = 0;
+            jatekostomb[i].passz = 3;
+            jatekostomb[i].kimarad = 0;
+            jatekostomb[i].nev[0] = ((char) (48 + i + 1));
+            jatekostomb[i].nev[1] = '\0';
+            SDL_strlcat(jatekostomb[i].nev, ". játékos", 13);
+            if (i != *jatekosszam - 1)
+                jatekostomb[i].kov = &jatekostomb[i + 1];
+            else jatekostomb[i].kov = &jatekostomb[0];
+            if (i != 0)
+                jatekostomb[i].elozo = &jatekostomb[i - 1];
+            else jatekostomb[i].elozo = &jatekostomb[*jatekosszam - 1];
+            elso = true;
+        }
+        if (valasztott_szin == j_kilep) {
+            free(jatekostomb);
+            SDL_Quit();
+            return;
+        }
+        SDL_Delay(100);
+    }
+    // beolvasásnál
+    else {
+        for (int i = 0; i < *jatekosszam; ++i) {
+            jatekostomb[i].mezo = &mezok_tombje[jatekostomb->mezo_id];
+            babuk_megjelenitese(&jatekostomb[i], jatekostomb->mezo->kozep);
+            jatekostomb[i].nev[0] = ((char) (48 + i + 1));
+            jatekostomb[i].nev[1] = '\0';
+            SDL_strlcat(jatekostomb[i].nev, ". játékos", 13);
+            if (i != *jatekosszam - 1)
+                jatekostomb[i].kov = &jatekostomb[i + 1];
+            else jatekostomb[i].kov = &jatekostomb[0];
+            if (i != 0)
+                jatekostomb[i].elozo = &jatekostomb[i - 1];
+            else jatekostomb[i].elozo = &jatekostomb[*jatekosszam - 1];
+        }
+        elso = false;
+        aktualis_jatekos = kov_jatekos;
+    }
+
     Jatekos *soron_levo;
     Jatek_event mire_kattintott;
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
@@ -71,8 +98,8 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_RenderClear(renderer);
         jatekter_kirajzolasa();
 
-        if (*aktualis_jatekos == *jatekosszam - 1 && soron_levo->kimarad < 0)
-            { /* nem változik */ }
+        if (soron_levo->kimarad < 0)
+            soron_levo->kimarad++;
         else if (*aktualis_jatekos == *jatekosszam - 1)
             *aktualis_jatekos = 0;
         else
@@ -88,16 +115,18 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         if (mire_kattintott == dob) {
             szabalyok(&vege, jatekosszam, jatekostomb, aktualis_jatekos, mezok_tombje);
         }
-        if (mire_kattintott == passz && soron_levo->passz > 0)
-            soron_levo->passz--;
+        if (mire_kattintott == passz && soron_levo->passz > 0) {
+            soron_levo->ermek += 1;
+            soron_levo->kov->passz--;
+        }
         if (mire_kattintott == ment)
-            mentes(*jatekosszam, *aktualis_jatekos, jatekostomb);
+            mentes(*jatekosszam, soron_levo->elozo->id, *aktualis_jatekos, jatekostomb);
         if (mire_kattintott == bezar) {
-            mentes(*jatekosszam, *aktualis_jatekos, jatekostomb);
+            mentes(*jatekosszam, soron_levo->elozo->id, *aktualis_jatekos, jatekostomb);
             break;
         }
+        SDL_RenderPresent(renderer);
     }
-    //TODO: játék vége fgv javítása
     jatek_vege(jatekostomb);
 }
 
@@ -120,25 +149,35 @@ void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const i
     kov_mezo = soron_levo->mezo_id += dobokocka;
     if (elozo_mezo < 40 && kov_mezo >= 40) {
         soron_levo->mezo_id -= 40;
-        soron_levo->ermek += 4; /* Starton áthaladáskor 4 érem jár */
+        soron_levo->ermek += 2; /* Starton áthaladáskor 2 érem jár */
     }
 
-    soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
-    if (soron_levo->mezo->lep != 0) {
-        soron_levo->mezo_id += soron_levo->mezo->lep;
-        if (soron_levo->mezo_id >= 40)
-            soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id - 40];
-        else if (soron_levo->mezo_id < 0)
-            soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id + 40];
-        else soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
-    }
-    soron_levo->ermek += soron_levo->mezo->erem;
-    soron_levo->kimarad = soron_levo->mezo->dob;
+    if (soron_levo->mezo_id != 31) {
+        soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+        if (soron_levo->mezo->lep != 0) {
+            soron_levo->mezo_id += soron_levo->mezo->lep;
+            if (soron_levo->mezo_id >= 40) {
+                soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id - 40];
+                if (soron_levo->mezo->dob != 0)
+                    soron_levo->kimarad = soron_levo->mezo->dob;
+            }
+            else if (soron_levo->mezo_id < 0)
+                soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id + 40];
+            else soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+        }
+        soron_levo->ermek += soron_levo->mezo->erem;
+        soron_levo->kimarad = soron_levo->mezo->dob;
 
-    if (soron_levo->kimarad < 0)
-        szovegek_megjelenitese(soron_levo, &dobokocka);
-    else
-        szovegek_megjelenitese(jatekostomb[*aktualis_jatekos].kov, &dobokocka);
+        if (soron_levo->kimarad < 0)
+            szovegek_megjelenitese(soron_levo, &dobokocka);
+        else
+            szovegek_megjelenitese(jatekostomb[*aktualis_jatekos].kov, &dobokocka);
+    }
+    else {
+        soron_levo->ermek = 0;
+        soron_levo->mezo_id -= 1;
+        soron_levo->mezo = &mezok_tombje[soron_levo->mezo_id];
+    }
 
     for (int i = 0; i < *jatekosszam; ++i)
         babuk_megjelenitese(&jatekostomb[i], mezo_kozepe(&jatekostomb[i].mezo->id));
@@ -176,8 +215,9 @@ Jatek_event kattintas(void) {
     }
 }
 
-/**
- * Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
+/** Letisztítja az ablakot, bekér egy 6nál nem nagyobb számot (játékosok száma)
+ *
+ * @param sdlquit_esemeny True, ha a játékosszám-foglalás közben bezárja az ablakot
  * @param jatekosok_szama A játékosok száma
  */
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
@@ -257,9 +297,8 @@ void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
 
 /** Megkérdezi a felhasználót, hogy biztosan meg szeretné-e kezdeni a játékot
  *
- * @param tomb A játékostömb, aminek memóriát kell foglalni
- * @param jatekosszam A játékosok száma
- * @return true, ha megkezdi a játékot
+ * @param sdlquit_esemeny True, ha a játékos megerősítés közben bezárja az ablakot
+ * @return True, ha megkezdi a játékot
  */
 bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
     ablak_tisztitasa(renderer);

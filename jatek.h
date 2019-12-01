@@ -31,6 +31,7 @@ typedef struct Jatekos {
     int passz;  /**<ennyi mezőt passzolhat még (max 3)*/
     int kimarad; /**<ennyiszer marad ki a dobásból*/
     struct Jatekos* kov; /**<az őt követő játékos */
+    struct Jatekos* elozo; /**<az őt megelőző játékos */
 } Jatekos;
 
 /** A játékmenet közben a dobókockára kattintáskor vagy kilépéskor kell*/
@@ -42,7 +43,7 @@ typedef enum Jatek_event {
 } Jatek_event;
 
 
-void jatek_main(Jatekos* jatekostomb, const int* jatekosszam);
+void jatek_main(Jatekos* jatekostomb, int* elozo_jatekos, int* kov_jatekos, const int* jatekosszam, bool beolvasott);
 void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const int* aktualis_jatekos, Mezo* mezok_tombje);
 Jatek_event kattintas(void);
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny);
