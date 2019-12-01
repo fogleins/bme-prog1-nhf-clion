@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 
@@ -22,7 +21,6 @@
 
 /** Kirajzolja a menüt */
 void menu_kirajzolasa(void) {
-    // Háttér beállítása
     /* kép forrása:
      * https://www.pexels.com/photo/monopoly-board-game-on-brown-wooden-tabletop-776654/
      */
@@ -51,12 +49,7 @@ void menu_kirajzolasa(void) {
     fancy_szoveget_kiir(menupontok, feher, "Játékmenet betöltése", 0, 337);
     fancy_szoveget_kiir(menupontok, feher, "Kilépés", 0, 425);
 
-    // a változtatások megjelenítése a kimeneten
-    /*TODO: a renderer nem frissül, a
-     * háttér nem jelenik meg, javításch - kész */
     SDL_RenderPresent(renderer);
-    //egeresbillentyu();
-    // a kép által foglalt memória felszabadítása
     SDL_DestroyTexture(hatter);
 }
 
@@ -96,41 +89,26 @@ Gomb egeresbillentyu(void) {
         switch (esemeny.type){
             case SDL_MOUSEBUTTONDOWN:
                 // ha új játékot kezd
-                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 255 && esemeny.button.y <= 305) {
-                    // jatek_main();
-                    //TODO: új játék
-                    kilepes = true;
+                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 255 && esemeny.button.y <= 305)
                     return uj;
-                }
                 // ha játékmenetet tölt be
-                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 325 && esemeny.button.y <= 375) {
+                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 325 && esemeny.button.y <= 375)
                     //TODO: fájl beolvasása
                     return megnyit;
-                }
-                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465) {
-                    // kilepes = true;
-                    // SDL_Quit();
+                if (esemeny.button.x >= 362 && esemeny.button.x <= 662 && esemeny.button.y >= 415 && esemeny.button.y <= 465)
                     return kilep;
-                }
                 break;
             case SDL_KEYDOWN:
                 // ha n (=new)
-                if (esemeny.key.keysym.sym == SDLK_n) {
-                    // jatek_main();
+                if (esemeny.key.keysym.sym == SDLK_n)
                     return uj;
-                }
                 // ha l (load)
-                if (esemeny.key.keysym.sym == SDLK_l) {
+                if (esemeny.key.keysym.sym == SDLK_l)
                     //TODO: ld fent
                     return megnyit;
-                }
                 // ha q (quit)
-                if (esemeny.key.keysym.sym == SDLK_q) {
-                    kilepes = true;
-                    // ablak_bezarasa();
-                    // SDL_Quit();
+                if (esemeny.key.keysym.sym == SDLK_q)
                     return kilep;
-                }
                 break;
             case SDL_QUIT:
                 return kilep;

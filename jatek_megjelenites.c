@@ -8,7 +8,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_image.h>
-#include <string.h>
 
 #include "jatek_megjelenites.h"
 #include "ablakkezeles.h"
@@ -49,7 +48,6 @@ void jatekosszam_gombok_kirajzolasa(void) {
 void parbeszed(TTF_Font* betu, char* uzenet, int y) {
     ablak_tisztitasa(renderer);
     fancy_szoveget_kiir(betu, szin(feher), uzenet, 0, y);
-    //SDL_RenderPresent(renderer);
 }
 
 /** Megjeleníti a játékmenet grafikus felületét */
@@ -90,7 +88,6 @@ void jatekter_kirajzolasa(void) {
     SDL_Texture* erem = IMG_LoadTexture(renderer, "medal.png");
     SDL_Rect celterulet_erem = { 250, 120, 30, 30 };
     SDL_RenderCopy(renderer, erem, NULL, &celterulet_erem);
-    //SDL_RenderPresent(renderer);
     SDL_DestroyTexture(erem);
 
     // kockadobás
@@ -116,31 +113,6 @@ void jatekter_kirajzolasa(void) {
     boxRGBA(renderer, 234, 496, 428, 546,
             szin(flatgreen).r, szin(flatgreen).g, szin(flatgreen).b, szin(flatgreen).a);
     fancy_szoveget_kiir(betutipus(felkover36pt), szin(feher), "Mentés", 330, 501);
-}
-
-/** Hátteres élsimított szöveget ír ki
- *
- * @param betutipus A megjelenítendő szöveg betűtípusa
- * @param szoveg A megjelenítendő szöveg
- * @param x A szöveg vízszintes pozíója
- * @param y A szöveg függőleges pozíciója
- * @param betuszin A megjelenítendő szöveg színe
- * @param hatterszin A megjelenítendő szöveg háttérszíne
- */
-void hatteres_szoveget_kiir(TTF_Font* betutipus, char* szoveg, int x, int y, SDL_Color betuszin, SDL_Color hatterszin) {
-    SDL_Surface *felirat;
-    SDL_Texture *felirat_t;
-    SDL_Rect hova = { 0, 0, 0, 0 };
-
-    felirat = TTF_RenderUTF8_Shaded(betutipus, szoveg, betuszin, hatterszin);
-    felirat_t = SDL_CreateTextureFromSurface(renderer, felirat);
-    hova.x = x;
-    hova.y = y;
-    hova.w = felirat->w;
-    hova.h = felirat->h;
-    SDL_RenderCopy(renderer, felirat_t, NULL, &hova);
-    SDL_FreeSurface(felirat);
-    SDL_DestroyTexture(felirat_t);
 }
 
 /** Visszaadja egy sztring közepének a pozícióját adott pixelhez igazításhoz
@@ -194,32 +166,6 @@ SDL_Color jatekosszin(Jatekosszin szin) {
             break;
     }
     return color;
-}
-
-// TODO: kell?
-/** SDL_Color-t alakít vissza enummá
- *
- * @return A szín neve
- */
-Jatekosszin szinenumma(SDL_Color szin) {
-    // piros
-    if (szin.r == 235 && szin.g == 64 && szin.b == 52)
-        return j_piros;
-    // sárga
-    if (szin.r == 248 && szin.g == 255 && szin.b == 0)
-        return j_sarga;
-    // zöld
-    if (szin.r == 50 && szin.g == 168 && szin.b == 82)
-        return j_zold;
-    // kék
-    if (szin.r == 66 && szin.g == 135 && szin.b == 245)
-        return j_kek;
-    // lila
-    if (szin.r == 128 && szin.g == 0 && szin.b == 128)
-        return j_lila;
-    // narancssárga
-    if (szin.r == 252 && szin.g == 186 && szin.b == 3)
-        return j_narancs;
 }
 
 /** Kirajzol egy képernyőt, melyen a játékosok színeket választhatnak

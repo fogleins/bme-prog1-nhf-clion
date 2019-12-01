@@ -11,7 +11,6 @@
 SDL_Renderer *renderer;
 
 void ablak_letrehozasa(int szelesseg, int magassag);
-void ablak_bezarasa(void);
 void ablak_tisztitasa(SDL_Renderer* renderer);
 SDL_Color szin(Szinek szin);
 TTF_Font* betutipus(Betuk betutipus);

@@ -5,8 +5,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
 
 #include "main.h"
 #include "jatek.h"
@@ -15,13 +13,6 @@
 #include "fajlkezeles.h"
 #include "menu.h"
 #include "debugmalloc.h"
-
-// Hogy a Sleep linuxon is működjön
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     Mezo mezok_tombje[40];
@@ -63,7 +54,7 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
         SDL_Quit();
         return;
     }
-    Sleep(100);
+    SDL_Delay(100);
     bool elso = true, vege = false;
     int p = 0;
     int* aktualis_jatekos = &p;
@@ -124,18 +115,19 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     jatek_vege(jatekostomb);
 }
 
-void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, int* aktualis_jatekos, Mezo* mezok_tombje) {
+/** A játékosok mozgásakor változó értékeket kezeli
+ *
+ * @param vege Igazra állítja, ha valaki megnyerte a játékot
+ * @param jatekosszam A játékosok száma
+ * @param jatekostomb A játékosok adatait tartalmazó tömb
+ * @param aktualis_jatekos Az éppen következő játékos azonosítója
+ * @param mezok_tombje A mezők adatait tartalmazó tömb
+ */
+void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const int* aktualis_jatekos, Mezo* mezok_tombje) {
     int dobokocka, elozo_mezo, kov_mezo;
     Jatekos* soron_levo;
     Jatekos *gyoztes = NULL;
-
-//    if (*aktualis_jatekos == *jatekosszam - 1)
-//        *aktualis_jatekos = 0;
-//    else
-//        *aktualis_jatekos += 1;
     soron_levo = &jatekostomb[*aktualis_jatekos];
-
-
 
     dobokocka = (rand() % 6 + 1);
     elozo_mezo = soron_levo->mezo_id;
@@ -179,7 +171,7 @@ void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, int* ak
 
 /** A játék során mire kattint a játékos
  *
- * @return Kockadobás vagy kilépés
+ * @return A kattintott gombhoz rendelt tulajdonság
  */
 Jatek_event kattintas(void) {
     while (true) {
@@ -207,7 +199,6 @@ Jatek_event kattintas(void) {
  * @param jatekosok_szama A játékosok száma
  */
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
-    //TODO: ez null?
     Jatekos *jatekosok_tombje = NULL;
     bool kilepes = false;
     parbeszed(betutipus(felkover48pt), "Add meg a játékosok számát: ", 576 / 8);
@@ -282,16 +273,6 @@ void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny) {
     }
 }
 
-//TODO: ez a függvény
-/** Visszaadja a jelenlegi játékmenet tulajdnoságait (pl. játékosszám)
- *
- * @return A játék jellemzői
- */
-//Jatek tulajdonsagok(void) {
-//    jatek = Jatek {};
-//    return jatek;
-//}
-
 /** Megkérdezi a felhasználót, hogy biztosan meg szeretné-e kezdeni a játékot
  *
  * @param tomb A játékostömb, aminek memóriát kell foglalni
@@ -316,24 +297,18 @@ bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
                 switch (megerosites_esemeny.key.keysym.sym) {
                     case SDLK_i:
                     case SDLK_y:
-                        megerositette = true;
                         return true;
                     case SDLK_m:
                     case SDLK_f:
-                        megerositette = true;
                         return false;
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (megerosites_esemeny.button.y >= 334 && megerosites_esemeny.button.y <= 384) {
-                    if (megerosites_esemeny.button.x >= 297 && megerosites_esemeny.button.x <= 497) {
-                        //menu_kirajzolasa();
-                        megerositette = true;
+                    if (megerosites_esemeny.button.x >= 297 && megerosites_esemeny.button.x <= 497)
                         return false;
-                    }
                     if (megerosites_esemeny.button.x >= 527 && megerosites_esemeny.button.x <= 727) {
                         ablak_tisztitasa(renderer);
-                        megerositette = true;
                         return true;
                     }
                 }
@@ -346,22 +321,6 @@ bool jatekkezdes_megerositese(bool* sdlquit_esemeny) {
     }
 }
 
-/** Memóriát foglal a játékosok számára
- *
- * @param tomb Ez a pointer fog a foglalt memóriaterületre mutatni
- * @param jatekosszam A játékosok száma
- * @return true, ha a memóriafoglalás sikerült
- */
-//static bool memfoglalas(Jatekos* tomb, int jatekosszam) {
-//    tomb = (Jatekos*) malloc(jatekosszam * sizeof(Jatekos));
-//    //TODO: itt lehetne kilepes = false-szal továbblépni?
-//    if (tomb == NULL) {
-//        SDL_Log("Nem sikerult memoriat foglalni a jatekosok szamara: %s", SDL_GetError());
-//        return false;
-//    }
-//    else return true;
-//}
-
 /** A játék befejezésekor kerül hívásra. Felszabadítja a lefoglalt memóriát és bezárja az ablakot
  *
  * @param jatekostomb A felszabadítandó memóriaterületre mutató Jatekos típusú pointer
@@ -370,29 +329,6 @@ static void jatek_vege(Jatekos* jatekostomb) {
     /*TODO: eredménykijelzés, stb*/
     free(jatekostomb);
     SDL_Quit();
-}
-
-//TODO ez a függvény
-/** Sztring bemenet kezelése */
-// https://wiki.libsdl.org/Tutorials/TextInput
-char* sdl_sztring(void) {
-    char* str = "";
-    bool kilepes = false;
-    SDL_StartTextInput();
-    while (!kilepes) {
-        SDL_Event esemeny;
-        if (SDL_PollEvent(&esemeny)) {
-            switch (esemeny.type) {
-                case SDL_QUIT:
-                    kilepes = true;
-                    break;
-                case SDL_TEXTINPUT:
-                    strcat(str, esemeny.text.text);
-                    break;
-            }
-        }
-    }
-    return str;
 }
 
 /** Visszaadja egy mező közepének koordinátáit

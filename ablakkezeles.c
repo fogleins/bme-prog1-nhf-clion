@@ -64,9 +64,6 @@ SDL_Color szin(Szinek szin) {
             color = (SDL_Color) { 46, 204, 113, 99 };
             break;
         case kek:
-//            r = 66;
-//            g = 135;
-//            b = 245;
             color = (SDL_Color) { 66, 170, 245, 80 };
             break;
         case hatter:
@@ -74,10 +71,6 @@ SDL_Color szin(Szinek szin) {
             break;
         case hatter_sotet:
             color = (SDL_Color) { 173, 102, 102, a };
-            break;
-        default:
-            //TODO: fekete?
-            color = (SDL_Color) { 0, 0, 0, a };
             break;
     }
     return color;
@@ -115,5 +108,4 @@ TTF_Font* betutipus(Betuk betutipus) {
             return NULL;
     }
     return TTF_OpenFont(nev, meret);
-    //TODO: ha NULL
 }

@@ -43,14 +43,11 @@ typedef enum Jatek_event {
 
 
 void jatek_main(Jatekos* jatekostomb, const int* jatekosszam);
-void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, int* aktualis_jatekos, Mezo* mezok_tombje);
+void szabalyok(bool* vege, const int* jatekosszam, Jatekos* jatekostomb, const int* aktualis_jatekos, Mezo* mezok_tombje);
 Jatek_event kattintas(void);
 void jatekkezdes(int* jatekosok_szama, bool* sdlquit_esemeny);
 bool jatekkezdes_megerositese(bool* sdlquit_esemeny);
-//bool jatekkezdes_megerositese(Jatekos *tomb, int jatekosszam);
-static bool memfoglalas(Jatekos* tomb, int jatekosszam);
 static void jatek_vege(Jatekos* jatekostomb);
-char* sdl_sztring(void);
 Mezokoord mezo_kozepe(const int* mezo_id);
 
 #endif //TARSAS_JATEK_H
