@@ -66,11 +66,12 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
     int aktualis_jatekos = 0, elozo_mezo, kov_mezo, dobokocka;
     Jatekos *soron_levo;
     Jatekos *gyoztes = NULL;
-    Jatek_event mire_kattintott;
+    Jatek_event mire_kattintott, mire_kattintott2 = bezar; /* a második a passzok kezeléséhez kell */
     SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
     SDL_RenderClear(renderer);
     jatekter_kirajzolasa();
     SDL_RenderPresent(renderer);
+
     while (!vege) {
         soron_levo = &jatekostomb[aktualis_jatekos];
         SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
@@ -84,13 +85,20 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
             SDL_RenderPresent(renderer);
             aktualis_jatekos++;
             elso = false;
+            SDL_SetRenderDrawColor(renderer, szin(hatter).r, szin(hatter).g, szin(hatter).b, 255);
+            SDL_RenderClear(renderer);
+            jatekter_kirajzolasa();
         }
 
         if (aktualis_jatekos == *jatekosszam - 1)
             aktualis_jatekos = 0;
         else aktualis_jatekos++;
 
+
         mire_kattintott = kattintas();
+        // a passzolás kezelése
+//        if (mire_kattintott == mire_kattintott2 && mire_kattintott2 != passz)
+//            mire_kattintott = mire_kattintott2;
         if (mire_kattintott == dob) {
             dobokocka = (rand() % 6 + 1);
             elozo_mezo = soron_levo->mezo_id;
@@ -98,6 +106,24 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
             if (elozo_mezo < 40 && kov_mezo >= 40)
                 soron_levo->mezo_id -= 40;
             soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
+
+            //TODO
+            // mezők speciális tulajdonságai átvétele a játékosoknak
+//            soron_levo->ermek += soron_levo->mezo.erem;
+//            soron_levo->mezo_id += soron_levo->mezo.lep;
+//            soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
+//            soron_levo->kimarad += soron_levo->mezo.dob;
+//            soron_levo->kimarad += soron_levo->mezo.dob;
+//            while (soron_levo->kimarad < 0) {
+//                soron_levo->ermek += soron_levo->mezo.erem;
+//                soron_levo->mezo_id += soron_levo->mezo.lep;
+//                soron_levo->mezo = mezok_tombje[soron_levo->mezo_id];
+//                soron_levo->kimarad += soron_levo->mezo.dob;
+//            }
+//            if (soron_levo->ermek < 0)
+//                soron_levo->ermek = 0;
+//            if (soron_levo->mezo_id < 0)
+//                soron_levo->mezo_id += 40;
             szovegek_megjelenitese(&jatekostomb[aktualis_jatekos], &dobokocka);
 
             for (int i = 0; i < *jatekosszam; ++i)
@@ -109,7 +135,9 @@ void jatek_main(Jatekos* jatekostomb, const int* jatekosszam) {
                 gyoztes = soron_levo;
                 break;
             }
-
+//            mire_kattintott2 = kattintas();
+//            if (mire_kattintott2 == passz)
+//                soron_levo->passz--;
         }
         if (mire_kattintott == passz && soron_levo->passz > 0)
             soron_levo->passz--;
@@ -366,13 +394,13 @@ Mezokoord mezo_kozepe(const int* mezo_id) {
     if (*mezo_id == 10)
         return kozep10;
     if (*mezo_id < 20)
-        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 1), kozep10.y };
+        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 11), kozep10.y };
     if (*mezo_id == 20)
         return kozep20;
     if (*mezo_id < 30)
-        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 1) };
+        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 20) };
     if (*mezo_id == 30)
         return kozep30;
     if (*mezo_id < 40)
-        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 1), kozep0.y };
+        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 31), kozep0.y };
 }
