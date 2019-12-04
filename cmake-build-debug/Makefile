@@ -176,6 +176,15 @@ fajlkezeles.c.s:
 	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/fajlkezeles.c.s
 .PHONY : fajlkezeles.c.s
 
+icon.obj: icon.rc.obj
+
+.PHONY : icon.obj
+
+# target to build an object file
+icon.rc.obj:
+	$(MAKE) -f CMakeFiles\sdlteszt.dir\build.make CMakeFiles/sdlteszt.dir/icon.rc.obj
+.PHONY : icon.rc.obj
+
 jatek.obj: jatek.c.obj
 
 .PHONY : jatek.obj
@@ -299,6 +308,7 @@ help:
 	@echo ... fajlkezeles.obj
 	@echo ... fajlkezeles.i
 	@echo ... fajlkezeles.s
+	@echo ... icon.obj
 	@echo ... jatek.obj
 	@echo ... jatek.i
 	@echo ... jatek.s
