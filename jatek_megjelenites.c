@@ -281,7 +281,7 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
     seged[1] = ']';
     seged[2] = '\0';
     SDL_strlcat(passzok_szama, seged, 13);
-    fancy_szoveget_kiir(betutipus(felkover24pt), szin(feher), passzok_szama, 330, 192);
+    fancy_szoveget_kiir(betutipus(felkover30pt), szin(feher), passzok_szama, 330, 190);
 
     char ermek_szama[3];
     sprintf(ermek_szama, "%d", soronkovetkezo->ermek);
