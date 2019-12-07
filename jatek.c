@@ -358,22 +358,22 @@ void jatek_vege(Jatekos* jatekostomb) {
 Mezokoord mezo_kozepe(const int* mezo_id) {
     Mezokoord kozep0 = { 500, 523 };
     Mezokoord kozep10 = { 500, 53 };
-    Mezokoord kozep20 = { 970, 53 };
-    Mezokoord kozep30 = { 970, 523 };
+    Mezokoord kozep20 = { 970, 51 };
+    Mezokoord kozep30 = { 972, 523 };
     if (*mezo_id == 0)
         return kozep0;
     if (*mezo_id < 10)
-        return (Mezokoord) { kozep0.x, kozep0.y - 61 - 44 * (*mezo_id - 1) };
+        return (Mezokoord) { kozep0.x - 5, kozep0.y - 61 - 44 * (*mezo_id - 1) };
     if (*mezo_id == 10)
         return kozep10;
     if (*mezo_id < 20)
-        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 11), kozep10.y };
+        return (Mezokoord) { kozep10.x + 61 + 44 * (*mezo_id - 11), kozep10.y - 5 };
     if (*mezo_id == 20)
         return kozep20;
     if (*mezo_id < 30)
-        return (Mezokoord) { kozep20.x, kozep20.y + 61 + 44 * (*mezo_id - 21) };
+        return (Mezokoord) { kozep20.x + 5, kozep20.y + 61 + 44 * (*mezo_id - 21) };
     if (*mezo_id == 30)
         return kozep30;
     if (*mezo_id < 40)
-        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 31), kozep0.y };
+        return (Mezokoord) { kozep30.x - 61 - 44 * (*mezo_id - 31), kozep0.y + 5 };
 }

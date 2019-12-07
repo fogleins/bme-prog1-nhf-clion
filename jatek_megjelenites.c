@@ -313,33 +313,43 @@ void szovegek_megjelenitese(Jatekos* soronkovetkezo, const int* dobokocka) {
 void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
     int r = 8;
     SDL_Color szin = jatekosszin(soronkovetkezo->szin);
+    bool fuggoleges; // megadja, hogy a bábut elsősorban melyik tengelyen kell mozgatni
     switch (soronkovetkezo->szin) {
         case j_piros:
             if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
                     || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                 hova.x -= 2 * r + 3;
                 hova.y += r + 10;
+                fuggoleges = true;
             }
             else {
                 hova.y -= 2 * r + 3;
-                hova.x += r + 10 + 2*r+3;
+                hova.x += r + 10;
+                fuggoleges = false;
             }
             break;
         case j_narancs:
             if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
-                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30))
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                     hova.y += r + 10;
-            else hova.x += r + 10;
+                    fuggoleges = true;
+            }
+            else {
+                hova.x += r + 10;
+                fuggoleges = false;
+            }
             break;
         case j_sarga:
             if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
                 || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                     hova.x += 2 * r + 3;
                     hova.y += r + 10;
+                    fuggoleges = true;
             }
             else {
                 hova.y += 2 * r + 3;
-                hova.x += r + 10 + 2*r+3;
+                hova.x += r + 10;
+                fuggoleges = false;
             }
             break;
         case j_zold:
@@ -347,32 +357,48 @@ void babuk_megjelenitese(Jatekos* soronkovetkezo, Mezokoord hova) {
                 || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                     hova.x -= 2 * r + 3;
                     hova.y -= r - 7;
+                    fuggoleges= true;
             }
             else {
                 hova.y -= 2 * r + 3;
-                hova.x -= r - 7 + 2*r+3;
+                hova.x -= r - 7;
+                fuggoleges = false;
             }
             break;
         case j_kek:
             if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
-                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30))
+                || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                     hova.y -= r - 7;
-            else hova.x -= r - 7;
+                    fuggoleges = true;
+            }
+            else {
+                hova.x -= r - 7;
+                fuggoleges = false;
+            }
             break;
         case j_lila:
             if ((soronkovetkezo->mezo_id >= 0 && soronkovetkezo->mezo_id <= 10)
                 || (soronkovetkezo->mezo_id >= 20 && soronkovetkezo->mezo_id <= 30)) {
                     hova.x += 2 * r + 3;
                     hova.y += r - 9;
+                    fuggoleges = true;
             }
             else {
                 hova.y += 2 * r + 3;
-                hova.x += r - 9 + 2*r+3;
+                hova.x += r - 9;
+                fuggoleges = false;
             }
             break;
     }
-    filledCircleRGBA(renderer, hova.x, hova.y, r, szin.r, szin.g, szin.b, szin.a);
-    circleRGBA(renderer, hova.x, hova.y, r, 0, 0, 0, 255);
+    if (fuggoleges) {
+        filledCircleRGBA(renderer, hova.x, hova.y - r, r, szin.r, szin.g, szin.b, szin.a);
+        circleRGBA(renderer, hova.x, hova.y - r, r, 0, 0, 0, 255);
+    }
+    else {
+        filledCircleRGBA(renderer, hova.x - r, hova.y, r, szin.r, szin.g, szin.b, szin.a);
+        circleRGBA(renderer, hova.x - r, hova.y, r, 0, 0, 0, 255);
+    }
+
 }
 
 /** Játék végén kerül hívásra, kiírja, hogy melyik játékos nyert
