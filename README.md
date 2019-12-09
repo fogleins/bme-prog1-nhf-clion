@@ -3,7 +3,8 @@
 ## Leírás
 
 Programozás alapjai 1. tárgyhoz készített nagy házi feladatom.
- 
+
+<div style="text-align: justify">
 2-6 játékos által játszható táblás társasjáték, 
 melyben a játékosok egymás ellen versenyeznek a győzelemért.
 A győzelemhez legalább 15 aranyérmet kell összegyűjteni,
@@ -13,7 +14,9 @@ A versenyzők könnyen hátrányba is kerülhetnek társaikkal szemben: a
 segítséget nyújtó mezőkön túl több olyan mezővel is találkozhatnak, 
 mely nehezíti az érmek mihamarabbi összegyűjtését. Ezek a mezők
 vehetnek el érmeket, hátralépésre kényszeríthetik a játékosokat,
-vagy éppen hatásukra a soronkövetkező játékos kimarad a dobásból.    
+vagy éppen hatásukra a soronkövetkező játékos kimarad a dobásból.  
+</div>  
+
 A felhasználói dokumentáció 
 [ide](https://github.com/fogleins/bme-prog1-nhf-clion/raw/master/dokumentacio/felhasznaloi.pdf "Felhasználói dokumentáció") 
 kattintva olvasható.
