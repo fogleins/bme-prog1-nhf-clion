@@ -1,6 +1,6 @@
 # Legyél olimpiai bajnok!
 
-##Leírás
+## Leírás
 
 Programozás alapjai 1. tárgyhoz készített nagy házi feladatom.
  
@@ -25,7 +25,7 @@ fájlokra):
 * [SDL2_gfx](http://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/)
 ##### Az esetleges hibákat [ezen](https://github.com/fogleins/bme-prog1-nhf-clion/issues "Hibajelentés") az oldalon lehet jelezni.
 
-##Képernyőképek
+## Képernyőképek
 ![alt text](https://github.com/fogleins/bme-prog1-nhf-clion/raw/master/dokumentacio/fomenu.png "Főmenü")
 
 
